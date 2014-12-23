@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Sales Lead Detail</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+    </ui:define>
+
+    <ui:define name="content">
+
+        <h:form>
+            <p:graphicImage value="../../resources/images/salesLead.jpg" style="width:100%;"></p:graphicImage>
+            <p:panel id ="panel" header="Detail of Client #{salesLeadManagedBean.clientCompany.companyName}">
+                <f:facet name="header">
+                    <b style="font-size:1.5em;">Detail of Client #{salesLeadManagedBean.clientCompany.companyName}</b>
+                </f:facet>
+                <p:growl id="msgs" />
+                <h:panelGrid columns="2" cellpadding="5">
+                    
+                    <h:outputText value="Contact Number: "/>
+                    <h:outputText value="#{salesLeadManagedBean.sl.clientCompany.contactNo}"/>
+                    
+                    <p:outputLabel for="description" value="Description:" />
+                    <p:inplace id="description">
+                        <p:inputText required="false" label="description"
+                                     requiredMessage="Contract description is required." id="description1"
+                                     value="#{salesLeadManagedBean.description}"/>
+                    </p:inplace>
+
+                </h:panelGrid>
+                
+                <h:panelGrid columns="3" cellpadding="5">
+                    <p:commandButton value="Update" id="submit" update="panel" ajax="true" actionListener="#{salesLeadManagedBean.updateSalesLead()}" styleClass="ui-priority-primary" />
+                    <p:commandButton type="submit" value="Return to Sales Lead List" icon="ui-icon-check" actionListener="#{salesLeadManagedBean.redirectToViewSalesLeadList()}" /> 
+                </h:panelGrid>  
+            </p:panel>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+

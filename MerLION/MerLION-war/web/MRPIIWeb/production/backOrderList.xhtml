@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Display Sales Order List</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfManufacture()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+
+            <p:graphicImage value="../../resources/images/bannerManufacturing.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:dataTable id="dataTable" var="salesOrder" value="#{productionManagedBean.retrieveBackOrderList()}"
+                         rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="No Back Order">
+                <f:facet name="header">
+                    <p style="font-size:1.5em;display:inline;">Incoming Back Orders</p>
+                </f:facet>
+                <p:column headerText="Order ID" sortBy="#{salesOrder.id}" filterBy="#{salesOrder.id}" filterMatchMode="contains" >
+                    <h:outputText value="#{salesOrder.id}" />
+                </p:column>
+                <p:column filterBy="#{salesOrder.salesQuotation.customer.name}" headerText="Customer Company"
+                          sortBy="#{salesOrder.salesQuotation.customer.name}" filterMatchMode="contains">
+                    <h:outputText value="#{salesOrder.salesQuotation.customer.name}" />
+                </p:column>
+                <p:column headerText="Total Price" sortBy="#{salesOrder.salesQuotation.totalPrice}" 
+                          filterBy="#{salesOrder.salesQuotation.totalPrice}" filterMatchMode="contains">
+                    <h:outputText value="#{salesOrder.salesQuotation.totalPrice}">
+                        <f:convertNumber type="currency" currencySymbol="S$" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Sales Order Date" sortBy="#{salesOrder.salesOrderDate}" filterBy="#{salesOrder.salesOrderDate}" filterMatchMode="contains">
+                    <h:outputText value="#{salesOrder.salesOrderDate}" />
+                </p:column>
+
+                <p:column headerText="View Detail">
+                    <center>
+                        <p:commandButton type="submit" icon="ui-icon-extlink" actionListener="#{productionManagedBean.retrieveBackOrder(salesOrder)}"/>
+                    </center>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

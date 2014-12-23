@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Raw Material Storage Bin List</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfWarehouse()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formMain"> 
+            <p:graphicImage value="../../resources/images/bannerWarehouse.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+            <p:growl id="msgs" />
+
+            <p:dataTable id="datatable" var="shelf" value="#{rawMaterialInventoryManagedBean.retrieveShelfListForSpecificProductInWarehouse()}"
+                         paginator="true" rows="10" emptyMessage="No storage bin found">
+
+                <f:facet name="header">
+                    Storage bin list of Warehouse #{rawMaterialInventoryManagedBean.wh.name} storing #{rawMaterialInventoryManagedBean.fg.productName}
+                </f:facet>
+                <p:column headerText="Serial Code" sortBy="#{shelf.serialCode}">
+                    <h:outputText value="#{shelf.serialCode}" />
+                </p:column>   
+                <p:column headerText="Raw Material Name" sortBy="#{rawMaterialInventoryManagedBean.fg.productName}">
+                    <h:outputText value="#{rawMaterialInventoryManagedBean.fg.productName}" />
+                </p:column>      
+                <p:column headerText="Quantity">
+                    <h:outputText value="#{shelf.curQuantity}" />
+                </p:column>
+                <p:column headerText="Unit">
+                    <h:outputText value="#{rawMaterialInventoryManagedBean.fg.unit}" />
+                </p:column>
+
+            </p:dataTable>
+            <p:commandButton type="submit" value="Back to Warehouse List" icon="ui-icon-check" actionListener="#{rawMaterialInventoryManagedBean.redirectToViewWarehouseList()}" /> 
+        </h:form>
+    </ui:define>
+</ui:composition>
+

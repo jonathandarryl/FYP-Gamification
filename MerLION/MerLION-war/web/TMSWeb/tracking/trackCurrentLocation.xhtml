@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:m="http://code.google.com/p/gmaps4jsf/">
+    <ui:define name="head-title">
+        <title>Track Transportation Order</title>
+    </ui:define>
+    <ui:define name="js">
+        <script src="https://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAxrVS1QxlpJHXxQ2Vxg2bJBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxS9AOPy_YJl48ifAy4mq6I8SgK8fg" type="text/javascript">
+        </script> 
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="ui-grid ui-grid-responsive">
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-2"></div>
+                <div class="ui-grid-col-2">
+                    <p:graphicImage value="/resources/images/tracking.png" style="width: 30px;float:right;"></p:graphicImage>
+                </div>
+                <div class="ui-grid-col-6">
+                    <h:outputText value="Track My Shipment" style="font-size: 2em; margin-left: 10px;" />
+                </div>
+                <div class="ui-grid-col-2"></div>
+            </div>
+        </div>
+        <h:form>
+            <p:panel id ="panel" style="font-size: 1.2em;">
+                <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+                <p:growl id="msgs" />
+                <center>
+                    <p:outputLabel for="tracking" value="Tracking Number : " />
+                    <p:inputText required="true" label="track" requiredMessage="Tracking number is required." id="tracking"
+                                 value="#{transportationOrderManagedBean.trackingNumber}" size="50"/>
+                    <p:commandButton ajax="true" type="submit" value="Submit" icon="ui-icon-check" 
+                                     actionListener="#{transportationOrderManagedBean.goToTracking()}" /> 
+                </center>
+            </p:panel>
+        </h:form>
+        <h:form>
+            <p:panel id ="panel" header="Track Transportation Order Current Location">
+                <div class="ui-grid ui-grid-responsive">
+                    <div class="row">
+                        <div class="ui-grid-col-2">
+                            <h:outputText value="Current Location : " style="font-size: 1.5em; margin-left: 10px;" />
+                        </div>
+                        <div class="ui-grid-col-10">
+                            <h:outputText style="font-size: 1.5em;" value="#{transportationOrderManagedBean.trackingTransOrder().street}, #{transportationOrderManagedBean.trackingTransOrder().blockNo}, #{transportationOrderManagedBean.trackingTransOrder().city}, #{transportationOrderManagedBean.trackingTransOrder().state}, #{transportationOrderManagedBean.trackingTransOrder().country}, #{transportationOrderManagedBean.trackingTransOrder().postalCode}"/>
+                        </div>
+                    </div>
+                </div>
+            </p:panel>
+            <div class="map" style="height:500px;">
+                <m:map width="100%" height="100%" address="#{transportationOrderManagedBean.currAddress}">
+                    <m:marker/>
+                    <m:htmlInformationWindow htmlText="#{transportationOrderManagedBean.currAddress}"/>
+                </m:map>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

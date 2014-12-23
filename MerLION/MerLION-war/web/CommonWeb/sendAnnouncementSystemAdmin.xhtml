@@ -1,0 +1,53 @@
+<ui:composition template="../template/systemAdminTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            MerLION Platform | Send Announcement
+        </title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfSystemAdmin()}
+    </ui:define>
+    <ui:define name="content"> 
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="images/ajaxloadingbar.gif" />
+        </p:dialog>
+
+        <center>
+
+            <h:form>
+                <p:panel id ="panel">
+                    <p:messages id="sendAnn" autoUpdate="true" closable="true"/>
+
+                    <h:panelGrid columns="3" cellpadding="5">
+
+                        <p:outputLabel for="department" value="Department: " />
+                        <p:selectCheckboxMenu id="department" value="#{messageManagedBean.selectedDepartment}" label="departments" required="true" requiredMessage="Please select one department" converter="omnifaces.SelectItemsConverter">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItems value="#{commonFuncManagedBean.departmentList}" />
+                        </p:selectCheckboxMenu>
+                        <p:messages for="department" />
+
+                        <h:outputLabel for="title" value="Announcement title: *" />
+                        <p:inputText id="title" value="#{messageManagedBean.title}" label="title" required="true" requiredMessage="Please input title of message">
+                            <p:watermark for="title" value="Please enter title of the announcement" />
+                        </p:inputText>                        
+                        <p:messages for="title" />
+
+                    </h:panelGrid>
+
+                    <p:editor id="msgEditor" widgetVar="editorWidget" value="#{messageManagedBean.content}" width="600" />
+
+                    <p:commandButton type="submit" value="Send" icon="ui-icon-check" actionListener="#{messageManagedBean.sendAnnouncement()}" />
+                </p:panel>
+
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
+

@@ -1,0 +1,223 @@
+<ui:composition template="../../template/userGRNSTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="head-title">
+        <title>
+            GRNS | Update Storage Post
+        </title>
+    </ui:define>
+
+    <ui:define name="css-style">
+        <style type="text/css">
+            td, th {
+                padding: 5px !important;
+            }
+            .position-icon-right .ui-button-text {
+                padding: 0.4em 2.1em 0.4em 1em;
+            }
+            .position-icon-right .ui-button-icon-primary {
+                left: auto;
+                right: 0.5em;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="images/ajaxloadingbar.gif" />
+        </p:dialog>
+
+        <p:breadCrumb>
+        </p:breadCrumb>
+
+        <center>
+            <h:form>
+
+                <p:panel id ="panel">
+
+                    <p:growl id="growlId" sticky="true" life="5" />
+
+                    <p:messages id="msgId" autoUpdate="true" closable="true"/>
+
+                    <p:wizard>
+                        <p:tab id="postTab" title="Post Information">
+                            <f:facet name="title">
+                                Post Information <i class="fa fa-arrow-circle-right"></i>
+                            </f:facet>
+                            <p:panel header="Post Information">
+                                <h:panelGrid id="postInfo" columns="3" cellpadding="10">
+                                    <h:outputLabel for="title" value="Post Title: " />
+                                    <p:inplace editor="true">
+                                        <p:inputText id="title" value="#{postManagedBean.title}" required="true" label="title" />
+                                    </p:inplace>
+                                    <p:message for="title" display="icon"/>
+
+                                </h:panelGrid>
+                                <p:editor id="contentEditor" widgetVar="editorWidget" value="#{postManagedBean.content}" width="600" />
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="auctionTab" title="Auction Detail">
+                            <f:facet name="title">
+                                Auction Detail <i class="fa fa-arrow-circle-right"></i>
+                            </f:facet>
+                            <p:panel header="Auction Detail">
+                                <h:panelGrid id="auctionInfo" columns="3" cellpadding="10" >
+                                    <h:outputLabel for="initBid" value="Initial Bid: " />
+                                    <p:inplace editor="true">
+                                        <p:inputText id="initBid" value="#{postManagedBean.initBid}" required="true" requiredMessage="Please enter a valid number"  converterMessage="Price must contains digits only.">
+                                            <f:converter converterId="javax.faces.Double" />
+                                            <!--<f:validateRegex pattern="^[0-9]+(\.[0-9]{1,2})?$"/>-->
+                                        </p:inputText>
+                                    </p:inplace>
+                                    <p:message for="initBid" display="icon"/>
+
+                                    <h:outputLabel for="oldEndTime" value="Old End Time: " />
+                                    <h:outputText id="oldEndTime" value="#{postManagedBean.endDateTime}"/>
+                                    <p:message for="oldEndTime" display="icon"/>
+
+                                    <h:outputLabel for="endTime" value="New End Time: " />
+                                    <p:calendar id="endTime" value="#{postManagedBean.date}" pattern="MM/dd/yyyy HH:mm:ss" />
+                                    <p:message for="endTime" display="icon"/>
+
+                                    <p:outputLabel for="reservePriceSpecified" value="Do you want to reserve price: " />
+                                    <p:selectBooleanButton id="reservePriceSpecified" value="#{postManagedBean.reservePriceSpecified}" onLabel="Yes" offLabel="No" style="width:60px" required="true" requiredMessage="Please select whether you want to have a reserve price" />
+                                    <p:message for="reservePriceSpecified" display="icon"/>
+
+                                    <h:outputLabel for="reservePrice" value="Reserve Price: " />
+                                    <p:inplace editor="true">
+                                        <p:inputText id="reservePrice" value="#{postManagedBean.reservePrice}" converterMessage="Price must contain digits only.">
+                                            <f:converter converterId="javax.faces.Double" />
+                                        </p:inputText>
+                                    </p:inplace>
+                                    <p:message for="reservePrice" display="icon"/>
+
+                                    <p:outputLabel for="oldAuctionType" value="Original Auction Type: "/>
+                                    <h:outputText id="oldAuctionType" value="#{postManagedBean.auctionType}"/>
+                                    <p:message for="oldAuctionType" display="icon"/>
+
+                                    <p:outputLabel for="auctionType" value="Auction Type: " />
+                                    <p:selectOneRadio id="auctionType" value="#{postManagedBean.auctionType}">
+                                        <f:selectItem itemLabel="Vickery Auction" itemValue="vickreyAuction" />
+                                        <f:selectItem itemLabel="Blind Auction" itemValue="blindAuction" />
+                                        <f:selectItem itemLabel="English Auction" itemValue="englishAuction" />
+                                    </p:selectOneRadio>
+                                    <p:message for="auctionType" display="icon"/> 
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="storageTab" title="Storage Post Detail">
+                            <f:facet name="title">
+                                Storage Post Detail <i class="fa fa-arrow-circle-right"></i>
+                            </f:facet>
+                            <p:panel header="Storage Post Detail">
+                                <h:panelGrid id="storageInfo" columns="3" cellpadding="10">
+                                    <h:outputLabel for="warehouseId" value="Warehouse ID: *" />
+                                    <p:inplace editor="true">
+                                        <p:inputText id="warehouseId" value="#{postManagedBean.warehouseId}" required="true" requiredMessage="Please enter a warehouse ID" />
+                                    </p:inplace>
+                                    <p:message for="warehouseId" display="icon"/>
+
+                                    <h:outputLabel for="capacity" value="Capacity: " />
+                                    <p:inplace editor="true">
+                                        <p:inputText id="capacity" value="#{postManagedBean.capacity}" required="true" requiredMessage="Please enter capacity" validatorMessage="The capacity must be in integer only.">
+                                            <f:converter converterId="javax.faces.Integer" />
+                                        </p:inputText>
+                                    </p:inplace>
+                                    <p:message for="capacity" display="icon"/>
+
+                                    <h:outputLabel for="oldServiceStartTime" value="Original Service Start Time: " />
+                                    <h:outputText id="oldServiceStartTime" value="#{postManagedBean.startTime}" />
+                                    <p:message for="oldServiceStartTime" display="icon"/>
+
+                                    <h:outputLabel for="serviceStartTime" value="Service Start Time: " />
+                                    <p:calendar id="serviceStartTime" value="#{postManagedBean.startDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+                                    <p:message for="serviceStartTime" display="icon"/>
+
+                                    <h:outputLabel for="oldServiceEndTime" value="Original Service End Time: " />
+                                    <h:outputText id="oldServiceEndTime" value="#{postManagedBean.endTime}" />
+                                    <p:message for="oldServiceEndTime" display="icon"/>
+
+                                    <h:outputLabel for="serviceEndTime" value="Service End Time: " />
+                                    <p:calendar id="serviceEndTime" value="#{postManagedBean.endDate}" pattern="MM/dd/yyyy HH:mm:ss" />
+                                    <p:message for="serviceEndTime" display="icon"/>
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="warehouseTab" title="Warehouse Information">
+                            <f:facet name="title">
+                                Warehouse Information <i class="fa fa-arrow-circle-right"></i>
+                            </f:facet>
+                            <p:panel header="Warehouse Information">
+                                <h:panelGrid id="warehouse" columns="3" cellpadding="10">
+                                    <h:outputLabel for="street" value="Address Line 1: " />  
+                                    <p:inputText id="street" value="#{postManagedBean.street}" required="true" requiredMessage="Please input valid address" label="Street" style="width: 250px;">  
+                                        <f:validateLength minimum="5" />
+                                    </p:inputText>
+                                    <p:message for="street" display="icon"/>
+
+                                    <h:outputLabel for="blockNo" value="Address Line 2: " />  
+                                    <p:inputText id="blockNo" value="#{postManagedBean.blockNo}" label="BlockNo" style="width: 250px;"/>  
+                                    <p:message for="blockNo" display="icon"/>
+
+                                    <h:outputLabel for="city" value="City: " />  
+                                    <p:inputText id="city" value="#{postManagedBean.city}" required="true" requiredMessage="Please input valid city" label="City">  
+                                        <f:validateLength minimum="2" />
+                                    </p:inputText>
+                                    <p:message for="city" display="icon"/>
+
+                                    <h:outputLabel for="state" value="State: " />  
+                                    <p:inputText id="state" value="#{postManagedBean.state}" label="State" required="true" requiredMessage="Please input valid state">  
+                                        <f:validateLength minimum="2" />
+                                    </p:inputText>
+                                    <p:message for="state" display="icon"/>
+
+                                    <h:outputLabel for="country" value="Country: " />  
+                                    <p:inputText id="country" value="#{postManagedBean.country}" required="true" requiredMessage="Please input valid country" label="Country">  
+                                        <f:validateLength minimum="2" />
+                                    </p:inputText>
+                                    <p:message for="country" display="icon"/>
+
+                                    <h:outputLabel for="postalCode" value="Postal Code: " />  
+                                    <p:inputMask id="postalCode" value="#{postManagedBean.postalCode}" mask="999 999" required="true" requiredMessage="Please input valid postal code" label="PostalCode."/>  
+                                    <p:message for="postalCode" display="icon"/>
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="capabilityTab" title="Special capability" >
+                            <p:panel header="Sepcial capability">
+                                <h:panelGrid id="capabilityInfo" columns="2" cellpadding="10">
+                                    <h:outputText value="Perishable: " />
+                                    <p:selectBooleanButton id="perishable" value="#{postManagedBean.perishable}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px" />
+
+                                    <h:outputText value="Flammable: " />
+                                    <p:selectBooleanButton id="flammable" value="#{postManagedBean.flammable}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px" />
+
+                                    <h:outputText value="Pharmaceutical: " />
+                                    <p:selectBooleanButton id="pharmaceutical" value="#{postManagedBean.pharmaceutical}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px"/>
+
+                                    <h:outputText value="HighValue: " />
+                                    <p:selectBooleanButton id="highValue" value="#{postManagedBean.highValue}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px"/>
+                                </h:panelGrid>
+
+                                <p:commandButton  ajax="true" type="submit" value="Submit" update="panel" icon="ui-icon-check" actionListener="#{postManagedBean.updateStoragePost()}" />
+                            </p:panel>
+                        </p:tab>
+
+                    </p:wizard>     
+                </p:panel>
+
+            </h:form>
+
+        </center>
+    </ui:define>
+</ui:composition>
+

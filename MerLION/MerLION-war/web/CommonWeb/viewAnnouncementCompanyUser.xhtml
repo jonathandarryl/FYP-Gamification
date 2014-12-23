@@ -1,0 +1,90 @@
+<ui:composition template="../template/companyUserTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            MerLION Platform | View Announcement
+        </title>
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            #annDetail {
+                z-index: 1010 !important;
+            }
+            td th {
+                padding: 5px !important;
+            }
+            td {
+                color: black !important;
+            }
+        </style> 
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkStatus()}
+        #{commonFuncManagedBean.checkIfUser()} 
+        #{messageManagedBean.viewAllAnnouncement()}
+    </ui:define>
+    <ui:define name="content"> 
+
+        <center>
+
+            <h:form id="form">
+                <p:panel id ="panel">
+
+                    <p:messages id="viewAnn" autoUpdate="true" closable="true"/>
+
+                    <p:dataTable var="announcement" value="#{messageManagedBean.allAnnouncement}" resizableColumns="true" rows="10" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" >
+                        <f:facet name="header">
+                            View Announcement
+                        </f:facet>
+
+                        <p:column filterBy="#{announcement.announcementTime}" headerText="Announcement Time" sortBy="#{announcement.announcementTime}" filterMatchMode="contains" >
+                            <h:outputText value="#{announcement.announcementTime}" />
+                        </p:column>
+
+                        <p:column filterBy="#{announcement.title}" headerText="Title" filterMatchMode="contains" >
+                            <h:outputText value="#{announcement.title}" />
+                        </p:column>
+
+                        <p:column filterBy="#{announcement.content}" headerText="Content" filterMatchMode="contains" >
+                            <h:outputText value="#{announcement.content}" escape="false" />
+                        </p:column>
+
+                        <p:column headerText="View" style="width: 80px;" >
+                            <center>
+                                <p:commandButton icon="ui-icon-search" oncomplete="PF('annDialog').show()" ajax="true" update=":form:panel" type="submit" >
+                                    <f:setPropertyActionListener value="#{announcement}" target="#{messageManagedBean.selectedAnnouncement}" />
+                                </p:commandButton>
+                            </center>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <p:dialog header="Announcement Info" modal="true" appendTo="@(body)" widgetVar="annDialog" showEffect="fade" hideEffect="fade" resizable="false">
+                        <p:outputPanel id="annDetail" style="text-align:center;">
+                            <p:panelGrid  columns="2" rendered="#{not empty messageManagedBean.selectedAnnouncement}" columnClasses="label,value">
+
+                                <h:outputText value="Send time" />
+                                <h:outputText value="#{messageManagedBean.selectedAnnouncement.announcementTime}" />
+
+                                <h:outputText value="Title:" />
+                                <h:outputText value="#{messageManagedBean.selectedAnnouncement.title}" />
+
+                                <h:outputText value="Content:" />
+                                <h:outputText value="#{messageManagedBean.selectedAnnouncement.content}" escape="false" />
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </p:dialog>
+
+                </p:panel>
+
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
+

@@ -1,0 +1,97 @@
+<ui:composition template="../template/systemAdminTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            MerLION Platform | View Announcement Sent
+        </title>
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            #annSDetail {
+                z-index: 1010 !important;
+            }
+            td th {
+                padding: 5px !important;
+            }
+            td {
+                color: black !important;
+            }
+        </style> 
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfSystemAdmin()}
+        #{messageManagedBean.viewAllAnnouncementSent()}
+    </ui:define>
+    <ui:define name="content"> 
+
+
+        <center>
+
+            <h:form id="form">
+                <p:panel id ="panel">
+
+                    <p:messages id="viewAnnSent" autoUpdate="true" closable="true"/>
+
+                    <p:dataTable var="announcementSent" value="#{messageManagedBean.allAnnouncementSent}" resizableColumns="true" rows="10" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" >
+                        <f:facet name="header">
+                            View Announcement Sent
+                        </f:facet>
+
+                        <p:column filterBy="#{announcementSent.announcementTime}" headerText="Announcement Time" sortBy="#{announcementSent.announcementTime}" filterMatchMode="contains" >
+                            <h:outputText value="#{announcementSent.announcementTime}" />
+                        </p:column>
+
+                        <p:column filterBy="#{announcementSent.title}" headerText="Title" filterMatchMode="contains" >
+                            <h:outputText value="#{announcementSent.title}" />
+                        </p:column>
+
+                        <p:column filterBy="#{announcementSent.content}" headerText="Content" filterMatchMode="contains" >
+                            <h:outputText value="#{announcementSent.content}" escape="false" />
+                        </p:column>
+
+                        <p:column headerText="View" style="width: 80px;" >
+                            <center>
+                                <p:commandButton icon="ui-icon-search" oncomplete="PF('annSDialog').show()" ajax="true" update=":form:panel" type="submit" >
+                                    <f:setPropertyActionListener value="#{announcementSent}" target="#{messageManagedBean.selectedAnnouncementSent}" />
+                                </p:commandButton>
+                            </center>
+                        </p:column>
+
+                        <p:column headerText="Delete" style="width: 80px;" >
+                            <center>
+                                <p:commandButton icon="ui-icon-trash" actionListener="#{messageManagedBean.deleteAnnouncement(announcementSent.id)}" update=":form:panel" ajax="false" type="submit" 
+                                                 onclick="if (!confirm('Are you sure you want to delete this announcement')) return false;"/>
+                            </center>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <p:dialog header="Announcement Info" modal="true" appendTo="@(body)" widgetVar="annSDialog" showEffect="fade" hideEffect="fade" resizable="false">
+                        <p:outputPanel id="annSDetail" style="text-align:center;">
+                            <p:panelGrid  columns="2" rendered="#{not empty messageManagedBean.selectedAnnouncementSent}" columnClasses="label,value">
+
+                                <h:outputText value="Send time" />
+                                <h:outputText value="#{messageManagedBean.selectedAnnouncementSent.announcementTime}" />
+
+                                <h:outputText value="Title:" />
+                                <h:outputText value="#{messageManagedBean.selectedAnnouncementSent.title}" />
+
+                                <h:outputText value="Content:" />
+                                <h:outputText value="#{messageManagedBean.selectedAnnouncementSent.content}" escape="false" />
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </p:dialog>
+
+                </p:panel>
+
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
+

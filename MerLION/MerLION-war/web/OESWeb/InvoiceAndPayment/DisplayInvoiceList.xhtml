@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Display Invoice List</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfOperating()}
+        #{invoiceAndPaymentManagedBean.retrieveInvoiceList()}
+    </ui:define>
+    <ui:define name="content">
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="images/ajaxloadingbar.gif" />
+        </p:dialog>
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/sales_invoice.jpg" style="width:100%; height: 200px"></p:graphicImage>
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+
+            <p:panel header="View Historical Invoice List">
+                <p:dataTable var="invoices" value="#{invoiceAndPaymentManagedBean.inList}"
+                             paginator="true" rows="5" emptyMessage="No Invoice">
+                    <p:column headerText="Invoice ID">
+                        <h:outputText value="#{invoices.id}" />
+                    </p:column>
+                    <p:column headerText="Customer Company">
+                        <h:outputText value="#{invoices.salesOrder.salesQuotation.customer.name}" />
+                    </p:column>
+                    <p:column headerText="Invoice Date"
+                              sortBy="#{invoices.invoiceDate}">
+                        <h:outputText value="#{invoices.invoiceDate}" />
+                    </p:column>
+                    <p:column headerText="Total Price"
+                              sortBy="#{invoices.salesOrder.salesQuotation.totalPrice}">
+                        <h:outputText value="#{invoices.salesOrder.salesQuotation.totalPrice}" >
+                            <f:convertNumber type="currency" currencySymbol="S$" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Country"
+                              sortBy="#{invoices.warehouseLoc.country}">
+                        <h:outputText value="#{invoices.warehouseLoc.country}" />
+                    </p:column>
+                    <p:column headerText="City">
+                        <h:outputText value="#{invoices.warehouseLoc.city}" />
+                    </p:column>
+                    <p:column headerText="View Detail" >
+                        <p:commandButton type="submit" value="View Detail" ajax="true" actionListener="#{invoiceAndPaymentManagedBean.retrieveInvoice(invoices.id)}" oncomplete="PF('dlg').show()">
+                            <f:setPropertyActionListener value="#{invoices}" target="#{invoiceAndPaymentManagedBean.invoice}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column headerText="Payment" >
+                        <p:commandButton type="submit" value="Confirm Payment" ajax="true" actionListener="#{invoiceAndPaymentManagedBean.preConfirmPayment(invoices.id)}" oncomplete="PF('paymentdlg').show()">
+                            <f:setPropertyActionListener value="#{invoices.id}" target="#{invoiceAndPaymentManagedBean.invoiceID}" />
+                        </p:commandButton>
+                    </p:column>      
+                    <p:column headerText="Email" >
+                        <p:commandButton type="update" value="Send Invoice" ajax="true" actionListener="#{invoiceAndPaymentManagedBean.exportToPDF(invoices.id)}"/>
+                    </p:column>
+                    <p:column headerText="Create Receipt" >
+                        <p:commandButton type="update" value="Create Receipt" ajax="true" actionListener="#{invoiceAndPaymentManagedBean.createReceipt(invoices.id)}"/>
+                    </p:column>
+                </p:dataTable>
+
+                <p:dialog resizable="true" header="Invoice Detail" widgetVar="dlg" showEffect="fold" dynamic="true">
+                    <p:panelGrid>
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel value="Invoice ID:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{invoiceAndPaymentManagedBean.invoice.id}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel value="Date:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{invoiceAndPaymentManagedBean.invoice.invoiceDate}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row >
+                            <p:column>
+                                <h:outputText value="Total price:" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{invoiceAndPaymentManagedBean.invoice.salesOrder.salesQuotation.totalPrice}">
+                                    <f:convertNumber type="currency" currencySymbol="S$" />
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel value="Country:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{invoiceAndPaymentManagedBean.invoice.warehouseLoc.country}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel value="State:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{invoiceAndPaymentManagedBean.invoice.warehouseLoc.state}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel value="City:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{invoiceAndPaymentManagedBean.invoice.warehouseLoc.city}"/> 
+                            </p:column>
+                        </p:row>
+                        <p:row >
+                            <p:column>
+                                <h:outputText value="Street:" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{invoiceAndPaymentManagedBean.invoice.warehouseLoc.street}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Block No: " style="font-weight: bold"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{invoiceAndPaymentManagedBean.invoice.warehouseLoc.blockNo}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Postal Code: " style="font-weight: bold"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{invoiceAndPaymentManagedBean.invoice.warehouseLoc.postalCode}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Related Sales Order ID: " style="font-weight: bold"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{invoiceAndPaymentManagedBean.invoice.salesOrder.id}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+                <p:dialog resizable="true" header="Invoice Detail" widgetVar="paymentdlg" showEffect="fold">
+                    <p:outputLabel value="Bill Number: " style="font-weight: bold"/>
+                    <p:inputText value="#{invoiceAndPaymentManagedBean.billingNo}" required="false" requiredMessage="Billing Number cannot be empty"/>
+
+                    <f:facet name="footer">
+                        <p:commandButton type="submit" value="Confirm Payment" actionListener="#{invoiceAndPaymentManagedBean.confirmPayment()}"/>
+                    </f:facet>
+                </p:dialog>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

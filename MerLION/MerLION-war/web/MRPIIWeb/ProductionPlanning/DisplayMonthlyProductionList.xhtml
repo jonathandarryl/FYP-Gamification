@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Display Monthly Production Plan List</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfManufacture()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+            <p:graphicImage value="../../resources/images/bannerManufacturing.jpg" style="width:100%;"></p:graphicImage>
+            <p:layout style="height:500px;" >
+                <p:layoutUnit position="west" resizable="true" size="40%" header="Monthly Production Plan">
+                    <h:outputText value="Current Inventory: #{productionPlanningManagedBean.selectProduct.getInventoryLevel()}"/>
+                    <p:dataTable var="monthlyPlan" value="#{productionPlanningManagedBean.monthlyPlanList}"
+                                 paginator="true" rows="5" emptyMessage="No Monthly Plan">
+
+                        <p:column headerText="Monthly Plan Date"
+                                  sortBy="#{monthlyPlan.monthlyPlanDate}">
+                            <h:outputText value="#{monthlyPlan.monthlyPlanDate}" />
+                        </p:column>
+                        <p:column headerText="Sales Forecast">
+                            <h:outputText value="#{monthlyPlan.salesForecast.amount}" />
+                        </p:column>
+                        <p:column headerText="Production Plan">
+                            <h:outputText value="#{monthlyPlan.productionPlan}" />
+                        </p:column>
+                        <p:column headerText="Target Inventory">
+                            <h:outputText value="#{monthlyPlan.targetInventoryLevel}" />
+                        </p:column>
+                        <p:column headerText="Working Days">
+                            <h:outputText value="#{monthlyPlan.workingDay}" />
+                        </p:column>
+                        <p:column headerText="Generate Weekly Plan" >
+                            <p:commandButton type="submit" value="Generate" ajax="true" actionListener="#{productionPlanningManagedBean.generateWeeklyProductionPlan(monthlyPlan.planYear, monthlyPlan.planMonth, monthlyPlan.targetInventoryLevel)}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </p:layoutUnit>
+                <p:layoutUnit position="center" resizable="true" size="60%" header="Monthly Production Plan Chart">
+                    <p:chart type="bar" model="#{productionPlanningManagedBean.monthlyPlanListChart}" style="height:90%;" />
+                </p:layoutUnit>
+            </p:layout>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:o="http://omnifaces.org/ui">
+    <ui:define name="head-title">
+        <title>Update Warehouse Info</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfWarehouse()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <p:graphicImage value="../../resources/images/bannerWarehouse.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+            <p:growl id="msgs" />
+            <p:layout style="height:400px;" >
+                <p:layoutUnit position="west" resizable="true" size="40%" header="Update Warehouse Information">
+                    <h:panelGrid columns="2" cellpadding="5">
+
+                        <p:outputLabel for="newWarehouseName" value="Warehouse name:" />
+                        <p:inplace>
+                            <p:inputText required="true" label="warehouseName"
+                                         requiredMessage="Warehouse Name is required." id="newWarehouseName"
+                                         value="#{facilityManagedBean.warehouseName}"/>
+                        </p:inplace>
+
+                        <h:outputLabel for="contactNo" value="Company Phone : *" />
+                        <p:inplace>
+                            <p:inputMask style="width:80%;margin-top: 10px;" id="contactNo" value="#{facilityManagedBean.contactNo}" mask="9999-9999" label="ContactNo" required="true" requiredMessage="Please input contact number">
+                                <p:watermark for="contactNo" value="Input contact number" />
+                            </p:inputMask>
+                        </p:inplace>
+                        
+                        <h:outputLabel for="pricePerCapacityPerDay" value="Price per capacity per day (S$): * " />
+                        <p:inplace>
+                            <p:inputText id="pricePerCapacityPerDay" value="#{facilityManagedBean.pricePerCapacityPerDay}" label="pricePerCapacityPerDay" required="true" requiredMessage="Please input pricePerCapacityPerDay" converterMessage="Price must contains digits only.">
+                                <f:converter converterId="javax.faces.Double" />
+                            </p:inputText>
+                        </p:inplace>
+
+                        <p:outputLabel for="country" value="Located country:" />
+                        <p:inplace>
+                            <p:inputText required="true" label="country"
+                                         requiredMessage="Country is required." id="country"
+                                         value="#{facilityManagedBean.country}"/>
+                        </p:inplace>                    
+
+                        <p:outputLabel for="state" value="State:" />
+                        <p:inplace>
+                            <p:inputText required="true" label="state"
+                                         requiredMessage="State is required." id="state"
+                                         value="#{facilityManagedBean.state}"/>
+                        </p:inplace>
+
+                        <p:outputLabel for="city" value="City:" />
+                        <p:inplace>
+                            <p:inputText required="true" label="city"
+                                         requiredMessage="City is required." id="city"
+                                         value="#{facilityManagedBean.city}"/>
+                        </p:inplace>                    
+
+                        <p:outputLabel for="street" value="Street:" />
+                        <p:inplace>
+                            <p:inputText required="true" label="street"
+                                         requiredMessage="Street is required." id="street"
+                                         value="#{facilityManagedBean.street}"/>
+                        </p:inplace>
+
+                        <p:outputLabel for="blockNo" value="Block No:" />
+                        <p:inplace>                        
+                            <p:inputText required="true" label="blockNo"
+                                         requiredMessage="Block No is required." id="blockNo"
+                                         value="#{facilityManagedBean.blockNo}"/>
+                        </p:inplace>
+
+                        <p:outputLabel for="postalCode" value="Postal Code:" />
+                        <p:inplace>                        
+                            <p:inputText required="true" label="postalCode"
+                                         requiredMessage="Postal code is required." id="postalCode"
+                                         value="#{facilityManagedBean.postalCode}"/>
+                        </p:inplace>
+                    </h:panelGrid>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" resizable="false" size="20%" header="Special Requirements">
+
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputText value="Perishable " />
+                        <p:selectBooleanButton id="perishable" value="#{facilityManagedBean.perishable}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px">
+                            <p:ajax update="msgs" listener="#{facilityManagedBean.addPerishableMessage}" />
+                        </p:selectBooleanButton>
+
+                        <h:outputText value="Flammable: " />
+                        <p:selectBooleanButton id="flammable" value="#{facilityManagedBean.flammable}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px">
+                            <p:ajax update="msgs" listener="#{facilityManagedBean.addFlammableMessage}" />
+                        </p:selectBooleanButton>
+
+                        <h:outputText value="Pharmaceutical: " />
+                        <p:selectBooleanButton id="pharmaceutical" value="#{facilityManagedBean.pharmaceutical}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px">
+                            <p:ajax update="msgs" listener="#{facilityManagedBean.addPharmaceuticalMessage}" />
+                        </p:selectBooleanButton>
+
+                        <h:outputText value="HighValue: " />
+                        <p:selectBooleanButton id="highValue" value="#{facilityManagedBean.highValue}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px">
+                            <p:ajax update="msgs" listener="#{facilityManagedBean.addHighValueMessage}" />
+                        </p:selectBooleanButton>
+                        
+                    </h:panelGrid>
+                </p:layoutUnit>
+            </p:layout>
+
+            <p:commandButton ajax="true" type="submit" value="Update Warehouse Info" icon="ui-icon-check" actionListener="#{facilityManagedBean.updateWarehouseCommon()}" /> 
+
+            <p:dialog resizable="false" header="Update Successful" widgetVar="dlg" showEffect="fold">
+                <p:commandButton type="submit" value="View Current Warehouse List" icon="ui-icon-check" actionListener="#{facilityManagedBean.redirectToWarehouseDetail()}" /> 
+            </p:dialog>
+
+
+        </h:form>
+    </ui:define>
+</ui:composition>

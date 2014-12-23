@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Retrieve Past Sales Record</title>
+    </ui:define>
+    <ui:define name="check">
+        #{productInfoManagedBean.retrieveProductList()}   
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfManufacture()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+            <p:graphicImage value="../../resources/images/bannerForecast.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:dataTable id="productList" var="products" value="#{productInfoManagedBean.fgList}"
+                         rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="No Product">
+                <f:facet name="header">
+                    <p style="font-size:1.5em;display:inline;">Retrieve Past Sales Record</p>
+                </f:facet>
+                <p:column headerText="Product ID">
+                    <h:outputText value="#{products.id}" />
+                </p:column>
+                <p:column filterBy="#{products.productName}" headerText="Product Name"
+                          sortBy="#{products.productName}" filterMatchMode="contains">
+                    <h:outputText value="#{products.productName}" />
+                </p:column>
+                <p:column headerText="Product Price"
+                          sortBy="#{products.productPrice}">
+                    <h:outputText value="#{products.productPrice}">
+                        <f:convertNumber type="currency" currencySymbol="S$" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Product Description">
+                    <h:outputText value="#{products.productDescription}" />
+                </p:column>
+                <p:column filterBy="#{products.ownerCompanyName}" headerText="Company"
+                          sortBy="#{products.ownerCompanyName}" filterMatchMode="contains">
+                    <h:outputText value="#{products.ownerCompanyName}" />
+                </p:column>
+                <p:column headerText="Inventory Level"
+                          sortBy="#{products.inventoryLevel}">
+                    <h:outputText value="#{products.inventoryLevel}" />
+                </p:column>
+                <p:column headerText="Unit">
+                    <h:outputText value="#{products.unit}" />
+                </p:column>
+                <p:column headerText="Retrieve Sales Record" >
+                    <center>
+                        <p:commandButton type="submit" icon="ui-icon-arrowthickstop-1-s" actionListener="#{salesForecastManagedBean.retrievePastsSales(products)}"/>
+                    </center>
+                </p:column>
+                <p:column headerText="Generate Sales Forecast" >
+                    <center>
+                        <p:commandButton icon="ui-icon-document" actionListener="#{salesForecastManagedBean.preGenerateSalesForecast(products)}"/>
+                    </center>
+                </p:column>
+            </p:dataTable>
+
+            <p:dialog resizable="true" header="Please Select Target Forecast Month" widgetVar="dlg" showEffect="fold">
+                <h:panelGrid columns="2">
+
+                    <p:outputLabel value="Year: " style="font-weight: bold"/>
+                    <p:selectOneMenu id="year" value="#{salesForecastManagedBean.yearString}" label="year" editable="true" requiredMessage="Year cannot be empty">
+                        <f:selectItem itemLabel="Select Or Type" itemValue="" />
+                        <f:selectItem itemLabel="2014" itemValue="2014" />
+                        <f:selectItem itemLabel="2015" itemValue="2015" />
+                        <f:selectItem itemLabel="2016" itemValue="2016" />
+                        <f:selectItem itemLabel="2017" itemValue="2017" />
+                        <f:selectItem itemLabel="2018" itemValue="2018" />
+                        <f:selectItem itemLabel="2019" itemValue="2019" />
+                        <f:selectItem itemLabel="2020" itemValue="2020" />
+                        <f:selectItem itemLabel="2021" itemValue="2021" />
+                        <f:selectItem itemLabel="2022" itemValue="2022" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Month: " style="font-weight: bold"/>
+                    <p:selectOneMenu id="month" value="#{salesForecastManagedBean.monthString}" label="month" requiredMessage="Month cannot be empty">
+                        <f:selectItem itemLabel="Select" itemValue="" />
+                        <f:selectItem itemLabel="1" itemValue="1" />
+                        <f:selectItem itemLabel="2" itemValue="2" />
+                        <f:selectItem itemLabel="3" itemValue="3" />
+                        <f:selectItem itemLabel="4" itemValue="4" />
+                        <f:selectItem itemLabel="5" itemValue="5" />
+                        <f:selectItem itemLabel="6" itemValue="6" />
+                        <f:selectItem itemLabel="7" itemValue="7" />
+                        <f:selectItem itemLabel="8" itemValue="8" />
+                        <f:selectItem itemLabel="9" itemValue="9" />
+                        <f:selectItem itemLabel="10" itemValue="10" />
+                        <f:selectItem itemLabel="11" itemValue="11" />
+                        <f:selectItem itemLabel="12" itemValue="12" />
+                    </p:selectOneMenu>
+
+                    <f:facet name="footer">
+                        <center>
+                            <p:commandButton type="submit" value="Generate" actionListener="#{salesForecastManagedBean.generateSalesForecast()}"/>
+                        </center>
+                    </f:facet>
+                </h:panelGrid>
+            </p:dialog>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

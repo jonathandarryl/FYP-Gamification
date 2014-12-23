@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view>
+    <h:head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="author" content="Sunnie" />
+        <ui:insert name="head-title">
+            <title>MerLion Platform | Homepage</title>
+        </ui:insert>
+        <ui:insert name="css-style">
+            
+        </ui:insert>
+        
+        <style type="text/css">
+            .ui-layout-north {
+                z-index:20 !important;
+            }
+
+            .ui-layout-north .ui-layout-unit-content {
+                overflow:visible !important;
+            }
+            
+            .ui-layout-north .ui-menubar {
+                margin-top: 15px;
+                margin-left: 180px;
+                border: none;
+            }
+/*            .ui-layout-north .ui-menu.ui-megamenu .ui-menu-parent .ui-menu-child {
+                margin-left: -3000px;
+                padding-left: 3000px;
+                margin-right: -3000px;
+                padding-right: 3000px;
+                overflow-x: hidden;
+            }
+            .ui-layout-north ul.ui-widget-content.ui-menu-list.ui-corner-all.ui-helper-clearfix.ui-menu-child.ui-shadow {
+                left: 200px;
+            }*/
+            .ui-datepicker-calendar td, .ui-datepicker-calendar th {
+                    padding: 0 !important;
+            }
+            .ui-menu.ui-megamenu .ui-menu-child .ui-menu-list {
+                width: 15em;
+            }
+        </style>
+
+        <!-- Add custom CSS here -->
+        <link href="/MerLION-war/resources/css/merlion-platform.css" rel="stylesheet" type="text/css"/>
+        <link href="/MerLION-war/resources/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+
+    </h:head>
+        <ui:insert name="activation"></ui:insert>
+    <h:body>
+        <ui:insert name="externalCheck">
+        #{loginManagedBean.checkAlreadyLoggedIn()}
+        </ui:insert>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="100">
+                <ui:insert name="header" >
+                    <ui:include src="./defaultHeader.xhtml" />
+                </ui:insert>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">                                                         
+                <ui:insert name="content">
+                </ui:insert>
+            </p:layoutUnit>
+            
+            <p:layoutUnit position="west">                                                         
+                <ui:insert name="left">
+                </ui:insert>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="30">
+                <ui:insert name="footer">
+                    <ui:include src="./defaultFooter.xhtml" />
+                </ui:insert>
+            </p:layoutUnit>
+        </p:layout>
+                
+    </h:body>
+        </f:view>
+</html>
+

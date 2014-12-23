@@ -1,0 +1,491 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="../../template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:o="http://omnifaces.org/ui">
+    <ui:define name="head-title">
+        <title>Customer Relationship Management | Service Catalog Management</title>
+    </ui:define>
+
+    <ui:define name="check">
+        #{countryStateManagedBean.init()}
+        #{countryStateDManagedBean.init()}
+        #{countryStateWManagedBean.init()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form1">     
+            <p:graphicImage value="../../resources/images/banner4.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:panel id="panel2" header="Add New Service Catalog Item">
+                <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+
+                <f:facet name="header">
+                    <b style="font-size:1.5em;margin-bottom: 0 !important;">Add New Service Catalog Item</b>
+                </f:facet>
+                <p:growl id="updateServiceItem" autoUpdate="true" life="3000"/>
+                <p:wizard showNavBar="true" style="" backLabel="back" nextLabel="next" >
+
+                    <p:tab id="basicInfo" title="Basic Service Item Information">
+                        <center>
+                            <f:facet name="title">
+                                <p:outputLabel style="font-weight: bold; font-size: 12px">
+                                    Basic Service Information <i class="fa fa-arrow-circle-right"></i>
+                                </p:outputLabel>
+                            </f:facet>
+                            <p:panel>
+                                <p:panelGrid>
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="serviceName" style="font-weight: bold" value="Service Name" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:inputText required="true" label="Service Name" requiredMessage="Service Name is required." id="serviceName" value="#{serviceCatalogManagedBean.serviceName}">
+                                            </p:inputText>
+
+
+                                        </p:column>
+                                    </p:row>
+
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="startTime" style="font-weight: bold" value="Start Date (YYYY-MM-DD): " />
+                                        </p:column>
+                                        <p:column>
+                                            <p:calendar required="true" label="Start Date" requiredMessage="Start Date is required." id="startTime" value="#{serviceCatalogManagedBean.startTime}" pattern="yyyy-MM-dd">
+                                            </p:calendar>
+
+                                        </p:column>
+
+                                    </p:row>
+
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="endTime" style="font-weight: bold" value="End Date (YYYY-MM-DD): " />
+                                        </p:column>
+                                        <p:column>
+                                            <p:calendar required="true" label="End Date" requiredMessage="End Date is required." id="endTime" value="#{serviceCatalogManagedBean.endTime}" pattern="yyyy-MM-dd">
+
+                                            </p:calendar>
+
+                                            <o:validateOrder type="lte" components="startTime endTime" message="Start Date must be early than End Date"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="price" style="font-weight:bold" value="Price (in Singapore Dollar): " /> 
+                                        </p:column>
+                                        <p:column>
+                                            <p:inputText required="true" label="Price" requiredMessage="Price is required." id="price" value="#{serviceCatalogManagedBean.price}" converterMessage="Price must contains digits only.">
+                                                <f:converter converterId="javax.faces.Double" />
+
+                                            </p:inputText>
+
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="description" style="font-weight: bold" value="Description: " />
+                                        </p:column>
+                                        <p:column>
+                                            <p:inputText required="true" label="Description" requiredMessage="Description is required." id="description" value="#{serviceCatalogManagedBean.description}">
+                                            </p:inputText>
+
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="publicOrNot" style="font-weight: bold" value="Do you want to show it in  yellow page@MerLION?" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:selectBooleanButton id="publicOrNot" value="#{serviceCatalogManagedBean.publicOrNot}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px">
+                                                <p:ajax update="updateServiceItem" listener="#{serviceCatalogManagedBean.addPublicOrNotMessage}" />
+                                            </p:selectBooleanButton>
+
+                                        </p:column>
+                                    </p:row>
+
+                                </p:panelGrid>
+
+                            </p:panel>
+
+                        </center>
+                    </p:tab>
+
+
+                    <p:tab id="transportationInformation" title="Transportation Information">
+                        <center>
+                            <f:facet name="title">
+                                <p:outputLabel style="font-weight: bold; font-size: 12px">
+                                    Transportation Information <i class="fa fa-arrow-circle-right"></i>
+                                </p:outputLabel>
+                            </f:facet>
+                            <p:panel>
+                                <p:panelGrid>
+                                    <p:ajaxStatus style="width:200px;height:4px;">
+                                    </p:ajaxStatus>
+                                    <h:outputText  style="font-size: 14px; color: #FF0000" value="If you don't need transportation logistics in this service item, leave the form blank and click next please."/>
+                                    <p:ajaxStatus style="width:200px;height:10px;">
+                                    </p:ajaxStatus>
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="sourceCountry" style="font-weight: bold" value="Source Country: " />
+                                        </p:column>
+                                        <p:column>
+                                            <p:inputText required="false" label="SourceCountry" requiredMessage="Source Country is required." id="sourceCountry" value="#{serviceCatalogManagedBean.sourceCountry}">
+                                            </p:inputText>
+
+                                        </p:column>
+
+                                        <p:column>
+                                            <p:outputLabel for="destCountry" style="font-weight: bold" value="Destination Country: " />
+                                        </p:column>
+                                        <p:column>
+                                            <p:inputText required="false" label="DestCountry" requiredMessage="Destination Country is required." id="destCountry" value="#{serviceCatalogManagedBean.destCountry}">
+                                            </p:inputText>
+
+                                        </p:column>
+                                    </p:row>
+
+
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="sourceState" style="font-weight: bold" value="Source state: " />
+
+                                        </p:column>
+                                        <p:column>
+
+
+                                            <p:inputText required="false" label="SourceState" requiredMessage="Source State is required." id="sourceState" value="#{serviceCatalogManagedBean.sourceState}">
+                                            </p:inputText>
+
+                                        </p:column>
+
+                                        <p:column>
+                                            <p:outputLabel for="destState" style="font-weight: bold" value="Destination state:" />
+
+                                        </p:column>
+                                        <p:column>
+
+                                            <p:inputText required="false" label="DestState" requiredMessage="Destination state is required." id="destState" value="#{serviceCatalogManagedBean.destState}">
+                                            </p:inputText>
+
+                                        </p:column>
+                                    </p:row>
+
+
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="sourceCity" style="font-weight: bold" value="Source City: " />
+                                        </p:column>
+                                        <p:column>
+                                            <p:inputText required="false" label="SourceCity" requiredMessage="Source City is required." id="sourceCity" value="#{serviceCatalogManagedBean.sourceCity}">
+                                            </p:inputText>
+
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel for="destCity" style="font-weight: bold" value="Destination City: " />
+                                        </p:column>
+                                        <p:column>
+                                            <p:inputText required="false" label="destCity" requiredMessage="Destination City is required." id="destCity" value="#{serviceCatalogManagedBean.destCity}">
+                                            </p:inputText>
+
+                                        </p:column>
+                                    </p:row>
+
+
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="sourceStreet" style="font-weight: bold" value="Source Street: " />
+                                        </p:column>
+                                        <p:column>
+                                            <p:inputText required="false" label="SourceStreet" requiredMessage="Source Street is required." id="sourceStreet" value="#{serviceCatalogManagedBean.sourceStreet}">
+                                            </p:inputText>
+
+                                        </p:column>
+
+                                        <p:column>
+                                            <p:outputLabel for="destStreet" style="font-weight: bold" value="Destination Street: " />
+                                        </p:column>
+                                        <p:column>
+                                            <p:inputText required="false" label="destStreet" requiredMessage="Destination Street is required." id="destStreet" value="#{serviceCatalogManagedBean.destStreet}">
+                                            </p:inputText>
+
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="sourceBlockNo" style="font-weight: bold" value="Source Block: " />
+                                        </p:column>
+                                        <p:column>
+                                            <p:inputText required="false" label="SourceBlk" 
+                                                         requiredMessage="Source Block is required." id="sourceBlockNo" value="#{serviceCatalogManagedBean.sourceBlockNo}">
+                                            </p:inputText>
+
+                                            <p:message for="sourceBlockNo" />
+                                        </p:column>
+
+                                        <p:column>
+                                            <p:outputLabel for="destBlockNo" style="font-weight: bold" value="Destination Block: " />
+                                        </p:column>
+                                        <p:column>
+                                            <p:inputText required="false" label="destBlk" 
+                                                         requiredMessage="Desination Block is required." id="destBlockNo" value="#{serviceCatalogManagedBean.destBlockNo}">
+                                            </p:inputText>
+
+                                        </p:column>
+                                    </p:row>
+
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="sourcePostalCode" style="font-weight: bold" value="Source Postal Code: " />
+                                        </p:column>
+                                        <p:column>
+                                            <p:inputText required="false" label="SourcePostal" 
+                                                         requiredMessage="Source Postal Code is required." id="sourcePostalCode" value="#{serviceCatalogManagedBean.sourcePostalCode}">
+                                            </p:inputText>
+
+
+                                        </p:column>
+
+                                        <p:column>
+                                            <p:outputLabel for="destPostalCode" style="font-weight: bold" value="Destination Postal Code: " />
+                                        </p:column>
+                                        <p:column>
+                                            <p:inputText required="false" label="destPostal" 
+                                                         requiredMessage="Destination Postal Code is required." id="destPostalCode" value="#{serviceCatalogManagedBean.destPostalCode}">
+                                            </p:inputText>
+
+                                        </p:column>
+                                    </p:row>
+
+                                </p:panelGrid>
+                            </p:panel>
+                        </center>
+                    </p:tab>
+
+                    <p:tab id="warehouseinformation" title="Warehouse Information">
+                        <center>
+                            <f:facet name="title">
+                                <p:outputLabel style="font-weight: bold; font-size: 12px">
+                                    Warehouse Information  <i class="fa fa-arrow-circle-right"></i>
+                                </p:outputLabel>
+                            </f:facet>
+                            <p:panel id="warehousePanel">
+                                <p:panelGrid>
+
+                                    <p:ajaxStatus style="width:200px;height:4px;">
+                                    </p:ajaxStatus>
+                                    <h:outputText  style="font-size: 14px; color: #FF0000" value="If you don't need warehouse service in this service item, leave the form blank and click next please."/>
+                                    <p:ajaxStatus style="width:200px;height:10px;">
+                                    </p:ajaxStatus>
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="warehouse" style="font-weight: bold" value="Warehouse (Please Select): " />
+                                        </p:column>
+                                        <p:column>
+                                            <p:selectOneMenu required="false" label="warehouse"
+                                                             requiredMessage="Warehouse or N/A must be selected." 
+                                                             id="warehouse" style="width:150px" 
+                                                             value="#{serviceCatalogManagedBean.warehouseId}">
+                                                <f:ajax render="warehCountry"/>
+                                                <f:selectItem itemLabel="No Warehouse Selected" 
+                                                              itemValue= ""  />
+
+                                                <f:selectItems value="#{serviceCatalogManagedBean.retrieveOwningWarehouseList()}" var="warehouse" 
+                                                               itemLabel="Name: #{warehouse.name}; Location: #{warehouse.location.country}; #{warehouse.location.state}; #{warehouse.location.city}; #{warehouse.location.street}; #{warehouse.location.blockNo}; Postal Code: #{warehouse.location.postalCode} " 
+                                                               itemValue="#{warehouse.id}"/>
+                                            </p:selectOneMenu>
+                                        </p:column>
+
+                                        <p:column>
+
+                                            <p:commandButton id="updatewarehouse" style="font-weight: bold; font-size: 12px" 
+                                                             value="Confirm Warehouse" ajax="false" type="update" 
+                                                             actionListener="#{serviceCatalogManagedBean.retrieveWarehouseInfo(event)}"
+                                                             update="warehousePanel"/>
+
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="warehCountry" style="font-weight: bold" value="Country: " />
+                                        </p:column>
+                                        <p:column>
+
+                                            <h:outputText id="warehCountry" value ="#{serviceCatalogManagedBean.warehCountry}" />
+
+                                        </p:column>
+                                    </p:row>
+
+
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="warehState" style="font-weight: bold" value="State:" />
+
+                                        </p:column>
+                                        <p:column>
+
+                                            <h:outputText id="warehState" value="#{serviceCatalogManagedBean.warehState}" />
+
+
+                                        </p:column>
+                                    </p:row>
+
+
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="warehCity" style="font-weight: bold" value="City: " />
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText id="warehCity" value="#{serviceCatalogManagedBean.warehCity}" />
+
+
+                                        </p:column>
+                                    </p:row>
+
+
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="warehStreet" style="font-weight: bold" value="Street: " />
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText id="warehStreet" value="#{serviceCatalogManagedBean.warehStreet}" />
+
+
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="warehBlockNo" style="font-weight: bold" value="Block: " />
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText id="warehBlockNo" value="#{serviceCatalogManagedBean.warehBlockNo}" />
+
+                                        </p:column>
+                                    </p:row>
+
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="warehPostalCode" style="font-weight: bold" value="Postal Code: " />
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText id = "warehPostalCode" value="#{serviceCatalogManagedBean.warehPostalCode}" />
+
+                                        </p:column>
+                                    </p:row>
+
+                                </p:panelGrid>
+                            </p:panel>
+                        </center>
+                    </p:tab>
+
+
+
+                    <p:tab id="specialCapability" title="Special Capability Information">
+                        <center>
+                            <f:facet name="title">
+                                <p:outputLabel style="font-weight: bold; font-size: 12px">
+                                    Special Capability Information <i class="fa fa-arrow-circle-right"></i>
+                                </p:outputLabel>
+                            </f:facet>
+                            <p:panel>
+                                <p:panelGrid>
+
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="perishable" style="font-weight: bold" value="Can You Afford Perishable Goods?" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:selectBooleanButton id="perishable" value="#{serviceCatalogManagedBean.perishable}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px">
+                                                <p:ajax update="updateServiceItem" listener="#{serviceCatalogManagedBean.addPerishableMessage}" />
+                                            </p:selectBooleanButton>
+
+                                        </p:column>
+                                    </p:row>
+
+
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="flammable" style="font-weight: bold" value="Can You Afford Flammable Goods?" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:selectBooleanButton id="flammable" value="#{serviceCatalogManagedBean.flammable}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px">
+                                                <p:ajax update="updateServiceItem" listener="#{serviceCatalogManagedBean.addFlammableMessage}" />
+                                            </p:selectBooleanButton>
+
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="highValue" style="font-weight: bold" value="Can You Afford High Value Goods?" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:selectBooleanButton id="highValue" value="#{serviceCatalogManagedBean.highValue}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px">
+                                                <p:ajax update="updateServiceItem" listener="#{serviceCatalogManagedBean.addHighValueMessage}" />
+                                            </p:selectBooleanButton>
+
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="pharmaceutical" style="font-weight: bold" value="Can You Afford Pharmaceutical Goods?" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:selectBooleanButton id="pharmaceutical" value="#{serviceCatalogManagedBean.pharmaceutical}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px">
+                                                <p:ajax update="updateServiceItem" listener="#{serviceCatalogManagedBean.addPharmaceuticalMessage}" />
+                                            </p:selectBooleanButton>
+
+                                        </p:column>
+                                    </p:row>
+
+                                </p:panelGrid>
+
+                                <p:ajaxStatus style="width:200px;height:16px;">
+                                </p:ajaxStatus>
+
+                                <p:commandButton id="btn" style="font-weight: bold; font-size: 12px" value="Submit" actionListener="#{serviceCatalogManagedBean.createServiceCatalogItem(event)}"  ajax="true"/>
+
+                                <p:dialog resizable="false" header="Service Item Creation Successful!" widgetVar="dlg" showEffect="fold">
+                                    <p:button value="Go to Service Catalog List" style="font-size: 12px" outcome="./serviceCatalogIndex.xhtml" />
+                                    <p:button value="Add Another Service Item" style="font-size: 12px" outcome="./addNewServiceItem.xhtml" />
+                                </p:dialog>
+
+                                <p:ajaxStatus style="width:200px;height:16px;">
+                                </p:ajaxStatus>
+
+                            </p:panel>  
+                        </center>
+                    </p:tab>
+                </p:wizard> 
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

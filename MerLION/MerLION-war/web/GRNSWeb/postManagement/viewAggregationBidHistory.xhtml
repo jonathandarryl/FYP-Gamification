@@ -1,0 +1,157 @@
+<ui:composition template="../../template/userGRNSTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            GRNS | View Aggregation Bid
+        </title>
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            #apDetail {
+                z-index: 1010 !important;
+            }
+            td th {
+                padding: 5px !important;
+            }
+            td {
+                color: black !important;
+            }
+        </style> 
+    </ui:define>
+    <ui:define name="check">
+        #{postManagedBean.viewAggregationBid()}
+    </ui:define>
+    <ui:define name="content"> 
+
+        <center>
+
+            <h:form id="form">
+
+                <p:growl id="viewAP" autoUpdate="true" life="3000"/>
+
+                <p:dataGrid id="dataGridAP" var="ap" widgetVar="apTable" value="#{postManagedBean.historyBiddingAPList}" columns="1" rows="4" paginator="true"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="4,8,12" >
+
+                    <f:facet name="header">
+                        <p style="font-size:1.5em;margin-bottom: 0;">View Aggregation Post You Have Bid For</p>
+                    </f:facet>
+
+                    <p:panel header="#{ap.title}" style="text-align:left">
+                        <f:facet name="header">
+                            <p style="text-align:left; display: inline; font-size: 1.5em;">#{ap.title}</p>
+                            <p:menuButton value="Available Actions" style="float:right;">
+                                <p:menuitem value="View Detail" icon="ui-icon-search" actionListener="#{postManagedBean.viewDetailAggregationPost(ap.id)}"/>
+                            </p:menuButton>
+                        </f:facet>
+                        <p:panelGrid style="width:100%;">
+                            <p:row>
+                                <p:column rowspan="13" style="width:200px;">
+                                    <p:graphicImage name="images/merlion-logo.png" width="200"/> 
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Post Time:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{ap.postDateTime}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Bidding End Time:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{ap.endDateTime}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Number of Transport Service To Be Aggregated:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{ap.serviceOrderIdList.size()}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Required Capacity :" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{ap.quantity}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Initial Bid:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{ap.initBid}" />
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Reserve Price:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{ap.reservePrice}" rendered="#{ap.reservePriceSpecified}" />
+                                    <h:outputText value="Not Specified" rendered="#{not ap.reservePriceSpecified}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Winning Bid :" rendered="#{not ap.winnerId.equals(null)}"/>
+                                    <h:outputText value="Lowest Bid :" rendered="#{ap.winnerId.equals(null)}"/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{ap.winningPrice}" rendered="#{not ap.winnerId.equals(null)}"/>
+                                    <h:outputText value="#{ap.lowestBid}" rendered="#{ap.winnerId.equals(null)}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Winner Username / Company :" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{ap.winnerUsername} / #{ap.winnerCompanyName}" rendered="#{not ap.winnerUsername.equals(null)}" />
+                                    <h:outputText value="No Winner" rendered="#{ap.winnerUsername.equals(null)}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="Source Location :" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="#{ap.sourceLoc}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="Destination Location:" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="#{ap.destLoc}" />
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>      
+
+                </p:dataGrid>
+
+                
+
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>

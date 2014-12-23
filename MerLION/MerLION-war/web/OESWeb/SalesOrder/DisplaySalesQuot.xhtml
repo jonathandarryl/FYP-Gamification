@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Display Sales Quotation</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfOperating()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/Quotation_Banner.png" style="width:100%; height: 200px"></p:graphicImage>
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+
+            <f:facet name="header">
+                Display Sales Quotation
+            </f:facet>
+            <p:layout style="height:650px;" >
+                <p:layoutUnit position="west" resizable="true" size="70%" header="Raw Material Information">
+                    <f:facet name="header">
+                        Products Requested
+                    </f:facet>
+                    <p:dataTable var="products" value="#{salesOrderManagedBean.salesQ.productList}"
+                                 paginator="true" rows="5" emptyMessage="No Product">
+                        <p:column headerText="Product Name">
+                            <h:outputText value="#{products.productName}" />
+                        </p:column>
+                        <p:column headerText="Product Quantity">
+                            <h:outputText value="#{salesOrderManagedBean.getSingleQuantity(products)}" />
+                        </p:column>
+                        <p:column headerText="Unit">
+                            <h:outputText value="#{products.unit}" />
+                        </p:column>
+                    </p:dataTable>  
+
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" resizable="true" size="30%" header="Sales Quotation Info">
+                    <p:panelGrid>
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel value="Order ID:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{salesOrderManagedBean.salesQ.id}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row >
+                            <p:column>
+                                <h:outputText value="Customer Company:" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{salesOrderManagedBean.salesQ.customer.name}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel value="Owner Company:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{salesOrderManagedBean.salesQ.ownerCompanyName}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel value="Quotation Date:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{salesOrderManagedBean.salesQ.salesQuotationDate}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Total Price:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{salesOrderManagedBean.salesQ.totalPrice}">
+                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:layoutUnit>
+            </p:layout>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+

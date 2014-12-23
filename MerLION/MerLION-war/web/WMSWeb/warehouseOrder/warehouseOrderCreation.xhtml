@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Create New Warehouse Order</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfPartnerCompany()}
+        #{commonFuncManagedBean.checkIfWarehouse()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <p:graphicImage value="../../resources/images/bannerWarehouse.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:growl id="msgs" />
+            <p:layout style="height:450px;" >
+                <p:layoutUnit position="west" resizable="true" size="40%" header="Common Information">
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="Creation Date:" />
+                        <h:outputText value="#{warehouseOrderManagedBean.so.creationTime}">
+                            <f:convertDateTime pattern="yy-MM-dd" />
+                        </h:outputText>
+                        <h:outputLabel value="Service Provider:" />
+                        <h:outputText value="#{warehouseOrderManagedBean.so.serviceContract.serviceQuotation.getpCompany().companyName}">
+                        </h:outputText>
+                        <h:outputLabel value="Client Company Name:" />
+                        <h:outputText value="#{warehouseOrderManagedBean.so.serviceContract.serviceQuotation.clientCompany.companyName}">
+                        </h:outputText>
+
+                        <h:outputLabel value="Related Service Contract Id:" />
+                        <h:outputText value="#{warehouseOrderManagedBean.so.serviceContract.id}">
+                        </h:outputText>
+
+                        <h:outputLabel value="Start Date:" />
+                        <h:outputText value="#{warehouseOrderManagedBean.so.startTime}">
+                            <f:convertDateTime pattern="yy-MM-dd" />
+                        </h:outputText>
+
+                        <h:outputLabel value="End Date:" />
+                        <h:outputText value="#{warehouseOrderManagedBean.so.endTime}" >
+                            <f:convertDateTime pattern="yy-MM-dd" />
+                        </h:outputText>
+
+                        <h:outputLabel value="Order description:" />
+                        <h:outputText value="#{warehouseOrderManagedBean.so.description}"/>
+
+                        <h:outputLabel value="Service Price (S$):" />
+                        <h:outputText value="#{warehouseOrderManagedBean.so.price}"/>
+                    </p:panelGrid>
+
+                    <h:panelGrid columns="2">                       
+
+                        <h:outputLabel value="Approved Or Not: " />
+                        <p:selectBooleanButton id="approvedOrNot1" value="#{warehouseOrderManagedBean.so.isApprovedOrNot()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+
+                        <h:outputLabel value="Payment Fulfilled Or Not: " />
+                        <p:selectBooleanButton id="fulfilledOrNot1" value="#{warehouseOrderManagedBean.so.isPaidOrNot()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+                    </h:panelGrid>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" resizable="false" size="30%" header="Goods Information">
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="Product:" />
+                        <h:outputText value="#{warehouseOrderManagedBean.so.product.productName}"/>
+
+                        <h:outputLabel value="Product Quantity:" />
+                        <h:outputText value="#{warehouseOrderManagedBean.so.quantity}"/>
+                    </p:panelGrid>
+
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputLabel value="Persihable" />
+                        <p:selectBooleanButton id="perishable" value="#{warehouseOrderManagedBean.so.isPerishable()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+
+                        <h:outputLabel value="Flammable" />
+                        <p:selectBooleanButton id="flammable" value="#{warehouseOrderManagedBean.so.isFlammable()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+
+                        <h:outputLabel value="Pharmaceutical:" />
+                        <p:selectBooleanButton id="pharmaceutical" value="#{warehouseOrderManagedBean.so.isPharmaceutical()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+
+                        <h:outputLabel value="HighValue:" />
+                        <p:selectBooleanButton id="highValue" value="#{warehouseOrderManagedBean.so.isHighValue()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+
+                    </h:panelGrid>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="east" resizable="false" size="30%" header="Warehouse Information">
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="Country:" />
+                        <h:outputText value="#{warehouseOrderManagedBean.so.serviceContract.serviceQuotation.warehouse.location.country}"/>
+
+                        <h:outputLabel value="State:" />
+                        <h:outputText value="#{warehouseOrderManagedBean.so.serviceContract.serviceQuotation.warehouse.location.state}"/>
+
+                        <h:outputLabel value="City:" />
+                        <h:outputText value="#{warehouseOrderManagedBean.so.serviceContract.serviceQuotation.warehouse.location.city}"/>
+
+                        <h:outputLabel value="Street:" />
+                        <h:outputText value="#{warehouseOrderManagedBean.so.serviceContract.serviceQuotation.warehouse.location.street}"/>
+
+                        <h:outputLabel value="Block No:" />
+                        <h:outputText value="#{warehouseOrderManagedBean.so.serviceContract.serviceQuotation.warehouse.location.blockNo}"/>
+
+                        <h:outputLabel value="Postal Code:" />
+                        <h:outputText value="#{warehouseOrderManagedBean.so.serviceContract.serviceQuotation.warehouse.location.postalCode}"/>
+                    </p:panelGrid>
+                </p:layoutUnit>                        
+            </p:layout>
+
+            <h:panelGrid columns="3" cellpadding="5">
+                <p:commandButton value="Create New Warehouse Order" id="create" update="msgs" ajax="true" actionListener="#{warehouseOrderManagedBean.createWarehouseOrder()}" styleClass="ui-priority-primary" />
+
+            </h:panelGrid>
+
+            <p:dialog resizable="false" header="Warehouse Order Successfully Created" widgetVar="dlg" showEffect="fold">
+                <p:commandButton type="submit" value="Return to Service Order List" icon="ui-icon-check" actionListener="#{warehouseOrderManagedBean.redirectToViewOwningServiceOrderListForWarehouseOrderCreation}" /> 
+            </p:dialog>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+
+

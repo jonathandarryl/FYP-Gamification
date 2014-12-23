@@ -1,0 +1,148 @@
+<ui:composition template="../../template/userGRNSTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            GRNS | View Purchase History for Transport Post
+        </title>
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            td th {
+                padding: 5px !important;
+            }
+            td {
+                color: black !important;
+            }
+        </style> 
+    </ui:define>
+    <ui:define name="check">
+        #{postManagedBean.viewPurchaseHistoryTransport()}
+    </ui:define>
+    <ui:define name="content"> 
+
+        <center>
+
+            <h:form id="form">
+
+                <p:messages id="viewTP" autoUpdate="true" closable="true"/>
+
+                <p:dataGrid id="dataGridTP" var="tp" widgetVar="tpTable" value="#{postManagedBean.biddingTPList}" columns="1" rows="4" paginator="true"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="4,8,12" >
+
+                    <f:facet name="header">
+                        <p style="font-size: 1.5em; display: inline;">View Transport Post You Have Won</p>
+                    </f:facet>
+
+                    <p:panel header="#{tp.title}" style="text-align:left">
+                        <f:facet name="header">
+                            <p style="text-align:left; display: inline;font-size: 1.5em;">#{tp.title}</p>
+                            <p:menuButton value="Available Actions" style="float:right;">
+                                <p:menuitem value="View Detail" actionListener="#{postManagedBean.viewDetailTransportPost(tp.id)}"/>
+                                <p:menuitem value="Create Order" actionListener="#{postManagedBean.createTransportOrder(tp.id)}" 
+                                            rendered="#{not tp.orderCreated}" onclick="if (!confirm('Are you sure you want to create order?')) return false;" ajax="false"/>
+                            </p:menuButton>
+                        </f:facet>
+                        <p:panelGrid style="width:100%;">
+                            <p:row>
+                                <p:column rowspan="12" style="width:200px;">
+                                    <p:graphicImage name="images/tms2.png" width="200" rendered="#{not tp.orderCreated}"/> 
+                                    <p:graphicImage name="images/tms2OrderCreated.png" width="200" rendered="#{tp.orderCreated}"/> 
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Post time:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{tp.postDateTime}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Bidding End time:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{tp.endDateTime}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Transport Capacity:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{tp.capacity}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Initial Bid:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{tp.initBid}" />
+                                </p:column>
+                            </p:row>
+                           
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Reserve Price :" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{tp.reservePrice}" rendered="#{tp.reservePriceSpecified}" />
+                                    <h:outputText value="Not Specified" rendered="#{not tp.reservePriceSpecified}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Winning Bid :" rendered="#{not tp.winnerId.equals(null)}"/>
+                                    <h:outputText value="Highest Bid :" rendered="#{tp.winnerId.equals(null)}"/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{tp.winningPrice}" rendered="#{not tp.winnerId.equals(null)}"/>
+                                    <h:outputText value="#{tp.highestBid}" rendered="#{tp.winnerId.equals(null)}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Winner Username / Company :" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{tp.winnerUsername} / #{tp.winnerCompanyName}" rendered="#{not tp.winnerUsername.equals(null)}" />
+                                    <h:outputText value="No Winner" rendered="#{tp.winnerUsername.equals(null)}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="Source Location :" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="#{tp.sourceLoc}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="Destination Location :" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="#{tp.destLoc}" />
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+
+                    </p:panel>      
+
+                </p:dataGrid>
+
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,92 @@
+<ui:composition template="../../template/defaultTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            GRNS | Login
+        </title>
+    </ui:define>
+    <ui:define name="css-style">
+        <style type="text/css">
+            td, th {
+                padding: 5px !important;
+            }
+            #searchrow {
+                    padding: 0px 0px !important;
+                }
+            .ui-layout-north {
+                    z-index:20 !important;
+                }
+
+                .ui-layout-north .ui-layout-unit-content {
+                    overflow:visible !important;
+                }
+
+                .ui-layout-north .ui-menubar {
+                    margin-top: 15px;
+                    margin-left: 180px;
+                    border: none;
+                }
+        </style>
+    </ui:define>
+
+    <ui:define name="externalCheck" rendered="#{externalAccountManagedBean.checkIfExternal}">
+        #{externalAccountManagement.checkAlreadyLoggedIn()}
+    </ui:define>
+
+
+    <ui:define name="left">
+        <h:form id="form1" title="External User Login">
+            <p:growl life="2000"/> 
+            <p:panel id="userPanel">
+                <f:facet name="header">
+                    External User Login
+                </f:facet>
+                <p:messages id="login" autoUpdate="true" closable="true"/>
+                <p:graphicImage value="../../resources/images/Banner_login.jpg" style="width:260px;"></p:graphicImage>
+                <h:panelGrid id ="loginPG" columns="2" cellpadding="5" style="margin-bottom: 10px;">
+
+                    <h:outputLabel for="username" value="Username: *" />
+                    <p:inputText style="width:100%;" id="username" value="#{externalAccountManagedBean.username}" label="Username" required="true" requiredMessage="Please input your username">
+                        <f:validateLength minimum="4" maximum="25" />
+                        <p:watermark for="username" value="Please enter username" />
+                    </p:inputText>                        
+
+                    <h:outputLabel for="password" value="Password: *" />
+                    <p:password style="width:100%;" id="password" value="#{externalAccountManagedBean.password}" label="Password" required="true" requiredMessage="Please input password">
+                        <p:watermark for="password" value="Please enter password" />
+                    </p:password>
+                </h:panelGrid>
+
+                <a href="/MerLION-war/CommonWeb/login.xhtml" ><i class="fa fa-angle-right"></i> Already a subscriber of MerLION Platform?</a><br /><br />
+                <a href="./registration.xhtml" ><i class="fa fa-angle-right"></i> New User? Register Now!</a><br /><br />
+                <a href="./resetPassword.xhtml" ><i class="fa fa-angle-right"></i> Forgot Your Password or Username?</a><br /><br /><br /><br /><br />
+                <p:commandButton  style="margin-top:-30px; float:right;" update="panel" ajax="false" type="submit" value="Login" actionListener="#{externalAccountManagedBean.login()}"  icon="ui-icon-circle-triangle-e" />
+            </p:panel>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="content">
+        <p:tabView>
+            <p:tab title="Getting Started">
+                <h2>How do you register to start using GRNS?</h2>
+                <br />
+                <p>It’s easy! Even if you are new to MerLION GRNS, just follow the registration steps – it only takes a few minutes!</p>
+                <br />
+                <h:panelGrid columns="1" cellpadding="10">
+                    <h:outputText value="The registration process guides you through making selections according to your shipping and tracking needs." />
+                    <p:graphicImage name="images/step1.png" style="margin-top: 20px; margin-bottom: 20px;"/>
+                    <h:outputText value="After you register, you’ll receive an email of your account details. You'll need to wait for the approval of your account by system admin. Be sure to check your MerLION login details and change your password." />
+                    <p:graphicImage name="images/step2.png" style="margin-top: 20px; margin-bottom: 20px;"/>
+                    <h:outputText value="Upon the approval of your account, you are able to log in and ready to start using MerLION Platform and it's services." />
+                    <p:graphicImage name="images/step3.png" style="margin-top: 20px; margin-bottom: 20px;"/>
+                </h:panelGrid>
+            </p:tab>
+        </p:tabView>
+    </ui:define>
+
+</ui:composition>
+

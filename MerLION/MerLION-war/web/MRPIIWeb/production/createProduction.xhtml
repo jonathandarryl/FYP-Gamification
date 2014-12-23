@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:o="http://omnifaces.org/ui">
+    <ui:define name="head-title">
+        <title>Initiate Production Process</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfManufacture()}
+    </ui:define>
+    
+    <ui:define name="content">
+        <h:form>
+            <p:graphicImage value="../../resources/images/bannerManufacturing.jpg" style="width:100%;"></p:graphicImage>
+            <p:panel id ="panel">
+                <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+                <p:growl id="msgs" />
+
+                <h:panelGrid columns="2" cellpadding="5">
+
+                    <h:outputText value="Product Name:" />
+                    <h:outputText value="#{productionManagedBean.product.productName}">
+                    </h:outputText>
+                    
+                    <h:outputText value="Unit:" />
+                    <h:outputText value="#{productionManagedBean.product.unit}">
+                    </h:outputText>
+                    
+                    <h:outputText value="Needed Quantity:" />
+                    <h:outputText value="#{productionManagedBean.getSingleRequiredQuantity(productionManagedBean.product)}">
+                    </h:outputText>
+                    
+                    <h:outputText value="Quantity in One Batch:" />
+                    <h:outputText value="#{productionManagedBean.product.quantityInOneBatch}">
+                    </h:outputText>
+                    
+                    <h:outputText value="Minimun Batch Number Needed:" />
+                    <h:outputText value="#{productionManagedBean.minimunBatchNumber}">
+                    </h:outputText>
+
+                    <h:outputLabel value="Planned Batch Number: " />
+                    <p:inputText id="batchNumber" value="#{productionManagedBean.batchNumber}" label="batchNumber" required="true" requiredMessage="Please input targeted batch number">                       
+                    </p:inputText>                    
+
+                    
+                </h:panelGrid>
+
+                <p:commandButton ajax="true" type="submit" value="Initiate Production" icon="ui-icon-check" actionListener="#{productionManagedBean.createProduction()}" /> 
+
+                <p:dialog resizable="false" header="Production Initiated Successfully" widgetVar="dlg" showEffect="fold">
+                    <p:commandButton type="submit" value="View Stand By Production List" icon="ui-icon-check" actionListener="#{productionManagedBean.redirectToViewStandByProductionList()}" /> 
+                </p:dialog>
+            </p:panel>
+
+
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Update Product</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfOperating()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+            <p:panel id="panel">
+
+                <f:facet name="header">
+                    Update Existing Product Information
+                </f:facet>
+
+                <h:panelGrid columns="2">
+
+                    <p:outputLabel for="productName" value="Product Name: " style="font-weight: bold"/>
+                    <p:inplace id="productName">
+                        <p:inputText value="#{productInfoManagedBean.productName}" required="true" requiredMessage="Product Name cannot be empty"/>
+                    </p:inplace>
+
+                    <p:outputLabel for="productPrice" value="Product Price: " style="font-weight: bold"/>
+                    <p:inplace id="productPrice">
+                        <p:inputText value="#{productInfoManagedBean.productPrice}" required="true" requiredMessage="Product Price cannot be empty"/>
+                    </p:inplace>
+
+                    <p:outputLabel value="Owner Company: " style="font-weight: bold"/>
+                    <h:outputText value="#{productInfoManagedBean.ownerCompanyName}"/>
+
+                    <p:outputLabel for="productDescription" value="Product Description: " style="font-weight: bold"/>
+                    <p:inplace id="productDescription">
+                        <p:inputText value="#{productInfoManagedBean.productDescription}" required="true" requiredMessage="Product Description cannot be empty"/> 
+                    </p:inplace>
+
+                    <p:outputLabel for="unit" value="Unit: " style="font-weight: bold"/>
+                    <p:inplace id="unit">
+                        <p:inputText value="#{productInfoManagedBean.unit}" required="true" requiredMessage="Unit cannot be empty"/>
+                    </p:inplace>
+
+                    <p:outputLabel for="cUnit" value="Capacity Quantity: " style="font-weight: bold"/>
+                    <p:inplace id="cUnit">
+                        <p:inputText value="#{productInfoManagedBean.capacityQuantity}" required="true" requiredMessage="Capacity Quantity cannot be empty"/>
+                    </p:inplace>
+
+                    <p:outputLabel for="bUnit" value="Batch Quantity:" style="font-weight: bold"/>
+                    <p:inplace id="bUnit">
+                        <p:inputText value="#{productInfoManagedBean.quantityInOneBatch}" required="true" requiredMessage="Batch Quantity cannot be empty"/>
+                    </p:inplace>
+
+                    <f:facet name="footer">
+                        <p:commandButton type="submit" value="Update Product" actionListener="#{productInfoManagedBean.updateProduct}"/>
+                    </f:facet>
+                </h:panelGrid>
+
+            </p:panel>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>

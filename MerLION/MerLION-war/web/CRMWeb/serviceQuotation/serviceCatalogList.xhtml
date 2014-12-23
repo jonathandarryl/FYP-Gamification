@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Service Catalog List</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfSalesAndMarketing()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/sq1.jpg" style="width:100%;"></p:graphicImage>
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+
+            <p:dataTable id="dataTable" var="serviceCatalog" value="#{serviceQuotationManagedBean.retrieveServiceCatalogList()}"
+                         rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="No Service Catalog">
+                <f:facet name="header">
+                    <p style="font-size: 1.5em;margin-bottom: 0;display: inline;text-align: center;">Create Service Quotation from Service You Offer</p>
+                </f:facet>
+
+                <p:column headerText="Catalog ID" 
+                          sortBy="#{serviceCatalog.id}">
+                    <h:outputText value="#{serviceCatalog.id}"/>
+                </p:column>
+                
+                <p:column headerText="Service Name" 
+                          sortBy="#{serviceCatalog.serviceName}">
+                    <h:outputText value="#{serviceCatalog.serviceName}"/>
+                </p:column>
+
+                <p:column headerText="Create Service Quotation" >
+                    <center>
+                        <p:commandButton type="submit" icon="ui-icon-pencil" actionListener="#{serviceQuotationManagedBean.retrieveServiceCatalog(serviceCatalog)}" /> 
+                    </center>
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

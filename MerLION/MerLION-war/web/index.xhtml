@@ -1,0 +1,340 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view>
+        <h:head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <meta name="description" content="This is the home page of winexpress" />
+            <meta name="author" content="Sunnie" />
+            <title>MerLion Platform</title>
+
+            <!-- Bootstrap core CSS -->
+            <link href="./resources/css/bootstrap.min.css" rel="stylesheet"/>
+
+            <!-- Add custom CSS here -->
+            <link href="./resources/css/merlion-platform.css" rel="stylesheet" type="text/css"/>
+            <link href="./resources/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+            <link href="https://fonts.googleapis.com/css?family=Sonsie+One" rel="stylesheet" type="text/css"/>
+            <link href="./resources/css/bootstrap-formhelpers.min.css" rel="stylesheet" type="text/css"/>
+        </h:head>
+        <h:body>
+            #{populateManagedBean.populateAccounts()}
+            #{populateCatalogManagedBean.populateCatalog()}
+            #{populateCRMManagedBean.populateCRM()}
+            #{populateTMSManagedBean.populateTMS()} 
+            #{populateTMSManagedBean.populateTMSForMerlion()} 
+            #{populateOESManagedBean.populateProduct()}
+            #{populateMRPManagedBean.populateMaterial()}
+            #{populateCRMManagedBean.populateInventory()}
+            #{populateManagedBean.populateGRNS()}
+            
+            <nav class="navbar navbar-inverse navbar-fixed-top headroom" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="index.xhtml" style="color: #ffffff;font-family: 'Sonsie One', cursive;">MerLion Platform</a>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 pull-right">
+                        <form class="navbar-form" >
+                            <div class="col-md-4 col-sm-4">
+                                <a href="./GRNSWeb/externalAccount/registration.xhtml" class="btn btn-primary btn-sm btn-block"><strong>GRNS Registration</strong></a>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <a href="./CommonWeb/companyAdminRegistration.xhtml" class="btn btn-primary btn-sm btn-block"><strong>Join Us Now!</strong></a>
+                            </div>
+                        </form>
+
+                        <h:form >
+
+                            <div class="btn-group col-md-4 col-sm-4">
+                                <li class="dropdown" style="list-style:none;">
+                                    <h:commandLink actionListener="#{loginManagedBean.startSsl}" class="btn btn-default btn-sm" style="border-right:0px;width:10em;"><span class="glyphicon glyphicon-log-in"></span>&nbsp; Login</h:commandLink>
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" style="margin-left: -5px; border-left: 1px;padding: 5px 5px;" data-toggle="dropdown">
+                                        <i class="fa fa-angle-down"></i>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="./CommonWeb/login.xhtml">Platform User Login <i class="fa fa-angle-double-right"></i></a></li>
+                                        <p:separator style="margin-top:5px; margin-bottom: 5px;" />
+                                        <li><a href="./GRNSWeb/externalAccount/loginGRNS.xhtml">External User Login <i class="fa fa-angle-double-right"></i></a></li>
+                                        <!--<li class="divider"></li>-->
+
+                                    </ul>
+                                </li>
+                            </div>
+                        </h:form>
+
+
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+                <!-- /.container -->
+            </nav>
+
+            <div class="navbar-wrapper">
+                <div id="logo">
+                    <h1>MERLION</h1>
+                </div>
+                <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
+                <div id="nav">
+                    <ol id="mainMenuR">
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle" id="mainMenuBorder" >LOGISTIC SERVICE</a> 
+                            <ul class="dropdown-menu">
+                                <li><a href="#">TRANSPORTATION</a></li>
+                                <li><a href="#">WAREHOUSING</a></li>
+                                <li><a href="#">MANAGEMENT</a></li>
+                                <li><a href="#">CONSULTANCY</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle" id="mainMenuBorder">COUNTRY</a> 
+                            <ul class="dropdown-menu">
+                                <li><a href="#">France</a></li>
+                                <li><a href="#">Italy</a></li>
+                                <li><a href="#">Spain</a></li>
+                                <li><a href="#">United States</a></li>
+                                <li><a href="#">China</a></li>
+                                <li><a href="#">Argentina</a></li>
+                                <li><a href="#">Australia</a></li>
+                                <li><a href="#">Chile</a></li>
+                                <li><a href="#">Germany</a></li>
+                                <li><a href="#">Russia</a></li>
+                                <li><a href="#">Brazil</a></li>
+                                <li><a href="#">Japan</a></li>
+                                <li><a href="#">Canada</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle" id="mainMenuBorder">EXTERNAL PLATFORM</a> 
+                            <ul class="dropdown-menu">
+                                <li><a href="#">REGISTRATION</a></li>
+                                <li><a href="#">MARKETPLACE</a></li>
+                                <li><a href="#">LOGISTIC SERVICE PROVISION</a></li>
+                                <li><a href="#">SPARE CAPACITY TRADE</a></li>
+                                <li><a href="#">DEMAND AGGREGATION</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle" id="mainMenuBorder">ABOUT MERLION LOGISTICS</a> 
+                            <ul class="dropdown-menu">
+                                <li><a href="#">HISTORY</a></li>
+                                <li><a href="#">OUR TEAM</a></li>
+                                <li><a href="#">SERVICE</a></li>
+                                <li><a href="#">RECRUITMENT</a></li>
+                                <li><a href="#">LOCATION</a></li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div><!-- /.navbar-wrapper -->
+
+            <!-- Intro -->
+            <div id="about" class="intro">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3 text-center">
+                            <div class="well well-sm" style="background-color: rgba(245, 245, 245, 0.8);">
+                                <h1>MERLION PLATFORM</h1>
+                                <p class="lead">Hosted by the renowned fifth party logistics company, MerLION Logistcis, MerLION Platform is an effective online platform designed to facilitate daily operations of logistics service providers.</p>
+                                <a href="./CommonWeb/companyAdminRegistration.xhtml" class="btn btn-primary btn-lg">JOIN US NOW!</a>                           
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Intro -->
+
+            <!-- Services -->
+            <div id="services" class="services">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-4 text-center">
+                            <h2>Our Business</h2>
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2 col-md-offset-2 text-center">
+                            <div class="service-item">
+                                <i class="service-icon fa fa-rocket"></i>
+                                <h4>Logistics Services</h4>
+                                <p>Provide a channel to enable communication and contract establishment between logistic service providers and service seekers.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <div class="service-item">
+                                <i class="service-icon fa fa-magnet"></i>
+                                <h4>Management and Consultancy</h4>
+                                <p>Need to know how to improve efficiency of your company? Our global management and consultancy team can conduct exploratory research and help you streamline daily operations.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <div class="service-item">
+                                <i class="service-icon fa fa-shield"></i>
+                                <h4>Relationship Management</h4>
+                                <p>We provide you with an outstanding medium to facilitate communication with your suppliers and customers so as to help you excel in relationship management.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <div class="service-item">
+                                <i class="service-icon fa fa-pencil"></i>
+                                <h4>Administrative Work</h4>
+                                <p>Always have to juggle extra administrative work? We can help you nail it!Providing you a platform to manage daily activities, MerLION Platform helps you to improve business efficiency.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>     
+            <!-- /Services -->
+            <!-- /Footer -->
+            <div class="container">
+                <hr style="border-bottom: 3px solid #000000;"/>
+                <h3>ABOUT MERLION PLATFORM</h3>            
+                <hr />
+                <div  id="footerSection">
+                    <div class="row">
+                        <div class="col-md-3 text-left">
+                            <h5>ACCOUNT</h5>
+                            <a href="./CommonWeb/login.xhtml">YOUR ACCOUNT</a>
+                            <a href="./CommonWeb/login.xhtml">PERSONAL INFORMATION</a> 
+                            <a href="./CommonWeb/login.xhtml">ADDRESSES</a> 
+                            <a href="./CommonWeb/login.xhtml">DISCOUNT</a>  
+                            <a href="./CommonWeb/login.xhtml">ORDER HISTORY</a>
+                        </div>
+                        <div class="col-md-3 text-left">
+                            <h5>INFORMATION</h5>
+                            <a href="./AboutUs/contactUs.xhtml">CONTACT</a>
+                            <a href="./CommonWeb/companyAdminRegistration.xhtml">REGISTRATION</a>  
+                            <a href="./CommonWeb/login.xhtml">LEGAL NOTICE</a>  
+                            <a href="#">TERMS AND CONDITIONS</a> 
+                            <a href="./AboutUs/serviceDirectory.xhtml">FAQ</a>
+                        </div>
+                        <div class="col-md-3 text-left">
+                            <h5>OUR SERVICE</h5>
+                            <a href="#">HEADLINE</a> 
+                            <a href="#">NEW COMPANY JOINED</a> 
+                            <a href="#">NEW TRANSPORTATION ROUTE</a>  
+                            <a href="#">NEW WAREHOUSE LOCATION</a>  
+                            <a href="./AboutUs/contactUs.xhtml">CONTACT US</a> 
+                        </div>
+                        <div id="socialMedia" class="col-md-3 text-left pull-right">
+                            <h5>WE ACCEPT </h5>
+                            <img src="./resources/images/payment_methods.png" class="img-responsive" alt="Responsive image" />
+                        </div> 
+                    </div>
+                    <br />
+                    <div class="well well-sm">
+<!--                        <form class="form-inline text-center" role="form">
+                            <h4 style="display: inline;">SUBSCRIBE EMAIL PROMOTION:  </h4>
+                            <div class="form-group">
+                                <label class="sr-only" for="subemail1">Email address</label>
+                                <input type="email" class="form-control input-sm" id="subemail1" placeholder="Enter email"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="subemail2">Email address</label>
+                                <input type="email" class="form-control input-sm" id="subemail2" placeholder="Confirm email"/>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-default">SUBSCRIBE!</button>
+                        </form>-->
+                        <ul id="footer-link" class="list-inline text-center">
+                            <li><h4>FOLLOW US: </h4></li>
+                            <li>
+                                <a href="#"><span class="fa-stack fa-lg">
+                                        <i class="fa fa-square-o fa-stack-2x"></i>
+                                        <i class="fa fa-facebook fa-stack-1x"></i>
+                                    </span></a>
+                            </li>
+                            <li>
+                                <a href="#"><span class="fa-stack fa-lg">
+                                        <i class="fa fa-square-o fa-stack-2x"></i>
+                                        <i class="fa fa-twitter fa-stack-1x"></i>
+                                    </span></a>
+                            </li>
+                            <li>
+                                <a href="#"><span class="fa-stack fa-lg">
+                                        <i class="fa fa-square-o fa-stack-2x"></i>
+                                        <i class="fa fa-weibo fa-stack-1x"></i>
+                                    </span></a>
+                            </li>
+                            <li>
+                                <a href="#"><span class="fa-stack fa-lg">
+                                        <i class="fa fa-square-o fa-stack-2x"></i>
+                                        <i class="fa fa-google-plus fa-stack-1x"></i>
+                                    </span></a>
+                            </li>
+                            <li>
+                                <a href="#"><span class="fa-stack fa-lg">
+                                        <i class="fa fa-square-o fa-stack-2x"></i>
+                                        <i class="fa fa-tumblr fa-stack-1x"></i>
+                                    </span></a>
+                            </li>
+                            <li>
+                                <a href="#"><span class="fa-stack fa-lg">
+                                        <i class="fa fa-square-o fa-stack-2x"></i>
+                                        <i class="fa fa-pinterest fa-stack-1x"></i>
+                                    </span></a>
+                            </li>
+                            <li>
+                                <a href="#"><span class="fa-stack fa-lg">
+                                        <i class="fa fa-square-o fa-stack-2x"></i>
+                                        <i class="fa fa-renren fa-stack-1x"></i>
+                                    </span></a>
+                            </li>
+                            <li>
+                                <a href="#"><span class="fa-stack fa-lg">
+                                        <i class="fa fa-square-o fa-stack-2x"></i>
+                                        <i class="fa fa-youtube fa-stack-1x"></i>
+                                    </span></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr />
+                    <p align="center">Copyright &copy; 2014. IS3102ES02.</p>
+                </div>
+                <!-- /container -->
+            </div>
+
+            <!-- Back-to-top Example -->
+            <a href="#" class="btn back-to-top btn-light btn-fixed-bottom" id="backToTop"> <span class="glyphicon glyphicon-chevron-up"></span> </a>
+
+            <!-- JavaScript -->
+            <script src="./resources/js/jquery-1.11.1.min.js"></script>
+            <script src="./resources/js/bootstrap.min.js"></script>
+            <script src="./resources/js/bootstrapValidator.min.js"></script>
+
+            <!-- HeadRoom  -->
+            <style type="text/css">
+                .headroom {position: fixed;top: 0;left: 0;right: 0;transition: all .2s ease-in-out;}
+                .headroom--unpinned {top: -100px;}
+                .headroom--pinned {top: 0;}
+            </style>
+            <script  type="text/javascript"  src="https://rawgithub.com/WickyNilliams/headroom.js/master/dist/headroom.js"></script>      
+            <script  type="text/javascript"  src="https://rawgithub.com/WickyNilliams/headroom.js/master/src/jQuery.headroom.js"></script>
+            <script type="text/javascript">
+                $(".navbar-fixed-top").headroom();
+            </script>
+
+            <!-- Script to Activate the Carousel -->
+            <script>
+                $(document).ready(function() {
+                    $("#carousel").carousel({
+                        interval: 5000 //changes the speed
+                    });
+                });
+            </script>
+            <!-- back to top -->
+            <script src="./resources/js/showup.js"></script>
+            <!--form helper-->
+            <script src="./resources/js/bootstrap-formhelpers.min.js"></script>
+            <!-- social buttons-->
+            <script src="./resources/js/social-likes.min.js"></script>
+
+        </h:body>
+    </f:view>
+</html>
+

@@ -1,0 +1,92 @@
+<ui:composition template="../template/companyAdminTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            MerLION Platform | Service Directory
+        </title>
+    </ui:define>
+    <ui:define name="content"> 
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="images/ajaxloadingbar.gif" />
+        </p:dialog>
+
+        <h:form id="mainForm">
+            <p:graphicImage value="../resources/images/faq.jpg" style="width:100%;height: 200px"></p:graphicImage>
+
+            <p:accordionPanel>
+                <p:tab title="Q: What is common unit?">
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <h:outputText value="A: We adopt a common unit for all systems when calculating amount of products to be transported or stored." />
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab title="Q: How to calculate common unit?">
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <p:graphicImage value="../resources/images/wms2.png" />
+                        <h:outputText value="A: A common unit has volume capacity of 8 square meters and weight capacity of 1000 kilogram. 
+                                      For example, if you have products of a square meter and b kilogram, number of common unit they take would
+                                      be max(a/8, b/1000)" />
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab title="Q: What does it mean by special characteristic of producct">
+                    <h:panelGrid columns="4" cellpadding="10">
+                        <p:graphicImage value="../resources/images/perishable.jpg" style="height:200px;width:200px" />
+                        <p:graphicImage value="../resources/images/flammable.jpg" style="height:200px;width:200px" />
+                        <p:graphicImage value="../resources/images/pharmaceutical.jpg" style="height:200px;width:200px" />
+                        <p:graphicImage value="../resources/images/gold.jpg" style="height:200px;width:200px" />
+                    </h:panelGrid>
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <h:outputText value="A: Some of the special characteriscs of products need to be specified include perishable, flammable,
+                                      pharmaceutical and high value." />
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab title="Q: How do I create a warehouse?">
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <h:outputText value="A: When creating a warehouse, you would need to first partition your warehouse into 
+                                      regions, and then create storage bins inside each region. This is to keep a record of internal structure of warehouse." />
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab title="Q: How to do tracking?">
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <h:outputText value="A: Your transportation service provider would issue you a tracking number when your goods
+                                      are transported.Then you can use the tracking number to track the current position under Monitor 
+                                      Shipment. Geographical position of the product will be updated once products reach transitting warehouses." />
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab title="Q: How should I design route for transporting goods?">
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <p:graphicImage value="../resources/images/transport.jpg" />
+                    </h:panelGrid>
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <h:outputText value="A: The correct sequence for you to follow is:" />
+                        <h:outputText value="1. Enter information of transportation assets" />
+                        <h:outputText value="2. Enter information of driver" />
+                        <h:outputText value="3. Create routes necessary. For each transportation order, we divide the entire process into different routes." />
+                        <h:outputText value="4. Assign driver to vehicles:" />
+                        <h:outputText value="5. Assign vehicle to each route" />
+                        <h:outputText value="6. Divide the transportation service into different sections of routes" />
+                        <h:outputText value="7. Assign routes to the transportation service" />
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab title="Q: What are the difference between stock-in and stock-out request?">
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <h:outputText value="A: Stock-in request is created when inventory is to be moved into the warehouse. Whereas
+                                      stock-out request is created when inventory is moved out of the warehouse." />
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab title="Q: What is the difference between perspective client and key client?">
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <h:outputText value="A: Client becomes perspective client when he/she requested to create a service quotation with the service provider.
+                                      And he/she will become a key client if a service contract is eventually established." />
+                    </h:panelGrid>
+                </p:tab>
+            </p:accordionPanel>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

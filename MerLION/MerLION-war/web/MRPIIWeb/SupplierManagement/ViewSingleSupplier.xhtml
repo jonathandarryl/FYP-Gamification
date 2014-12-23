@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>View Single Supplier</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfManufacture()}
+        #{commonFuncManagedBean.checkIfUser()}
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            table.hovertable {
+                font-family: verdana,arial,sans-serif;
+                font-size:13px;
+                color:#333333;
+                border-width: 3px;
+                border-color: #999999;
+                border-collapse: collapse;
+            }
+            table.hovertable th {
+                background-color:#c3dde0;
+                border-width: 3px;
+                padding: 10px;
+                border-style: solid;
+                border-color: #a9c6c9;
+            }
+            table.hovertable tr {
+                background-color:#d4e3e5;
+            }
+            table.hovertable td {
+                border-width: 3px;
+                padding: 10px;
+                border-style: solid;
+                border-color: #a9c6c9;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="content">
+
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/process-banner.jpg" style="width:100%;"></p:graphicImage>
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+
+            <f:facet name="header">
+                View Single Supplier
+            </f:facet>
+
+            <table class="hovertable">
+                <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                    <td><strong>Supplier ID</strong></td>
+                    <td>#{supplierManagedBean.supplier.id}</td>
+                </tr>
+                <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                    <td><strong>Supplier Name</strong></td>
+                    <td>#{supplierManagedBean.supplier.name}</td>
+                </tr>
+            </table>
+            <br/><br/>
+
+            <p:dataTable var="material" value="#{supplierManagedBean.supplier.supplyList}"
+                         rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="No Materials">
+                <f:facet name="header">
+                    <p style="font-size:1.5em;display:inline;">Raw Material Supply List</p>
+                </f:facet>
+                <p:column headerText="Material Name">
+                    <h:outputText value="#{material.productName}" />
+                </p:column>
+                <p:column headerText="Material Inventory Level">
+                    <h:outputText value="#{material.inventoryLevel}" />
+                </p:column>
+                <p:column headerText="Unit">
+                    <h:outputText value="#{material.unit}" />
+                </p:column>
+                <p:column headerText="Lead Time">
+                    <h:outputText value="#{supplierManagedBean.getLeadTime(material)}" />
+                </p:column>
+            </p:dataTable>
+            </p:panel>
+
+            <br/><br/><br/>
+
+            <p:dataTable var="material" value="#{supplierManagedBean.supplier.allSupplyList}"
+                         rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="No Materials" rowIndexVar="index">
+                <f:facet name="header">
+                    <p style="font-size:1.5em;display:inline;">This supplier also provides</p>
+                </f:facet>
+                <p:column headerText="Index">
+                    <h:outputText value="#{index}" />
+                </p:column>
+                <p:column headerText="Material Name">
+                    <h:outputText value="#{material}" />
+                </p:column>
+            </p:dataTable>
+            <br/>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

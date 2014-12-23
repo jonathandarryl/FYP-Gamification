@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Customer List</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfOperating()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formMain"> 
+            <p:graphicImage value="../../resources/images/customers_banner.jpg" style="width:100%; height: 200px"></p:graphicImage>
+
+            <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+            <p:panel header="Customer List">
+
+                <p:contextMenu for="customerList">
+                    <p:menuitem value="Delete" update="customerList" icon="ui-icon-close" actionListener="#{customerManagedBean.removeCustomer()}"/>
+                </p:contextMenu>
+
+                <p:dataTable id="customerList" var="customer" value="#{customerManagedBean.retrieveCustomerList()}"
+                             paginator="true" rows="10" emptyMessage="No Customer found"
+                             rowKey="#{customer.id}" selection="#{customerManagedBean.selectCustomer}" selectionMode="single">
+                    <p:growl id="msgs" />
+                    <p:column headerText="Name: " sortBy="#{customer.name}">
+                        <h:outputText value="#{customer.name}" />
+                    </p:column>   
+                    <p:column headerText="Contact Number: " sortBy="#{customer.contactNo}">
+                        <h:outputText value="#{customer.contactNo}" />
+                    </p:column>
+                    <p:column headerText="Email Address: ">
+                        <h:outputText value="#{customer.email}" />
+                    </p:column>      
+                    <p:column headerText="Location">
+                        <h:outputText value="#{customer.location.country} #{customer.location.city}" />
+                    </p:column>
+                    <p:column headerText="Update">
+                        <p:commandButton type="submit" value="Update" actionListener="#{customerManagedBean.preUpdateCustomer(customer)}" /> 
+                    </p:column>
+                </p:dataTable>
+                
+                <p:commandButton type="submit" value="Add New Customer" icon="ui-icon-check" actionListener="#{customerManagedBean.redirectToCreateCustomer()}" /> 
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

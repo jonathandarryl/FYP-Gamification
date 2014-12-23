@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:o="http://omnifaces.org/ui">
+    <ui:define name="head-title">
+        <title>Completed Production</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfManufacture()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <p:graphicImage value="../../resources/images/bannerManufacturing.jpg" style="width:100%;"></p:graphicImage>
+            <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+            <p:growl id="msgs" />
+
+            <p:layout style="height:450px;" >
+                <p:layoutUnit position="west" resizable="true" size="20%" header="Production Information">
+                    <p:panelGrid columns="2">
+
+                        <h:outputLabel value="Set Up Time:" />
+                        <h:outputText value="#{productionManagedBean.production.creationTime}">
+                        </h:outputText>
+
+                        <h:outputLabel value="Product Name:" />
+                        <h:outputText value="#{productionManagedBean.production.finishedGood.productName}">
+                        </h:outputText>
+
+                        <h:outputLabel value="Unit:" />
+                        <h:outputText value="#{productionManagedBean.production.finishedGood.unit}">
+                        </h:outputText>
+
+                        <h:outputLabel value="Production Quantity:" />
+                        <h:outputText value="#{productionManagedBean.production.quantity}">
+                        </h:outputText>
+
+                        <h:outputLabel value="Quantity in One Batch:" />
+                        <h:outputText value="#{productionManagedBean.production.finishedGood.quantityInOneBatch}">
+                        </h:outputText>
+
+                        <h:outputLabel value="Planned Batch Number: " />
+                        <h:outputText value="#{productionManagedBean.production.batchNumber}">                       
+                        </h:outputText>                    
+                    </p:panelGrid>
+                </p:layoutUnit>                
+
+                <p:layoutUnit position="center" resizable="true" size="80%" header="Raw Material Requirements">
+                    <p:dataTable var="rawMaterial" value="#{productionManagedBean.production.rawMaterialList}"
+                                 paginator="true" rows="5" emptyMessage="No Material" >
+                        <p:column headerText="Raw Material Name">
+                            <h:outputText value="#{rawMaterial.productName}" />
+                        </p:column>
+                        <p:column headerText="Unit">
+                            <h:outputText value="#{rawMaterial.unit}" />
+                        </p:column>
+                        <p:column headerText="Required Quantity">
+                            <h:outputText value="#{productionManagedBean.getSingleRequiredRawMaterialQuantity(rawMaterial)}" />
+                        </p:column>
+                    </p:dataTable>  
+                </p:layoutUnit>
+            </p:layout>
+        </h:form>
+    </ui:define>
+</ui:composition>

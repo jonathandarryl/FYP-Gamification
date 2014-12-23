@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Display Receipt</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfOperating()}
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            table.hovertable {
+                font-family: verdana,arial,sans-serif;
+                font-size:13px;
+                color:#333333;
+                border-width: 3px;
+                border-color: #999999;
+                border-collapse: collapse;
+            }
+            table.hovertable th {
+                background-color:#c3dde0;
+                border-width: 3px;
+                padding: 10px;
+                border-style: solid;
+                border-color: #a9c6c9;
+            }
+            table.hovertable tr {
+                background-color:#d4e3e5;
+            }
+            table.hovertable td {
+                border-width: 3px;
+                padding: 10px;
+                border-style: solid;
+                border-color: #a9c6c9;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+
+            <f:facet name="header">
+                View Receipt
+            </f:facet>
+            <p:panel header="View Receipt">
+                <h:panelGrid columns="2">
+
+                    <table class="hovertable">
+
+                        <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                            <td><strong>Receipt ID</strong></td>
+                            <td>#{invoiceAndPaymentManagedBean.reID}</td>
+                        </tr>
+                        <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                            <td><strong>Date</strong></td>
+                            <td>#{invoiceAndPaymentManagedBean.receipt.receiptDate}</td>
+                        </tr>
+                        <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                            <td><strong>Total Price</strong></td>
+                            <td><strong>S$</strong>#{invoiceAndPaymentManagedBean.receipt.salesOrder.salesQuotation.totalPrice}</td>
+                        </tr>
+                        <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                            <td><strong>Related Sales Order ID</strong></td>
+                            <td>#{invoiceAndPaymentManagedBean.receipt.salesOrder.id}</td>
+                        </tr>
+                        <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                            <td><strong>Customer Company</strong></td>
+                            <td>#{invoiceAndPaymentManagedBean.receipt.salesOrder.salesQuotation.customer.name}</td>
+                        </tr>
+
+                    </table>
+
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

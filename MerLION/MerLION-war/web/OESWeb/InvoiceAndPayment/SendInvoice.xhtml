@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Send Invoice</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfOperating()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+            <p:panel id="panel">
+                <f:facet name="header">
+                    Send Invoice
+                </f:facet>
+                <h:panelGrid columns="2">
+
+                    <h:outputLabel for="email" value="Email: *" />
+                    <p:inputText id="email" value="#{invoiceAndPaymentManagedBean.email}" label="email" required="true" validatorMessage="Please input email in correct format">
+                        <p:watermark for="email" value="Input email" />
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                    <p:message for="email" display="icon"/>
+                    <br/>
+                    <p:outputLabel value="Customer Company Name: " style="font-weight: bold"/>
+                    <p:inputText id="customerName" value="#{invoiceAndPaymentManagedBean.customerCompany}" required="true" requiredMessage="Purchase Quotation ID cannot be empty"/>
+
+                    <f:facet name="footer">
+                        <p:commandButton type="submit" value="Send" actionListener="#{invoiceAndPaymentManagedBean.sendInvoice}"/>
+                    </f:facet>
+                </h:panelGrid>
+
+            </p:panel>
+
+        </h:form>
+    </ui:define>
+</ui:composition>
+

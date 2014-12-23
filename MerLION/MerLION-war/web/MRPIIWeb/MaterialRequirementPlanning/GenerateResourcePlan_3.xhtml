@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Generate Resource Plan</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfManufacture()}
+        #{commonFuncManagedBean.checkIfUser()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/resourceplan.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+
+            <h:panelGrid columns="2">
+
+                <p:dataTable id="supplierList" var="supplier" value="#{materialReqPlanningManagedBean.supplierList}"
+                             rows="10" paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15" emptyMessage="No Supplier"
+                             rowKey="#{supplier.id}" selection="#{materialReqPlanningManagedBean.selectedSupplier}">
+                    <f:facet name="header">
+                        <p style="font-size:1.5em;display:inline;">Select Supplier</p>
+                    </f:facet>
+                    <p:column selectionMode="single"/>
+                    <p:column headerText="Supplier ID">
+                        <h:outputText value="#{supplier.id}" />
+                    </p:column>
+                    <p:column filterBy="#{supplier.name}" headerText="Supplier Name"
+                              sortBy="#{supplier.name}" filterMatchMode="contains">
+                        <h:outputText value="#{supplier.name}" />
+                    </p:column>
+                </p:dataTable>
+
+                <f:facet name="footer">
+                    <center>
+                        <p:commandButton type="submit" value="Generate" actionListener="#{materialReqPlanningManagedBean.generateResourcePlan()}"/>
+                    </center>
+                </f:facet>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+

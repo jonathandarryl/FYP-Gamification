@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"                
+                xmlns:m="http://code.google.com/p/gmaps4jsf/">
+    <ui:define name="head-title">
+        <title>Detail Info of Warehouse #{facilityManagedBean.warehouseName}</title>
+    </ui:define>
+    <ui:define name="js">
+        <script src="https://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAxrVS1QxlpJHXxQ2Vxg2bJBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxS9AOPy_YJl48ifAy4mq6I8SgK8fg" type="text/javascript">
+        </script> 
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfWarehouse()}
+        #{facilityManagedBean.refreshWarehouseDetail()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <p:graphicImage value="../../resources/images/bannerWarehouse.jpg" style="width:100%;"></p:graphicImage>
+            <p:growl id="msgs" />
+            <p:commandButton style="margin:5px 5px;" value="Back to Owned Warehouse List" type="submit" id="back" actionListener="#{facilityManagedBean.redirectToViewOwnedWarehouseList()}" styleClass="ui-priority-primary" />
+
+            <p:layout style="height:650px;" >
+                <p:layoutUnit position="west" resizable="true" size="25%" header="Common Information">
+                    <center>
+                        <p:panelGrid columns="2" style="width:100%">
+                            <p:outputLabel value="Warehouse Name:" />
+                            <h:outputText value="#{facilityManagedBean.wh.name}">
+                            </h:outputText>                            
+
+                            <p:outputLabel value="Number of Storage Bin:" />
+                            <h:outputText value="#{facilityManagedBean.getWarehouseShelfNumber()}">
+                            </h:outputText>
+
+                            <p:outputLabel value="Contact Number:" />
+                            <h:outputText value="#{facilityManagedBean.contactNo}">
+                            </h:outputText>    
+                        </p:panelGrid>
+                    </center>
+                    <br></br>
+                    <br></br>
+                    <h:panelGrid columns="2">
+                        <f:facet name="header">
+                            Capability with Special Requirements
+                        </f:facet>
+
+                        <p:outputLabel value="Persihable" />
+                        <p:selectBooleanButton id="perishable" value="#{facilityManagedBean.perishable}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+
+                        <p:outputLabel value="Flammable" />
+                        <p:selectBooleanButton id="flammable" value="#{facilityManagedBean.flammable}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+
+                        <p:outputLabel value="Pharmaceutical:" />
+                        <p:selectBooleanButton id="pharmaceutical" value="#{facilityManagedBean.pharmaceutical}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+
+                        <p:outputLabel value="HighValue:" />
+                        <p:selectBooleanButton id="highValue" value="#{facilityManagedBean.highValue}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+                    </h:panelGrid>
+                    <br></br>
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <p:commandButton style="width: 70px" value="Update" type="submit" id="update" actionListener="#{facilityManagedBean.redirectToUpdateOwnedWarehouseInfo()}" styleClass="ui-priority-primary" />
+                        <p:commandButton style="width: 70px" value="Delete" type="submit" id="delete" update="msgs" ajax="true" actionListener="#{facilityManagedBean.deleteWarehouse()}" styleClass="ui-priority-primary" />
+                    </h:panelGrid>                      
+
+                    <p:dialog resizable="false" header="Deletion Successful" widgetVar="dlg" showEffect="fold">
+                        <p:commandButton type="submit" value="Return to Current Warehouse List" icon="ui-icon-check" actionListener="#{facilityManagedBean.redirectToViewOwnedWarehouseList()}" /> 
+                    </p:dialog>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" resizable="false" size="35%" header="Layout">
+                    <center>
+                        <p:panelGrid columns="2" style="width:100%">
+                            <p:outputLabel value="Total Capacity:" />
+                            <h:outputText value="#{facilityManagedBean.wh.capacity}">
+                            </h:outputText>
+
+                            <p:outputLabel value="Used Capacity:" />
+                            <h:outputText value="#{facilityManagedBean.wh.utilizedCapacity}">
+                            </h:outputText>
+
+                            <p:outputLabel value="Spare Capacity:" />
+                            <h:outputText value="#{facilityManagedBean.wh.spareCapacity}">
+                            </h:outputText>
+                        </p:panelGrid>
+                    </center>
+                    <br></br>
+                    <br></br>
+                    <p:chart type="pie" model="#{facilityManagedBean.getWarehouseCapacityChart(facilityManagedBean.wh)}" style="width:100%;height:300px" />
+
+                    <br></br>
+                    <br></br>
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <p:commandButton style="width: 200px" value="Layout" type="submit" id="layout" actionListener="#{facilityManagedBean.redirectToViewWarehouseLayout()}" styleClass="ui-priority-primary" />
+                        <p:commandButton style="width: 200px" value="Finished Goods" type="submit" id="productList" actionListener="#{facilityManagedBean.redirectToViewWarehouseFinishedGoodList()}" styleClass="ui-priority-primary" />
+                        <p:commandButton style="width: 200px" value="Raw Material" type="submit" id="rawMaterialList" actionListener="#{facilityManagedBean.redirectToViewWarehouseRawMaterialList()}" styleClass="ui-priority-primary" />
+                    </h:panelGrid> 
+                </p:layoutUnit>
+
+                <p:layoutUnit position="east" resizable="false" size="40%" header="Location">
+                    <center>
+                        <p:panelGrid columns="2" style="width:100%">
+                            <p:outputLabel value="Location country:" />
+                            <h:outputText value="#{facilityManagedBean.country}"/>
+
+                            <p:outputLabel value="State:" />
+                            <h:outputText value="#{facilityManagedBean.state}"/>
+
+                            <p:outputLabel value="City:" />
+                            <h:outputText value="#{facilityManagedBean.city}"/>
+
+                            <p:outputLabel value="Street number:" />
+                            <h:outputText value="#{facilityManagedBean.street}"/>
+
+                            <p:outputLabel value="Block No:" />
+                            <h:outputText value="#{facilityManagedBean.blockNo}"/>
+
+                            <p:outputLabel value="Postal code:" />
+                            <h:outputText value="#{facilityManagedBean.postalCode}"/>
+                        </p:panelGrid>
+                    </center>
+                    <div class="map" style="height:500px;">
+                        <m:map width="100%" height="100%" address="#{facilityManagedBean.warehouseAddressString}">
+                            <m:marker/>
+                            <m:htmlInformationWindow htmlText="#{facilityManagedBean.warehouseAddressString}"/>
+                        </m:map>
+                    </div>
+                </p:layoutUnit>
+            </p:layout>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>

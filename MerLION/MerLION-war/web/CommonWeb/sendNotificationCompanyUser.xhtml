@@ -1,0 +1,57 @@
+<ui:composition template="../template/companyUserTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            MerLION Platform | Send Notification
+        </title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkStatus()}
+        #{commonFuncManagedBean.checkIfUser()}
+        #{messageManagedBean.populateCompany()}
+    </ui:define>
+    <ui:define name="content"> 
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="images/ajaxloadingbar.gif" />
+        </p:dialog>
+
+        <center>
+
+            <h:form>
+                <p:panel id ="panel">
+                    <p:messages id="sendNot" autoUpdate="true" closable="true"/>
+
+                    <h:panelGrid columns="3" cellpadding="5">
+
+                        <p:outputLabel for="company" value="Company:"  />
+                        <p:selectOneMenu id="company" value="#{messageManagedBean.companyName}" label="company" required="true" requiredMessage="Please select one company" converter="omnifaces.SelectItemsConverter" panelStyle="width:180px"
+                                         effect="fade" var="omnifaces.SelectItemsConverter" style="width:160px" filter="true" filterMatchMode="contains">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItems value="#{messageManagedBean.companyList}" />
+                            <f:ajax event="change" execute="@this" render="department" listener="#{messageManagedBean.setDepartmentOption()}" />
+                        </p:selectOneMenu>
+                        <p:messages for="company" />
+
+                        <p:outputLabel for="department" value="Department: " />
+                        <p:selectCheckboxMenu id="department" value="#{messageManagedBean.selectedDepartment}" label="departments" required="true" requiredMessage="Please select one department" converter="omnifaces.SelectItemsConverter">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItems value="#{messageManagedBean.departmentList}" />
+                        </p:selectCheckboxMenu>
+                        <p:messages for="department" />
+
+                    </h:panelGrid>
+
+                    <p:editor id="msgEditor" widgetVar="editorWidget" value="#{messageManagedBean.content}" width="600" />
+
+                    <p:commandButton type="submit" value="Send" icon="ui-icon-check" actionListener="#{messageManagedBean.sendNotification()}" />
+                </p:panel>
+
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
+

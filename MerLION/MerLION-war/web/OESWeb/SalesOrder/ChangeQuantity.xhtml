@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Change Quantity</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfOperating()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/Quotation_Banner.png" style="width:100%; height: 200px"></p:graphicImage>
+            
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+
+            <p:panel header="Change Quantity of a Selected Product">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel value="Product Name: " style="font-weight: bold"/>
+                    <h:outputText value="#{salesOrderManagedBean.productName}"/>
+
+                    <p:outputLabel value="Product Quantity: " style="font-weight: bold"/>
+                    <p:inputText value="#{salesOrderManagedBean.quantity}" required="true" requiredMessage="Product Quantity cannot be empty"/>
+
+                    <f:facet name="footer">
+                        <p:commandButton type="submit" value="Update Quantity" actionListener="#{salesOrderManagedBean.changeQuantity}"/>
+                    </f:facet>
+                </h:panelGrid>
+
+            </p:panel>
+        </h:form>
+   </ui:define>
+</ui:composition>

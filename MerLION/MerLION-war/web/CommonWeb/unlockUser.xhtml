@@ -1,0 +1,63 @@
+<ui:composition template="../template/systemAdminTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            MerLION Platform | Unlock company users
+        </title>
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            #userDetail {
+                z-index: 1010 !important;
+            }
+            td {
+                color: black !important;
+            }
+        </style> 
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfSystemAdmin()}
+        #{systemAdminManagedBean.viewLockedAccount()}
+    </ui:define>
+    <ui:define name="content">         
+        <center>
+            <h:form id="form">
+                <p:panel id ="panel">
+
+                    <p:messages id="viewUser" autoUpdate="true" closable="true"/>
+
+                    <p:dataTable var="account" value="#{systemAdminManagedBean.allLockedAccount}" resizableColumns="true" rows="10" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" >
+
+                        <p:column filterBy="#{account.username}" headerText="Username" sortBy="#{account.username}" filterMatchMode="contains" >
+                            <h:outputText value="#{account.username}" />
+                        </p:column>
+                        
+                        <p:column filterBy="#{account.company.companyName}" headerText="Company Name" sortBy="#{account.company.companyName}" filterMatchMode="contains" >
+                            <h:outputText value="#{account.company.companyName}" />
+                        </p:column>
+
+                        <p:column filterBy="#{account.department}" headerText="Department" sortBy="#{account.department}" filterMatchMode="contains">
+                            <h:outputText value="#{account.department}" />
+                        </p:column>
+
+                        <p:column headerText="Activate" >
+                            <center>
+                                <p:commandButton icon="ui-icon-key" update=":form:panel" actionListener="#{systemAdminManagedBean.unlockAccount(account.id)}" ajax="false" type="submit" />
+                            </center>
+                        </p:column>
+                        
+                    </p:dataTable>
+
+                </p:panel>
+
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
+

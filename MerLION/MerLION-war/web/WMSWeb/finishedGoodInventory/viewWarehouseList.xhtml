@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>View Warehouse List</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formMain"> 
+            <p:graphicImage value="../../resources/images/bannerWarehouse.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+            <p:growl id="msgs" />
+            <p:commandButton value="Back To Finished Good List" actionListener="#{finishedGoodInventoryManagedBean.redirectToViewProductList()}" />
+            <p:dataTable id="datatable" var="warehouse" value="#{finishedGoodInventoryManagedBean.retrieveWarehouseListForSpecificFinishedGood()}"
+                         paginator="true" rows="10" emptyMessage="No Warehouse found">
+
+                <f:facet name="header">
+                    Warehouses Storing #{finishedGoodInventoryManagedBean.fg.productName}
+                </f:facet>
+                <p:column headerText="Warehouse ID" sortBy="#{warehouse.id}">
+                    <h:outputText value="#{warehouse.id}" />
+                </p:column>   
+                <p:column headerText="Warehouse Name" sortBy="#{warehouse.name}">
+                    <h:outputText value="#{warehouse.name}">
+                    </h:outputText>
+                </p:column>                    
+                <p:column headerText="Country" sortBy="#{warehouse.location.country}">
+                    <h:outputText value="#{warehouse.location.country}" />
+                </p:column>
+                <p:column headerText="City" sortBy="#{warehouse.location.city}">
+                    <h:outputText value="#{warehouse.location.city}" />
+                </p:column>
+                <p:column headerText="Total Quantity (#{finishedGoodInventoryManagedBean.fg.unit})" sortBy="#{finishedGoodInventoryManagedBean.getFinishedGoodQuantityForSpecificWarehouse(warehouse)}">
+                    <h:outputText value="#{finishedGoodInventoryManagedBean.getFinishedGoodQuantityForSpecificWarehouse(warehouse)}" />
+                </p:column>        
+                <p:column headerText="Detail">
+                    <p:commandButton value="Detail" actionListener="#{finishedGoodInventoryManagedBean.retrieveWarehouse(warehouse)}" />
+                </p:column>
+                <f:facet name="footer">
+                    Number of Warehouses: #{finishedGoodInventoryManagedBean.getWarehouseListSize(finishedGoodInventoryManagedBean.retrieveWarehouseListForSpecificFinishedGood())}
+                </f:facet>
+            </p:dataTable>
+
+        </h:form>
+    </ui:define>
+</ui:composition>
+

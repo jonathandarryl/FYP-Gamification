@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Generate Monthly Production Plan List</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfManufacture()}
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfUser()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/bannerManufacturing.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:layout style="height:420px;" >
+                <p:layoutUnit position="west" resizable="true" size="40%" header="Generate Monthly Production List for Product #{productionPlanningManagedBean.selectProduct.productName}">
+                    <p:dataTable var="number" value="#{productionPlanningManagedBean.numberList}" rowKey="#{number.intValue}"
+                                 paginator="true" rows="5" emptyMessage="Invalid Period" rowIndexVar="index">
+                        <p:column headerText="Index" style="width:10%;">
+                            <h:outputText value="#{number}"/>
+                        </p:column>
+                        <p:column headerText="Month">
+                            <h:outputText value="#{productionPlanningManagedBean.monthStrList.get(index)}"/>
+                        </p:column>
+                        <p:column headerText="Target Inventory Level" style="width:35%;">
+                            <p:inputText id="quantity" value="#{productionPlanningManagedBean.quantities[index]}"/>
+                        </p:column>
+                        <p:column id="select" headerText="Add Target Inventory" >
+                            <center>
+                                <p:commandButton disabled="" type="update" value="Add" ajax="true" actionListener="#{productionPlanningManagedBean.addAction(index)}"/>
+                            </center>
+                        </p:column>
+                    </p:dataTable>
+                    <br/>
+                    <h:outputLabel value="Current Inventory:"/>
+                    <h:outputText value="#{productionPlanningManagedBean.selectProduct.inventoryLevel}"/>
+
+                    <f:facet name="footer">
+                        <p:commandButton type="submit" value="Submit" actionListener="#{productionPlanningManagedBean.generateMonthlyProductionList()}"/>
+                    </f:facet>
+                </p:layoutUnit>
+                <p:layoutUnit position="center" resizable="true" size="60%" header="Sales Forecast for Reference">
+                    <p:chart type="line" model="#{productionPlanningManagedBean.salesForecastChart}" style="width:90%;" />
+                </p:layoutUnit>
+            </p:layout>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+
+

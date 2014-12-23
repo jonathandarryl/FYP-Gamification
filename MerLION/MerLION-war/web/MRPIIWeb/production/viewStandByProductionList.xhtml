@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Standing By Productions</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfManufacture()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/bannerManufacturing.jpg" style="width:100%;"></p:graphicImage>
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+
+            <p:dataTable id="dataTable" var="production" value="#{productionManagedBean.retrieveStandByProductionList()}"
+                         rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="No standby production">
+                <f:facet name="header">
+                    <p style="font-size:1.5em;display:inline;">Standby Production</p>
+                </f:facet>
+                <p:column headerText="Production ID">
+                    <h:outputText value="#{production.id}" />
+                </p:column>
+                <p:column headerText="Production Scheduled Time" sortBy="#{production.creationTime}" >
+                    <h:outputText value="#{production.creationTime}" />
+                </p:column>
+                <p:column headerText="Product Name" 
+                          sortBy="#{production.finishedGood.productName}">
+                    <h:outputText value="#{production.finishedGood.productName}"/>
+                </p:column>
+                <p:column headerText="Quantity">
+                    <h:outputText value="#{production.quantity}" />
+                </p:column>
+
+                <p:column headerText="Unit" sortBy="#{production.finishedGood.unit}">
+                    <h:outputText value="#{production.finishedGood.unit}" />
+                </p:column>
+
+                <p:column headerText="Raw Material Ready?" sortBy="#{production.rawMaterialReadyorNot}">
+                    <p:selectBooleanButton id="allReadyOrNot" value="#{production.rawMaterialReadyorNot}" disabled="true" 
+                                           onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>
+                </p:column>
+
+                <p:column headerText="Schedule Raw Material Supply" >
+                    <center>
+                        <p:commandButton type="submit" icon="ui-icon-search" actionListener="#{productionManagedBean.retrieveStandByProductionForRawMaterialSchedule(production)}"/>
+                    </center>
+                </p:column>
+
+                <p:column headerText="Commence Production" >
+                    <center>
+                        <p:commandButton type="submit" icon="ui-icon-gear" actionListener="#{productionManagedBean.commenceProduction(production)}"/>
+                    </center>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:dialog resizable="true" header="Production Commenced" widgetVar="dlg" showEffect="fold">
+                <p:commandButton type="submit" value="View Ongoing Production" icon="ui-icon-check" actionListener="#{productionManagedBean.redirectToViewOngoingProductionList()}" /> 
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,85 @@
+<ui:composition template="../template/companyAdminTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            MerLION Platform | View and manage company users
+        </title>
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            #userDetail {
+                z-index: 1010 !important;
+            }
+            td {
+                color: black !important;
+            }
+        </style> 
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCompanyAdmin()}
+        #{companyAdminManagedBean.viewCompanyUsers()}
+    </ui:define>
+    <ui:define name="content">         
+        <center>
+            <h:form id="form">
+                <p:panel id ="panel">
+
+                    <p:messages id="viewUser" autoUpdate="true" closable="true"/>
+
+                    <p:dataTable var="user" value="#{companyAdminManagedBean.companyUsers}" resizableColumns="true" rows="10" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" >
+
+                        <p:column filterBy="#{user.username}" headerText="Username" sortBy="#{user.username}" filterMatchMode="contains" >
+                            <h:outputText value="#{user.username}" />
+                        </p:column>
+
+                        <p:column filterBy="#{user.department}" headerText="Department" sortBy="#{user.department}" filterMatchMode="contains">
+                            <h:outputText value="#{user.department}" />
+                        </p:column>
+
+                        <p:column headerText="Title" >
+                            <h:outputText value="#{companyAdminManagedBean.viewSelectedTitle(user.id)}" />
+                        </p:column>
+
+                        <p:column headerText="First name" >
+                            <h:outputText value="#{companyAdminManagedBean.viewSelectedFN(user.id)}" />
+                        </p:column>
+
+                        <p:column headerText="Last name" >
+                            <h:outputText value="#{companyAdminManagedBean.viewSelectedLN(user.id)}" />
+                        </p:column>
+                        
+                        <p:column headerText="Phone No" >
+                            <h:outputText value="#{user.contactNo}" />
+                        </p:column>
+
+                        <p:column headerText="Email" >
+                            <h:outputText value="#{companyAdminManagedBean.viewSelectedEmail(user.id)}" />
+                        </p:column>
+
+                        <p:column headerText="Update" style="width: 80px;" >
+                            <center>
+                                <p:commandButton icon="ui-icon-pencil" update=":form:panel" actionListener="#{companyAdminManagedBean.viewCompanyUsersProfile(user.id)}" ajax="true" type="submit" />
+                            </center>
+                        </p:column>
+
+                        <p:column headerText="Delete" style="width: 80px;" >
+                            <center>
+                                <p:commandButton icon="ui-icon-trash" actionListener="#{companyAdminManagedBean.deleteCompanyUsers(user.id)}" update=":form:panel" ajax="false" type="submit" />
+                            </center>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </p:panel>
+
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
+

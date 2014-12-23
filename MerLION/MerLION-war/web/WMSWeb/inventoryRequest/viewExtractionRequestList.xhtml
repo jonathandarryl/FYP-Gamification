@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Incoming Stock-out Requests</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfWarehouse()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formMain"> 
+            <p:graphicImage value="../../resources/images/bannerWarehouse.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+            <p:growl id="msgs" />
+            <p:dataTable id="datatable" var="extractionRequest" value="#{inventoryRequestManagedBean.retrieveExtractionRequestList()}"
+                         rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="No Stock-out Request found">
+
+                <f:facet name="header">
+                    <p style="font-size:1.5em;display:inline;">Stock-out Request</p>
+                </f:facet>
+                <p:column headerText="ID" sortBy="#{extractionRequest.id}">
+                    <h:outputText value="#{extractionRequest.id}" />
+                </p:column>                       
+                <p:column headerText="Product" sortBy="#{extractionRequest.product.productName}">
+                    <h:outputText value="#{extractionRequest.product.productName}" />
+                </p:column>
+                <p:column headerText="Quantity" sortBy="#{extractionRequest.quantity}">
+                    <h:outputText value="#{extractionRequest.quantity}" />
+                </p:column>
+                <p:column headerText="Unit">
+                    <h:outputText value="#{extractionRequest.product.unit}" />
+                </p:column>
+                <p:column headerText="Warehouse" sortBy="#{extractionRequest.warehouse.name}">
+                    <h:outputText value="#{extractionRequest.warehouse.name}" />
+                </p:column>     
+                <p:column headerText="Detail">
+                    <center>
+                        <p:commandButton type="submit" icon="ui-icon-extlink" actionListener="#{inventoryRequestManagedBean.retrieveExtractionRequest(extractionRequest)}" /> 
+                    </center>
+                </p:column>
+                <p:column headerText="Reject">
+                    <center>
+                        <p:commandButton type="update" ajax="true" update="datatable" icon="ui-icon-closethick" actionListener="#{inventoryRequestManagedBean.rejectExtractionRequest(extractionRequest)}" /> 
+                    </center>
+                </p:column>
+                <f:facet name="footer">
+                    Number of Stock-out Requests: #{inventoryRequestManagedBean.getExtractionRequestListSize(inventoryRequestManagedBean.retrieveExtractionRequestList())} 
+                </f:facet>
+            </p:dataTable>
+
+            <p:dialog resizable="true" header="Stock-out Request Detail" widgetVar="dlg" showEffect="fold" dynamic="true">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputLabel value="Creation Time:" />
+                    <h:outputText value="#{inventoryRequestManagedBean.er.creationTime}">
+                    </h:outputText>
+
+                    <h:outputLabel value="Request source description:" />
+                    <h:outputText value="#{inventoryRequestManagedBean.er.requestSource}"/>
+
+                    <h:outputLabel value="Target Warehouse:" />
+                    <h:outputText value="#{inventoryRequestManagedBean.er.warehouse.name}"/>
+
+                    <h:outputLabel value="Product:" />
+                    <h:outputText value="#{inventoryRequestManagedBean.er.product.productName}"/>
+
+                    <h:outputLabel value="Product Quantity (#{inventoryRequestManagedBean.er.product.unit}):" />
+                    <h:outputText value="#{inventoryRequestManagedBean.er.quantity}"/>
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="3" cellpadding="5">
+                    <p:commandButton value="Approve" type="update" update="datatable" ajax="true" actionListener="#{inventoryRequestManagedBean.approveExtractionRequest()}" styleClass="ui-priority-primary" />
+                </h:panelGrid>    
+            </p:dialog>
+
+        </h:form>
+    </ui:define>
+</ui:composition>
+

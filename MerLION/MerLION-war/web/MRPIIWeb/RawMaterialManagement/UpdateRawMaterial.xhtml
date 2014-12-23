@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Update Raw Material</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfManufacture()}#{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfUser()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/banner_home.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+            <p:panel id="panel">
+
+                <f:facet name="header">
+                    Update Existing Raw Material Information
+                </f:facet>
+
+                <h:panelGrid columns="2">
+
+                    <p:outputLabel for="materialName" value="Material Name: " style="font-weight: bold"/>
+                    <p:inplace id="materialName">
+                        <p:inputText value="#{rawMaterialManagedBean.materialName}" required="true" requiredMessage="Material Name cannot be empty"/>
+                    </p:inplace>
+
+                    <p:outputLabel for="materialPrice" value="Material Price: " style="font-weight: bold"/>
+                    <p:inplace id="materialPrice">
+                        <p:inputText value="#{rawMaterialManagedBean.materialPrice}" required="true" requiredMessage="Material Price cannot be empty"/>
+                    </p:inplace>
+
+                    <p:outputLabel for="materialDescription" value="Material Description: " style="font-weight: bold"/>
+                    <p:inplace id="materialDescription">
+                        <p:inputText value="#{rawMaterialManagedBean.materialDescription}" required="true" requiredMessage="Material Description cannot be empty"/> 
+                    </p:inplace>
+
+                    <p:outputLabel for="unit" value="Unit: " style="font-weight: bold"/>
+                    <p:inplace id="unit">
+                        <p:inputText value="#{rawMaterialManagedBean.unit}" required="true" requiredMessage="Unit cannot be empty"/>
+                    </p:inplace>
+
+                    <p:outputLabel for="cUnit" value="Capacity Quantity: " style="font-weight: bold"/>
+                    <p:inplace id="cUnit">
+                        <p:inputText value="#{rawMaterialManagedBean.capacityQuantity}" required="true" requiredMessage="Capacity Quantity cannot be empty"/>
+                    </p:inplace>
+
+                    <p:outputLabel for="bUnit" value="Batch Quantity:" style="font-weight: bold"/>
+                    <p:inplace id="bUnit">
+                        <p:inputText value="#{rawMaterialManagedBean.batchQuantity}" required="true" requiredMessage="Batch Quantity cannot be empty"/>
+                    </p:inplace>
+
+                    <f:facet name="footer">
+                        <p:commandButton type="submit" value="Update Product" actionListener="#{rawMaterialManagedBean.updateMaterial()}"/>
+                    </f:facet>
+                </h:panelGrid>
+
+            </p:panel>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>

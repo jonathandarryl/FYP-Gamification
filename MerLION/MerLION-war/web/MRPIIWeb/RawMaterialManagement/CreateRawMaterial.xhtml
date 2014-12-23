@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Create Raw Material</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfManufacture()}
+        #{commonFuncManagedBean.checkIfUser()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/banner_home.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:panel id="panel">
+
+                <f:facet name="header">
+                    <p style="font-size:1.5em;display:inline;">Create New Raw Material</p>
+                </f:facet>
+                <h:panelGrid columns="2">
+
+                    <p:outputLabel value="Material Name: " style="font-weight: bold"/>
+                    <p:inputText id="materialName" value="#{rawMaterialManagedBean.materialName}" required="true" requiredMessage="Material Name cannot be empty"/>
+
+                    <p:outputLabel value="Material Price (S$): " style="font-weight: bold"/>
+                    <p:inputText id="materialPrice" value="#{rawMaterialManagedBean.materialPrice}" required="true" requiredMessage="Material Price cannot be empty"/>
+
+                    <p:outputLabel value="Material Description: " style="font-weight: bold"/>
+                    <p:inputText id="materialDescription" value="#{rawMaterialManagedBean.materialDescription}" required="true" requiredMessage="Material Description cannot be empty"/> 
+
+                    <p:outputLabel for="unit" value="Unit: " style="font-weight: bold"/>
+                    <p:selectOneMenu id="unit" value="#{rawMaterialManagedBean.unit}" label="unit" required="true" requiredMessage="Unit cannot be empty" effect="fold" editable="true">
+                        <f:selectItem itemLabel="Select Or Type" itemValue="" />
+                        <f:selectItem itemLabel="Set" itemValue="set" />
+                        <f:selectItem itemLabel="Roll" itemValue="roll" />
+                        <f:selectItem itemLabel="Dozen" itemValue="dozen" />
+                        <f:selectItem itemLabel="Bunch" itemValue="bunch" />
+                        <f:selectItem itemLabel="Sheet" itemValue="sheet" />
+                        <f:selectItem itemLabel="Slice" itemValue="slice" />
+                        <f:selectItem itemLabel="Box" itemValue="box" />
+                        <f:selectItem itemLabel="cubic_metre" itemValue="cubic_metre" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Weight per Unit(in kg): " style="font-weight: bold"/>
+                    <p:inputText id="weight" value="#{rawMaterialManagedBean.weight}" required="true" requiredMessage="Weight per Unit cannot be empty"/>
+                    
+                    <p:outputLabel value="Volume per Unit(in cubic metre): " style="font-weight: bold"/>
+                    <p:inputText id="volume" value="#{rawMaterialManagedBean.volume}" required="true" requiredMessage="Volume per Unit cannot be empty"/>
+
+                    <p:outputLabel value="Batch Quantity:" style="font-weight: bold"/>
+                    <p:inputText id="quantityInOneBatch" value="#{rawMaterialManagedBean.batchQuantity}" required="true" requiredMessage="Batch Quantity cannot be empty"/>
+
+                    <f:facet name="footer">
+                        <p:commandButton type="update" value="Create" actionListener="#{rawMaterialManagedBean.createRawMaterial()}"/>
+                    </f:facet>
+                </h:panelGrid>
+
+            </p:panel>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+

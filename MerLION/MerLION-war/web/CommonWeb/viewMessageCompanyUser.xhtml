@@ -1,0 +1,116 @@
+<ui:composition template="../template/companyUserTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            MerLION Platform | View Message
+        </title>
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            .unread {
+                background: bisque !important;
+            }
+            #msgDetail {
+                z-index: 1010 !important;
+            }
+            td th {
+                padding: 5px !important;
+            }
+            td {
+                color: black !important;
+            }
+        </style> 
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{messageManagedBean.viewAllMessage()}
+    </ui:define>
+    <ui:define name="content"> 
+
+        <center>
+            <h:form id="form">
+                <p:panel id ="panel">
+                    <p:messages id="viewMsg" autoUpdate="true" closable="true"/>
+                    <p:dataTable id="dataTableMessages" var="message" value="#{messageManagedBean.allMessage}" resizableColumns="true" rows="10" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" rowStyleClass="#{message.readOrNot ?  null : 'unread' }" >
+
+                        <f:facet name="header">
+                            View Messages
+                            <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                            <p:columnToggler datasource="dataTableMessages" trigger="toggler" />
+                        </f:facet>
+
+                        <p:column filterBy="#{message.sender.username}" headerText="Sender" sortBy="#{message.sender.username}" filterMatchMode="contains" >
+                            <h:outputText value="#{message.sender.username}" />
+                        </p:column>
+
+                        <p:column filterBy="#{message.messageTime}" headerText="SendTime" sortBy="#{message.messageTime}" filterMatchMode="contains" >
+                            <h:outputText value="#{message.messageTime}" />
+                        </p:column>
+
+                        <p:column filterBy="#{message.title}" headerText="Title" filterMatchMode="contains" >
+                            <h:outputText value="#{message.title}" />
+                        </p:column>
+
+                        <p:column filterBy="#{message.content}" headerText="Content" filterMatchMode="contains" >
+                            <h:outputText value="#{message.content}" escape="false" />
+                        </p:column>
+
+                        <p:column headerText="View" style="width: 80px;" >
+                            <center>
+                                <p:commandButton icon="ui-icon-search" oncomplete="PF('msgDialog').show()" actionListener="#{messageManagedBean.readMessage(message.id)}" update=":form:panel" ajax="true" type="submit" >
+                                    <f:setPropertyActionListener value="#{message}" target="#{messageManagedBean.selectedMsg}" />
+                                </p:commandButton>
+                            </center>
+                        </p:column>
+                        
+                        <p:column headerText="Reply" style="width: 80px;" >
+                            <center>
+                                <p:commandButton icon="ui-icon-pencil" oncomplete="PF('replyDialog').show()" actionListener="#{messageManagedBean.replyMessage(message)}" ajax="true" type="submit" />
+                            </center>
+                        </p:column>
+
+                        <p:column headerText="Delete" style="width: 80px;" >
+                            <center>
+                                <p:commandButton icon="ui-icon-trash" actionListener="#{messageManagedBean.deleteMessage(message.id)}" update=":form:panel" ajax="false" type="submit" 
+                                                 onclick="if (!confirm('Are you sure you want to delete this message')) return false;"/>
+                            </center>
+                        </p:column>
+
+                    </p:dataTable>
+                    
+                    <p:dialog header="Reply Message" widgetVar="replyDialog" showEffect="fade" hideEffect="fade" resizable="true" >
+                        <p:editor id="reply" widgetVar="replyWidget" value="#{messageManagedBean.replyMsgContent}" width="600" />
+                        <p:commandButton icon="ui-icon-mail-closed" value="Send Reply" actionListener="#{messageManagedBean.sendReply()}" update=":form:panel" ajax="false" type="submit" />
+                    </p:dialog>
+
+                    <p:dialog appendTo="@(body)" header="Message Info" widgetVar="msgDialog"  showEffect="fade" hideEffect="fade" resizable="true">
+                        <p:outputPanel id="msgDetail" style="text-align:center;">
+                            <p:panelGrid  columns="2" rendered="#{not empty messageManagedBean.selectedMsg}">
+
+                                <h:outputText value="Sender:" />
+                                <h:outputText value="#{messageManagedBean.selectedMsg.sender.username}" />
+
+                                <h:outputText value="Send time" />
+                                <h:outputText value="#{messageManagedBean.selectedMsg.messageTime}" />
+
+                                <h:outputText value="Title:" />
+                                <h:outputText value="#{messageManagedBean.selectedMsg.title}" />
+
+                                <h:outputText value="Content:" />
+                                <h:outputText value="#{messageManagedBean.selectedMsg.content}" escape="false" />
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </p:dialog>
+
+                </p:panel>
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
+

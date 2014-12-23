@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="../../template/adminGRNSTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="css-style">
+        <style type="text/css">
+            td, th {
+                padding: 5px !important;
+            }
+        </style>
+    </ui:define>
+    
+    <ui:define name="check">
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:fieldset legend="Update User Profile">
+            <h:form>
+                <p:panel id ="panel">
+                    <p:growl id="updateProfile" life="3000" />
+                    <h:panelGrid columns="3" cellpadding="5">
+                        <h:outputLabel for="username" value="Userame  : "  />  
+                        <p:inplace editor="true">
+                            <p:inputText id="username" value="#{adminManagedBean.username}" required="true" label="Username">  
+                                <f:validateLength minimum="4" maximum="25" />
+                            </p:inputText>
+                        </p:inplace>
+                        <p:message for="username" display="icon"/>
+
+                        <h:outputLabel for="firstName" value="First Name  : "  />  
+                        <p:inplace editor="true">
+                            <p:inputText id="firstName" value="#{adminManagedBean.firstName}" required="true" label="First Name">  
+                                <f:validateLength minimum="2" maximum="25" />
+                            </p:inputText>
+                        </p:inplace>
+                        <p:message for="firstName" display="icon"/>
+
+                        <h:outputLabel for="lastName" value="Last Name  : " />  
+                        <p:inplace editor="true">
+                            <p:inputText id="lastName" value="#{adminManagedBean.lastName}" required="true" label="Last Name">  
+                                <f:validateLength minimum="2" maximum="25" />
+                            </p:inputText>
+                        </p:inplace>
+                        <p:message for="lastName" display="icon"/>
+
+                        <h:outputLabel for="email" value="Email  : " />  
+                        <p:inplace editor="true">
+                            <p:inputText id="email" value="#{adminManagedBean.email}" required="true" label="Email">  
+                                <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                            </p:inputText>
+                        </p:inplace>
+                        <p:message for="email" display="icon"/>
+
+                        <h:outputLabel for="contact" value="Contact  : " />  
+                        <p:inplace editor="true">
+                            <p:inputMask id="contact" value="#{adminManagedBean.contact}" mask="9999-9999" label="contact" required="true"/>  
+                        </p:inplace>
+                        <p:message for="contact" display="icon"/>
+
+                        <h:outputLabel for="companyName" value="Company Name  : "  />  
+                        <p:inplace editor="true">
+                            <p:inputText id="companyName" value="#{adminManagedBean.companyName}" required="true" label="Company Name">  
+                                <f:validateLength minimum="2" maximum="25" />
+                            </p:inputText>
+                        </p:inplace>
+                        <p:message for="companyName" display="icon"/>
+
+                        <h:outputLabel for="companyContact" value="Company Contact  : "  />  
+                        <p:inplace editor="true">
+                            <p:inputMask id="companyContact" value="#{adminManagedBean.companyContact}" mask="9999-9999" label="companyContact" required="true"/>  
+                        </p:inplace>
+                        <p:message for="companyContact" display="icon"/>
+
+                    </h:panelGrid> 
+                    <p:commandButton ajax="true" type="submit" update="panel" icon="ui-icon-check" id="updateBtn" value="Update User Profile" actionListener="#{adminManagedBean.updateUser()}" /> 
+                </p:panel>
+            </h:form>
+        </p:fieldset> 
+    </ui:define>
+</ui:composition>

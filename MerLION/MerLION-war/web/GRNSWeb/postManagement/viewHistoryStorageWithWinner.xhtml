@@ -1,0 +1,138 @@
+<ui:composition template="../../template/userGRNSTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            GRNS | View History Storage Post
+        </title>
+    </ui:define>
+
+    <ui:define name="cssText">
+        <style type="text/css">
+            td th {
+                padding: 5px !important;
+            }
+            td {
+                color: black !important;
+            }
+        </style> 
+    </ui:define>
+    <ui:define name="content"> 
+
+        <center>
+
+            <h:form id="form">
+                <p:growl id="viewSP" autoUpdate="true" life="3000"/>
+
+                <p:dataGrid id="dataGridSP" var="sp" widgetVar="spTable" value="#{postManagedBean.historySPList}" columns="1" rows="4" paginator="true"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="4,8,12" >
+
+                    <f:facet name="header">
+                        <p style="margin-left:200px; font-size: 1.5em; display: inline;">View History Storage Post With Winner</p>
+                        <p:menuButton value="Navigate Storage Posts" style="float:right">
+                            <p:menuitem value="View All Post" url="viewUserHistoryStoragePost.xhtml"/>
+                            <p:menuitem value="View Posts With Winner" actionListener="#{postManagedBean.retrieveStoragePostWithWinner()}"/>
+                        </p:menuButton>
+                    </f:facet>
+
+                    <p:panel header="#{sp.title}" style="text-align:left;width:auto;">
+                        <f:facet name="header">
+                            <p style="text-align:left; display: inline;font-size: 1.5em;">#{sp.title}</p>
+                            <p:menuButton value="Available Actions" style="float:right;">
+                                <p:menuitem value="View Detail" actionListener="#{postManagedBean.viewDetailStoragePost(sp.id)}"/>
+                                <p:menuitem value="Pay Commission" actionListener="#{commissionManagedBean.setAction(sp.id, sp.postType)}"/>
+                                <p:menuitem value="Create Receipt" actionListener="#{commissionManagedBean.setAction(sp.id, sp.postType)}"/>
+                                <p:menuitem value="View Receipt" actionListener="#{commissionManagedBean.setAction(sp.id, sp.postType)}"/>
+                            </p:menuButton>
+                        </f:facet>
+                        <p:panelGrid style="width:100%;">
+                            <p:row>
+                                <p:column rowspan="11" style="width:200px;">
+                                    <p:graphicImage name="images/wms3.png" width="200" rendered="#{not sp.orderCreated}"/> 
+                                    <p:graphicImage name="images/wms3OrderCreated.png" width="200" rendered="#{sp.orderCreated}"/> 
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Post time :" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{sp.postDateTime}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Bidding End time :" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{sp.endDateTime}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Storage Capacity :" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{sp.capacity}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Initial Bid :" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{sp.initBid}" />
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Reserve Price :" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{sp.reservePrice}" rendered="#{sp.reservePriceSpecified}" />
+                                    <h:outputText value="Not Specified" rendered="#{not sp.reservePriceSpecified}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Winning Bid :" rendered="#{not sp.winnerId.equals(null)}"/>
+                                    <h:outputText value="Highest Bid :" rendered="#{sp.winnerId.equals(null)}"/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{sp.winningPrice}" rendered="#{not sp.winnerId.equals(null)}"/>
+                                    <h:outputText value="#{sp.highestBid}" rendered="#{sp.winnerId.equals(null)}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Winner Username / Company :" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{sp.winnerUsername} / #{sp.winnerCompanyName}" rendered="#{not sp.winnerUsername.equals(null)}" />
+                                    <h:outputText value="No Winner" rendered="#{sp.winnerUsername.equals(null)}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="Warehouse Location :" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="#{sp.location}" />
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+
+                    </p:panel>      
+                </p:dataGrid>
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>

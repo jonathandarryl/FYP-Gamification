@@ -1,0 +1,124 @@
+<ui:composition template="../template/systemAdminTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            MerLION Platform | View and manage all company admins
+        </title>
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            td {
+                color: black !important;
+            }
+        </style> 
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfSystemAdmin()}
+        #{systemAdminManagedBean.viewAllCompanyAdmin()}
+    </ui:define>
+    <ui:define name="content">         
+        <center>
+            <h:form id="form">
+                <p:panel id ="panel">
+
+                    <p:messages id="viewAllUser" autoUpdate="true" closable="true"/>
+
+                    <p:dataTable var="admin" value="#{systemAdminManagedBean.allCompanyAdmin}" resizableColumns="true" rows="10" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" >
+
+                        <p:column headerText="Username" sortBy="#{admin.username}">
+                            <h:outputText value="#{admin.username}" />
+                        </p:column>
+                        
+                        <p:column headerText="Company" sortBy="#{admin.company.companyName}">
+                            <h:outputText value="#{admin.company.companyName}" />
+                        </p:column>
+                        
+                        <p:column headerText="Company Type" sortBy="#{admin.company.companyType}">
+                            <h:outputText value="#{admin.company.companyType}" />
+                        </p:column>
+
+                        <p:column headerText="Department" sortBy="#{admin.department.departmentName}">
+                            <h:outputText value="#{admin.department.departmentName}" />
+                        </p:column>
+
+                        <p:column headerText="Title">
+                            <h:outputText value="#{systemAdminManagedBean.viewSelectedAdminTitle(admin.id)}" />
+                        </p:column>
+
+                        <p:column headerText="First name">
+                            <h:outputText value="#{systemAdminManagedBean.viewSelectedAdminFN(admin.id)}" />
+                        </p:column>
+
+                        <p:column headerText="Last name">
+                            <h:outputText value="#{systemAdminManagedBean.viewSelectedAdminLN(admin.id)}" />
+                        </p:column>
+                        
+                        <p:column headerText="Phone No">
+                            <h:outputText value="#{admin.contactNo}" />
+                        </p:column>
+
+                        <p:column headerText="Email">
+                            <h:outputText value="#{systemAdminManagedBean.viewSelectedAdminEmail(admin.id)}" />
+                        </p:column>
+
+                        <!--                        <p:column headerText="View" style="width: 80px;" >
+                                                    <center>
+                                                        <p:commandButton icon="ui-icon-search" oncomplete="PF('userDialog').show()" type="submit" ajax="true" update=":form:panel">
+                                                            <f:setPropertyActionListener value="{user}" target="{companyAdminManagedBean.selectedUser}" />
+                                                        </p:commandButton>
+                                                    </center>
+                                                </p:column>-->
+
+                        <p:column headerText="Update" style="width: 80px;" >
+                            <center>
+                                <p:commandButton icon="ui-icon-pencil" update=":form:panel" actionListener="#{systemAdminManagedBean.viewCompanyAdminProfile(admin.id)}" ajax="true" type="submit" />
+                            </center>
+                        </p:column>
+                        
+                        <p:column headerText="Lock" style="width: 80px;" >
+                            <center>
+                                <p:commandButton icon="ui-icon-locked" update=":form:panel" actionListener="#{systemAdminManagedBean.lockAdmin(admin.id)}" ajax="false" type="submit" />
+                            </center>
+                        </p:column>
+
+                        <p:column headerText="Delete" style="width: 80px;" >
+                            <center>
+                                <p:commandButton icon="ui-icon-trash" actionListener="#{systemAdminManagedBean.deleteCompanyAdmin(admin.id)}" update=":form:panel" ajax="false" type="submit" 
+                                                 onclick="if (!confirm('Are you sure you want to delete this account')) return false;"/>
+                            </center>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <!--                    <p:dialog header="Company User Info" widgetVar="userDialog" showEffect="fade" hideEffect="fade" resizable="false">
+                                            <p:outputPanel id="userDetail" style="text-align:center;">
+                                                <p:panelGrid  columns="2" rendered="{not empty companyAdminManagedBean.selectedUser}" columnClasses="label,value">
+                    
+                                                    <h:outputText value="User ID:" />
+                                                    <h:outputText value="{companyAdminManagedBean.selectedUser.id}" />
+                    
+                                                    <h:outputText value="Username" />
+                                                    <h:outputText value="{companyAdminManagedBean.selectedUser.username}" />
+                    
+                                                    <h:outputText value="Department:" />
+                                                    <h:outputText value="{companyAdminManagedBean.selectedUser.department}" />-->
+
+                    <!--                                <h:outputText value="Title:" />
+                                                    <h:outputText value="{companyAdminManagedBean.titlesForDisplayUser.get(companyAdminManagedBean.selectedUser.id)}" />-->
+                    <!--                            </p:panelGrid>
+                                            </p:outputPanel>
+                                        </p:dialog>-->
+
+                </p:panel>
+
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
+

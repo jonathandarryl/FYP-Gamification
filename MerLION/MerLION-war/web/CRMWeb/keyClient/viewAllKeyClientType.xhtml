@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyAdminTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Key Client Type</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; 
+            }
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/keyClient.jpg" style="width:100%;"></p:graphicImage>
+            <p:panel id="panel" header="View All Key Client Type">
+                <p:dataTable var="type" value="#{keyClientTypeTableManagedBean.getMembershipSchemas()}" paginator="true" rows="5" emptyMessage="No type">
+                    <p:column headerText="Type ID" sortBy="#{type.id}">
+                        <h:outputText value="#{type.id}" />
+                    </p:column>
+                    <p:column headerText="Membership Tier" >
+                        <h:outputText value="#{type.membershipTier}" />
+                    </p:column>
+                    <p:column headerText="Boundary Point" sortBy="#{type.boundaryPoint}">
+                        <h:outputText value="#{type.boundaryPoint}" />
+                    </p:column>
+                    <p:column headerText="Discount Per Order" sortBy="#{type.discountPerOrder}">
+                        <h:outputText value="#{type.discountPerOrder}" />
+                    </p:column>
+                    <p:column headerText="Delete">
+                        <p:commandButton id="btn" value="Delete" update=":formMain:panel" icon="ui-icon-trash"
+                                          actionListener="#{keyClientTypeTableManagedBean.deleteMembershipSchema}" type= "submit" ajax="true">                        
+                                <f:attribute name="typeId" value="#{type.id}"/>
+                         </p:commandButton>
+                    </p:column>
+                    <p:column headerText="Update">
+                        <p:commandButton value="Update" type="submit" icon="ui-icon-extlink" actionListener="#{keyClientTypeManagedBean.goToUpdate(type)}"/>                       
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+        
+        <h:form id="form2">
+        <p:panel id="panel2" header="Add New Key Client Type">
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/spinner.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:messages />
+                
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="membershipTier" style="font-weight: bold" value="Membership Tier: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Membership Tier"
+                                    requiredMessage="Membership Tier is required." id="membershipTier"
+                                    value="#{keyClientTypeManagedBean.membershipTier}">
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="membershipTier" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="boundaryPoint" style="font-weight: bold" value="Boundary Point: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Boundary Point" requiredMessage="Boundary Point is required." id="boundaryPoint"
+                                         value="#{keyClientTypeManagedBean.boundaryPoint}" validatorMessage="Boundary point must be integer only.">
+                                  <f:validateRegex pattern="[0-9]+"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="boundaryPoint" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="discountPerOrder" style="font-weight: bold" value="Discount Per Order: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="DiscountPerOrder" 
+                                         requiredMessage="Discount Per Order is required." id="discountPerOrder"
+                                         value="#{keyClientTypeManagedBean.discountPerOrder}" converterMessage="Discount must contain digit only.">
+                                <f:converter converterId="javax.faces.Double" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="discountPerOrder" />
+                        </p:column>
+                    </p:row>          
+                </p:panelGrid>               
+                <p:commandButton id="btn" value="Submit New Type" icon="ui-icon-check"
+                                 update=":formMain:panel" actionListener="#{keyClientTypeManagedBean.addNewKeyClientType}" ajax="true"/>
+            </p:panel>
+        
+        </h:form>
+    </ui:define>
+</ui:composition>

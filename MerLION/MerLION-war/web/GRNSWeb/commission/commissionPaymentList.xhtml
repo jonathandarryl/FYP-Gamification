@@ -1,0 +1,74 @@
+<ui:composition template="../../template/userGRNSTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            GRNS | View Commission Payment
+        </title>
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            td th {
+                padding: 5px !important;
+            }
+            td {
+                color: black !important;
+            }
+        </style> 
+    </ui:define>
+    <ui:define name="check">
+        #{commissionManagedBean.retrievePaymentList()}
+    </ui:define>
+    <ui:define name="content"> 
+
+        <center>
+
+            <h:form id="form">
+                <p:graphicImage value="../../resources/images/payment.png" style="width:100%;height:150px"></p:graphicImage>
+                <p:growl id="viewMsg" autoUpdate="true" life="3000"/>
+
+                <p:dataTable id="dataTablePayment" var="cp" value="#{commissionManagedBean.cpl}" rows="10" paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15">
+
+                    <f:facet name="header">
+                        <p style="font-size:1.5em;display:inline;">View Commission Payment</p>
+                        <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                        <p:columnToggler datasource="dataTablePayment" trigger="toggler" />
+                    </f:facet>
+
+                    <p:column filterBy="#{cp.postType}" headerText="Post Type" sortBy="#{cp.postType}" filterMatchMode="contains">
+                        <h:outputText value="#{cp.postType}" />
+                    </p:column>
+
+                    <p:column filterBy="#{cp.paymentTime}" headerText="Payment Time" sortBy="#{cp.paymentTime}" filterMatchMode="contains" >
+                        <h:outputText value="#{cp.paymentTime}" />
+                    </p:column>
+
+                    <p:column filterBy="#{cp.senderCompanyName}" headerText="Payer" sortBy="#{cp.senderCompanyName}" filterMatchMode="contains" >
+                        <h:outputText value="#{cp.senderCompanyName}" />
+                    </p:column>
+
+                    <p:column filterBy="#{cp.receiverCompanyName}" headerText="Payee" sortBy="#{cp.receiverCompanyName}" filterMatchMode="contains" >
+                        <h:outputText value="#{cp.receiverCompanyName}" />
+                    </p:column>
+
+                    <p:column filterBy="#{cp.price}" headerText="Price" sortBy="#{cp.price}" filterMatchMode="contains" >
+                        <h:outputText value="#{cp.price}" />
+                    </p:column>
+
+                    <p:column headerText="Create Receipt" >
+                        <center>
+                            <p:commandButton icon="ui-icon-pencil" actionListener="#{commissionManagedBean.createReceipt(cp.postId, cp.postType)}" update=":form" ajax="true" type="submit" />
+                        </center>
+                    </p:column>
+
+                </p:dataTable>                   
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
+

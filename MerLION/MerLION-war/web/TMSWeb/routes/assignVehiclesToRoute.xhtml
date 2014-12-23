@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Choose Routes</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; 
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <p:graphicImage value="../../resources/images/transportationRoutes1.jpg" style="width:100%;"></p:graphicImage>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="images/ajaxloadingbar.gif" />
+        </p:dialog>
+        <p:growl id="msgs" autoUpdate="true" life="3000"/>
+        
+        <h:form id="formMain">
+            <p:dataTable id="routesTable" var="route" value="#{routesManagedBean.routesList}" rows="10" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15">
+                <f:facet name="header">
+                    <p style="font-size: 1.5em;display:inline;margin-top:0;margin-bottom: 0;text-align: center;">Vehicle Scheduling for Current Routes</p> 
+                    <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                    <p:columnToggler datasource="routesTable" trigger="toggler" />
+                </f:facet>
+                <p:column headerText="Route ID" sortBy="#{route.routesId}">
+                    <h:outputText value="#{route.routesId}" />
+                </p:column>
+                <p:column headerText="Source Country" sortBy="#{route.startOfRoute.country}">
+                    <h:outputText value="#{route.startOfRoute.country}" />
+                </p:column>
+                <p:column style="width:20%" headerText="Source Location" sortBy="#{route.startOfRoute}">
+                    <h:outputText value="#{route.startOfRoute}" />
+                </p:column>
+                <p:column headerText="Destination Country" sortBy="#{route.destOfRoute.country}">
+                    <h:outputText value="#{route.destOfRoute.country}" />
+                </p:column>
+                <p:column style="width:20%" headerText="Destination Location" sortBy="#{route.destOfRoute}">
+                    <h:outputText value="#{route.destOfRoute}" />
+                </p:column>
+                <p:column headerText="Mode" sortBy="#{route.mode}">
+                    <h:outputText value="#{route.mode}" />
+                </p:column>
+                <p:column headerText="Distance (KM)" sortBy="#{route.distance}">
+                    <h:outputText value="#{route.distance}" />
+                </p:column>
+                <p:column headerText="Select Vehicles">
+                    <center>
+                        <p:commandButton id="btn" update=":formMain:panel" icon="ui-icon-arrowthickstop-1-e"
+                                         actionListener="#{routesManagedBean.gotoAssign(route)}" type= "submit" ajax="false">                 
+                        </p:commandButton>
+                    </center>
+                </p:column>                   
+            </p:dataTable>
+        </h:form>          
+    </ui:define>
+</ui:composition>

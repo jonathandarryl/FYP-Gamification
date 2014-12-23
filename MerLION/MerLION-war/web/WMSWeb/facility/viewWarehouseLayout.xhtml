@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>View Warehouse Layout</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfWarehouse()}
+        #{facilityManagedBean.refreshWarehouseDetail()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formMain"> 
+            <p:graphicImage value="../../resources/images/bannerWarehouse.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+            <p:growl id="msgs" />
+            <h:panelGrid columns="3">
+                <p:commandButton style="width: 220px" ajax="true" type="submit" value="Back to Warehouse Detail" actionListener="#{facilityManagedBean.redirectToWarehouseDetail()}" /> 
+                <h:outputText value="           "/>
+                <p:commandButton style="width: 220px" ajax="true" type="submit" value="Add New Region" icon="ui-icon-plus" actionListener="#{facilityManagedBean.redirectToCreateShelfInNewRegion()}" /> 
+            </h:panelGrid>
+            <p:dataGrid id="dataGrid" var="regionCode1" value="#{facilityManagedBean.regionList}" columns="3" layout="grid" 
+                        rows="3" paginator="true"
+                        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="3,6,9" emptyMessage="No Storage bin found">
+                <f:facet name="header">
+                    <p style="font-size:1.5em;display:inline;">Layout of Warehouse #{facilityManagedBean.warehouseName}</p>
+                </f:facet>
+                <p:panel header="#{regionCode1}" style="text-align:center">
+                    <p:chart type="pie" model="#{facilityManagedBean.getRegionCapacityChart(regionCode1)}" style="width:100%;height:300px" />
+                    <p:panelGrid columns="2" style="width:100%;">
+                        <h:outputText value="Number of Storage Bins: "/>
+                        <h:outputText value="#{facilityManagedBean.getRegionShelfNumber(regionCode1)}"/>
+
+                        <h:outputText value="Total Capacity: "/>
+                        <h:outputText value="#{facilityManagedBean.getRegionCapacity(regionCode1)}" />
+
+                        <h:outputText value="Spare Capacity: "/>
+                        <h:outputText value="#{facilityManagedBean.getRegionSpareCapacity(regionCode1)}" />
+                    </p:panelGrid>
+                    <center>
+                        <h:panelGrid columns="1">
+                            <p:commandButton style="width: 200px" ajax="true" type="submit" value="View Storage Bins" icon="ui-icon-search" actionListener="#{facilityManagedBean.redirectToViewRegionShelfList(regionCode1)}" /> 
+                            <p:commandButton style="width: 200px" ajax="true" type="submit" value="Add Storage Bins" icon="ui-icon-plus" actionListener="#{facilityManagedBean.redirectToCreateShelf(regionCode1)}" /> 
+                            <p:commandButton style="width: 200px" ajax="true" type="update" value="Delete Region" update="dataGrid" icon="ui-icon-trash" actionListener="#{facilityManagedBean.deleteRegion(regionCode1)}" /> 
+                        </h:panelGrid>
+                    </center>
+                </p:panel>
+            </p:dataGrid>
+
+        </h:form>
+    </ui:define>
+</ui:composition>
+

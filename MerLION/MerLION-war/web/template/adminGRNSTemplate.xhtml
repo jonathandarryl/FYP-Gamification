@@ -1,0 +1,236 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view>
+        <h:head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <meta name="author" content="Sunnie" />
+            <ui:insert name="head-title">
+                <title>GRNS | Admin</title>
+            </ui:insert>
+            <ui:insert name="css-style">
+
+            </ui:insert>
+
+            <f:facet name="middle">
+                <h:outputStylesheet name="bootstrap/css/bootstrap.css" />
+                <h:outputStylesheet name="css/font-awesome.css" />
+                <h:outputStylesheet name="css/merlion-platform.css" />
+                <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" type="text/javascript" />-->
+                <!--<h:outputScript name="bootstrap/js/bootstrap.js" />-->
+            </f:facet>
+
+            <style type="text/css">
+                .ui-layout-north {
+                    z-index:20 !important;
+                }
+
+                .ui-layout-north .ui-layout-unit-content {
+                    overflow:visible !important;
+                }
+
+                .ui-layout-north .ui-menubar {
+                    margin-top: 15px;
+                    margin-left: 180px;
+                    border: none;
+                }
+                .ui-layout-west {
+                    z-index:19 !important;
+                    overflow:visible !important;;
+                }
+                .ui-layout-west .ui-layout-unit-content {
+                    overflow:visible !important;
+                }
+                .ui-datepicker-inline {
+                    width: 100% !important;
+                }
+                .ui-datepicker table {
+                    font-size: .7em !important;
+                }
+                .ui-datepicker-calendar td, .ui-datepicker-calendar th {
+                    padding: 0 !important;
+                }
+                .label {
+                    color: #222222;
+                }
+                hr {
+                    margin-top: 5px !important;
+                    margin-bottom: 10px !important;
+                }
+                #searchrow {
+                    padding: 0px 0px !important;
+                }
+                .ui-wizard-step-title {
+                    font-size: 12px;
+                }
+                .ui-menu.ui-megamenu .ui-menu-child .ui-menu-list {
+                    width: 15em;
+                }
+                .ui-selectonebutton .ui-button-text-only .ui-button-text {
+                padding: .3em .1em;
+            }
+            </style>
+        </h:head>
+        <h:body>
+            #{commonFuncManagedBean.checkStatus()}
+            #{commonFuncManagedBean.checkIfSystemAdmin()}
+            <ui:insert name="check">
+            </ui:insert>
+            <p:layout fullPage="true">
+                <p:layoutUnit position="north" size = "60">
+                <a href="/MerLION-war/index.xhtml"><img src="/MerLION-war/resources/css/images/logo.png" class="logoImage" ></img></a>
+                <h:form>  
+                    <p:growl id="messages"/>
+
+                    <p:megaMenu id="mb" orientation="horizontal" >
+                        <p:submenu label="My Account" icon="ui-icon-document">
+                            <p:column>
+                                <p:graphicImage name="images/crm4.png" width="200"/>
+                            </p:column>
+                            <p:column>
+                                <p:submenu label="Workspace">
+                                    <p:menuitem value="Workspace" url="/CommonWeb/systemAdminHome.xhtml" icon="ui-icon-home" />
+                                </p:submenu>
+                                <p:submenu label="Profile">
+                                    <p:menuitem value="View and update MerLION Info" url="/CommonWeb/updateMerLION.xhtml" />
+                                    <p:separator />
+                                    <p:menuitem value="View and Updte Your profile" url="/CommonWeb/updateProfileSystemAdmin.xhtml" />
+                                    <p:separator />
+                                    <p:menuitem value="Change password" url="/CommonWeb/changePasswordSystemAdmin.xhtml" />
+                                    <p:separator />
+                                </p:submenu>
+                            </p:column>
+                        </p:submenu>
+                        <p:submenu label="Customer Relationship Mgt" icon="ui-icon-person" >
+                            <p:column>
+                                <p:graphicImage name="/images/crm8.png" width="200"/>
+                            </p:column>
+                            <p:column>
+                                <p:submenu label="Subscription Schema Management" >
+                                    <p:menuitem value="Subscription Schema Management" url="/CRMWeb/subscription/subscriptionSchemaMgt.xhtml" />
+                                    <p:separator />
+                                </p:submenu>
+                                <p:submenu label="Subscription Payment Management" >                           
+                                    <p:menuitem value="View All Payment" url="/CRMWeb/subscription/subscriptionPaymentMgtViewAllPayment.xhtml" />
+                                    <p:separator />    
+                                    <p:menuitem value="View Payment By One Company" url="/CRMWeb/subscription/subscriptionPaymentMgtAdmin.xhtml" />
+                                    <p:separator />    
+                                    <p:menuitem value="Check Payment Notification" url="/CRMWeb/subscription/subscriptionPaymentNotification.xhtml" />
+                                    <p:separator />    
+                                    <p:menuitem value="Check Lock Status" url="/CRMWeb/subscription/subscriptionPaymentLockStatus.xhtml"/>
+                                    <p:separator />
+                                </p:submenu>
+                            </p:column>
+                        </p:submenu>
+                        <p:submenu label="Global Rates Negotiation System" icon="ui-icon-extlink">
+                            <p:column>
+                                <p:graphicImage name="/images/grns2.png" width="200"/>
+                            </p:column>
+                            <p:column>
+                                <p:submenu label="Manage GRNS" >
+                                    <p:menuitem value="Control Panel" url="/GRNSWeb/manageGRNS.xhtml" />
+                                    <p:separator />
+                                </p:submenu>
+                            </p:column>
+                        </p:submenu>
+                        <ui:insert name="menubarItem">
+                        </ui:insert>
+                        <p:submenu label="Help" icon="ui-icon-help">
+                            <p:column>
+                                <p:graphicImage name="/images/contact.png" width="200"/>
+                            </p:column>
+                            <p:column>
+                                <p:submenu label="Help" >
+                                    <p:menuitem value="MerLION Help" url="#" />
+                                </p:submenu>
+                                <p:submenu label="Contact Us" >
+                                    <p:menuitem value="Contact Us" url="#" />
+                                </p:submenu>
+                            </p:column>
+                        </p:submenu>
+                        <f:facet name="options">
+                            <p:commandButton type="submit" value="Logout" icon="ui-icon-extlink" actionListener="#{loginManagedBean.logout()}" onclick="if (!confirm('Are you sure you want to log out?'))
+                                        return false;"/>
+                        </f:facet>
+                    </p:megaMenu>
+
+                </h:form>
+                
+            </p:layoutUnit>
+
+                <p:layoutUnit position="center">                                                         
+                    <ui:insert name="content">
+                    </ui:insert>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="230" header="GRNS Menu" collapsible="true" resizable="true">    
+                    <ui:insert name="leftMenu">
+                        <h:form>
+                            <p:tieredMenu style="width:225px">
+                                <p:menuitem value="Workspace" url="/CommonWeb/systemAdminHome.xhtml" icon="ui-icon-home" />
+                                <p:separator />
+                                <p:menuitem value="Control Panel" icon="ui-icon-gear" url="/GRNSWeb/manageGRNS.xhtml" />
+                                <p:separator />
+                                <p:submenu label=" Manage External Account" icon="ui-icon-clipboard">
+                                    <p:menuitem value=" View All User Account" url="/GRNSWeb/admin/viewAllUser.xhtml" />
+                                    <p:separator />
+                                </p:submenu>
+                                <p:separator />
+                                <p:menuitem value="Manage Aggregation Post" icon="ui-icon-document" url="/GRNSWeb/admin/manageAggregationPost.xhtml" />
+                                <p:separator />
+                                <p:menuitem value="Manage Storage Post" icon="ui-icon-document" url="/GRNSWeb/admin/manageStoragePost.xhtml" />
+                                <p:separator />
+                                <p:menuitem value="Manage Transport Post" icon="ui-icon-document" url="/GRNSWeb/admin/manageTransportPost.xhtml"/>
+                                <p:separator />
+                            </p:tieredMenu>
+                            <p:calendar id="inline" mode="inline" />
+                        </h:form>  
+                        <p:idleMonitor timeout="1800000" onidle="PF('dlg').show()"/>
+                        <p:dialog header="Idled for 30 Minutes" modal="true" appendTo="@(body)" widgetVar="dlg" resizable="false" closable="false">  
+                            <h:form id="timeoutForm">  
+                                <h:panelGrid columns="1" style="margin-bottom:10px">  
+                                    <h:outputLabel value="You have been logged out." />
+                                </h:panelGrid>
+                                <center><p:commandButton id="submitButton" value="Ok" oncomplete="PF('dlg').hide();" actionListener="#{commonFuncManagedBean.forcelogout()}"/></center>  
+                            </h:form>  
+                        </p:dialog>
+                    </ui:insert>
+                    
+                    <ui:insert name="externalLeftMenuInfo">
+                        <h:form>
+                            <p:panel style="width:225px;">
+                                <f:facet name="header">
+                                    <center><p:clock /></center>
+                                </f:facet>
+                                    <h:outputLabel for="displayusername" value="Username : " style="margin-right:5px" />
+                                    <h:outputText id="displayusername" style="margin-right:10px" value="#{commonFuncManagedBean.username}" /><br />
+                                    <h:outputLabel for="displayfirst" value="Name : " style="margin-right:5px" />
+                                    <h:outputText id="displayfirst" style="margin-right:10px" value="#{commonFuncManagedBean.firstName} #{commonFuncManagedBean.lastName}" /><br />
+                                    <h:outputLabel for="displaydepartment" value="Department : " style="margin-right:5px" />
+                                    <h:outputText id="displaydepartment" style="margin-right:10px" value="#{commonFuncManagedBean.department.departmentName}" /><br />
+                                    <h:outputLabel for="displaycompany" value="Company : " style="margin-right:5px" />
+                                    <h:outputText id="displaycompany" style="margin-right:10px" value="#{commonFuncManagedBean.companyName}" /><br />
+                                    <h:outputLabel for="displaycompanytype" value="Company Type : " style="margin-right:5px" />
+                                    <h:outputText id="displaycompanytype" style="margin-right:10px" value="#{commonFuncManagedBean.companyType}" />
+                            </p:panel>
+                        </h:form>
+                    </ui:insert>
+
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="30">
+                    <ui:insert name="footer">
+                        <ui:include src="./defaultFooter.xhtml" />
+                    </ui:insert>
+                </p:layoutUnit>
+            </p:layout>
+
+        </h:body>
+    </f:view>
+</html>
+

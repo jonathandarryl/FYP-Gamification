@@ -1,0 +1,155 @@
+<ui:composition template="../../template/userGRNSTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            GRNS | View History Transport Post
+        </title>
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            td th {
+                padding: 5px !important;
+            }
+            td {
+                color: black !important;
+            }
+        </style> 
+    </ui:define>
+    <ui:define name="check">
+        #{postManagedBean.viewUserHistoryTransportPost()}
+    </ui:define>
+    <ui:define name="content"> 
+
+        <center>
+
+            <h:form id="form">
+
+
+
+                <p:messages id="viewTP" autoUpdate="true" closable="true"/>
+
+                <p:dataGrid id="dataGridTP" var="tp" widgetVar="tpTable" value="#{postManagedBean.historyTPList}" columns="1" rows="4" paginator="true"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="4,8,12" >
+
+                    <f:facet name="header">
+                        <p style="margin-left:200px; font-size: 1.5em; display: inline;">View Transport Post History</p>
+                        <p:menuButton value="Navigate Transport Posts" style="float:right">
+                            <p:menuitem value="View All Post" url="viewUserHistoryTransportPost.xhtml"/>
+                            <p:menuitem value="View Posts With Winner" actionListener="#{postManagedBean.retrieveTransportPostWithWinner()}"/>
+                        </p:menuButton>
+                    </f:facet>
+
+                    <p:panel header="#{tp.title}" style="text-align:left;width:auto">
+                        <f:facet name="header">
+                            <p style="text-align:left; display: inline;font-size: 1.5em;">#{tp.title}</p>
+                            <p:menuButton value="Available Actions" style="float:right;">
+                                <p:menuitem value="View Detail" actionListener="#{postManagedBean.viewDetailTransportPost(tp.id)}"/>
+                                <p:menuitem value="Extend Post" onclick="PF('extendDialog').show()"  actionListener="#{postManagedBean.setExtend(tp.id)}"/>
+                            </p:menuButton>
+                        </f:facet>
+                        <p:panelGrid style="width:100%;">
+                            <p:row>
+                                <p:column rowspan="12" style="width:200px;">
+                                    <p:graphicImage name="images/tms2.png" width="200"/> 
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Post time:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{tp.postDateTime}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Bidding End time:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{tp.endDateTime}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Transport Capacity:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{tp.capacity}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Initial Bid:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{tp.initBid}" />
+                                </p:column>
+                            </p:row>
+                           
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Reserve Price :" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{tp.reservePrice}" rendered="#{tp.reservePriceSpecified}" />
+                                    <h:outputText value="Not Specified" rendered="#{not tp.reservePriceSpecified}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Winning Bid :" rendered="#{not tp.winnerId.equals(null)}"/>
+                                    <h:outputText value="Highest Bid :" rendered="#{tp.winnerId.equals(null)}"/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{tp.winningPrice}" rendered="#{not tp.winnerId.equals(null)}"/>
+                                    <h:outputText value="#{tp.highestBid}" rendered="#{tp.winnerId.equals(null)}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Winner Username / Company :" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{tp.winnerUsername} / #{tp.winnerCompanyName}" rendered="#{not tp.winnerUsername.equals(null)}" />
+                                    <h:outputText value="No Winner" rendered="#{tp.winnerUsername.equals(null)}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="Source Location :" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="#{tp.sourceLoc}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="Destination Location :" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="#{tp.destLoc}" />
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>      
+
+                </p:dataGrid>
+                <p:dialog header="Extend Transport Post" widgetVar="extendDialog" showEffect="fade" hideEffect="fade" >
+                    <p:outputLabel value="Post End Time" for="endTime" />
+                    <p:calendar id="endTime" value="#{postManagedBean.date}" pattern="MM/dd/yyyy HH:mm:ss"/>
+                    <p:commandButton value="Extend Post" actionListener="#{postManagedBean.extendTransport()}" ajax="false" type="submit" />
+                </p:dialog>
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>

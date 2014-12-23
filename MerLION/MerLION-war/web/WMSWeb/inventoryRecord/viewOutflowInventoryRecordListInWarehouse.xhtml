@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>View Inventory List</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfWarehouse()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formMain"> 
+            <p:graphicImage value="../../resources/images/bannerWarehouse.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+            <p:growl id="msgs" />
+            <h:outputText value="#{inventoryRecordManagedBean.getInventoryRecordListSize(inventoryRecordManagedBean.retrieveOutflowInventoryList())}"/>
+            <p:dataTable id="datatable" var="inventory" value="#{inventoryRecordManagedBean.retrieveOutflowInventoryList()}"
+                         rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="No Inventory found">
+
+                <f:facet name="header">
+                    <p style="font-size:1.5em;display:inline;">Inventory Outflow Record</p>
+                </f:facet>
+                <p:column headerText="Inventory ID" sortBy="#{inventory.id}">
+                    <h:outputText value="#{inventory.id}" />
+                </p:column>   
+                <p:column headerText="Product Name" sortBy="#{inventory.product.productName}">
+                    <h:outputText value="#{inventory.product.productName}">
+                    </h:outputText>
+                </p:column>                    
+                <p:column headerText="Quantity" sortBy="#{inventory.quantity}">
+                    <h:outputText value="#{inventory.quantity}" />
+                </p:column>
+                <p:column headerText="Entry Time" sortBy="#{inventory.entryTime}">
+                    <h:outputText value="#{inventory.entryTime}" />
+                </p:column>    
+
+                <p:column headerText="Detail Info">
+                    <p:commandButton icon="ui-icon-search" actionListener="#{inventoryRecordManagedBean.retrieveOutflowInventoryDetail(inventory)}" />
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

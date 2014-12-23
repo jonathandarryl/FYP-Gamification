@@ -1,0 +1,230 @@
+<ui:composition template="../../template/defaultTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            GRNS | External User Registration
+        </title>
+    </ui:define>
+    <ui:define name="css-style">
+        <style type="text/css">
+            td, th {
+                padding: 5px !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="images/ajaxloadingbar.gif" />
+        </p:dialog>
+
+        <p:breadCrumb>
+            <p:menuitem value="Categories" url="/GRNSWeb/externalAccount/loginGRNS.xhtml" />
+            <p:menuitem value="Register New External Account" url="/GRNSWeb/externalAccount/registration.xhtml" />
+        </p:breadCrumb>
+
+        <h:form id="GRNSRegistrationForm">
+            <p:growl id="growl" life="3000" />
+            <p:messages id="registration" autoUpdate="true" closable="true"/>
+
+            <div class="ui-grid ui-grid-responsive" style="margin-left: 20px;">
+                <div class="ui-grid-row">
+                    <h1>Register For GRNS (External User)</h1>
+                </div>
+                <div class="ui-grid-row">
+                    <p style="color: #adadad;">Please enter the requested information. If you already use MerLION online tools (such as MerLION GRNS or MerLION Online Shipping) <br />
+                        please log in through our platform user login portal. All fields marked with an asterisk (*)
+                        are mandatory.</p>
+                </div>
+                <div class="ui-grid-row">
+                    <h2>Company Information</h2><br />
+                </div>
+                <div class="ui-grid-row" style="margin-top: 10px;">
+                    <div class="ui-grid-col-4">
+                        <h:outputLabel for="companyName" value="Company Name : *" /><br />
+                        <p:inputText style="width:80%;margin-top: 10px;" id="companyName" value="#{externalAccountManagedBean.companyName}" label="CompanyName" required="true" requiredMessage="Please input company name">
+                            <p:watermark for="companyName" value="Input company name" />
+                        </p:inputText>
+                    </div>
+                    <div class="ui-grid-col-4">
+                        <h:outputLabel for="companyVAT" value="VAT : *" /><br />
+                        <p:inputText style="width:80%;margin-top: 10px;" id="companyVAT" value="#{externalAccountManagedBean.companyVAT}" label="CompanyVAT" required="true" requiredMessage="Please input company VAT">
+                            <p:watermark for="companyVAT" value="Input company VAT" />
+                        </p:inputText>
+                    </div>
+                    <div class="ui-grid-col-4"></div>
+                </div>
+                <div class="ui-grid-row" style="margin-top: 10px;">
+                    <div class="ui-grid-col-4">
+                        <h:outputLabel for="contactNo" value="Company Phone : *" /><br />
+                        <p:inputMask style="width:80%;margin-top: 10px;" id="contactNo" value="#{externalAccountManagedBean.companyContact}" mask="9999-9999" label="ContactNo" required="true" requiredMessage="Please input contact number">
+                            <p:watermark for="contactNo" value="Input contact number" />
+                        </p:inputMask>
+                    </div>
+                    <div class="ui-grid-col-4">
+                    </div>
+                </div>
+                <div class="ui-grid-row" style="margin-top: 10px;">
+                    <h3 style="color: #666;">Main Address</h3>
+                </div>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-8">
+                        <p:panel style="padding: 0 10px 20px;">
+                            <div class="ui-grid-row" style="margin-top: 10px;">
+                                <div class="ui-grid-col-12">
+                                    <h:outputLabel for="street" value="Street Line 1 : *" /><br />
+                                    <p:inputText style="width:90%;margin-top: 10px;" id="street" value="#{externalAccountManagedBean.location.street}" label="Street" required="true" requiredMessage="Please input street">
+                                        <f:validateLength minimum="2" maximum="40" />
+                                        <p:watermark for="street" value="Input street line 1" />
+                                    </p:inputText>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin-top: 10px;">
+                                <div class="ui-grid-col-12">
+                                    <h:outputLabel for="blockNo" value="Street Line 2 : " /><br />
+                                    <p:inputText style="width:90%;margin-top: 10px;" id="blockNo" value="#{externalAccountManagedBean.location.blockNo}" label="BlockNo">
+                                        <p:watermark for="blockNo" value="Input street line 2" />
+                                    </p:inputText>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin-top: 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputLabel for="city" value="City : *" /><br />
+                                    <p:inputText style="width:80%;margin-top: 10px;" id="city" value="#{externalAccountManagedBean.location.city}" label="City" required="true" requiredMessage="Please input city">
+                                        <f:validateLength minimum="2" />
+                                        <p:watermark for="city" value="Input city" />
+                                    </p:inputText>
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputLabel for="state" value="State/Province : *" /><br />
+                                    <p:inputText style="width:80%;margin-top: 10px;" id="state" value="#{externalAccountManagedBean.location.state}" label="State" required="true" requiredMessage="Please input state">
+                                        <f:validateLength minimum="2" />
+                                        <p:watermark for="state" value="Input state" />
+                                    </p:inputText>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin-top: 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputLabel for="country" value="Country : *" /><br />
+                                    <p:inputText style="width:80%;margin-top: 10px;" id="country" value="#{externalAccountManagedBean.location.country}" label="Country" required="true" requiredMessage="Please input country">
+                                        <f:validateLength minimum="2" />
+                                        <p:watermark for="country" value="Input country" />
+                                    </p:inputText>
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputLabel for="postalCode" value="Postal Code : *" /><br />
+                                    <p:inputMask style="width:80%;margin-top: 10px;" id="postalCode" value="#{externalAccountManagedBean.location.postalCode}" mask="999 999" required="true" label="PostalCode">  
+                                        <p:watermark for="postalCode" value="Input postal code" />
+                                    </p:inputMask>
+                                </div>
+                            </div>
+                        </p:panel>
+                    </div>
+                </div>
+                <div class="ui-grid-row" style="margin-top: 10px;">
+                    <h3 style="color: #666;">Your Information</h3>
+                </div>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-8">
+                        <p:panel style="padding: 0 10px 20px;">
+                            <div class="ui-grid-row" style="margin-top: 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputLabel for="firstName" value="First name: *" /><br />
+                                    <p:inputText style="width:80%;margin-top: 10px;" id="firstName" value="#{externalAccountManagedBean.firstName}" label="FirstName" required="true" requiredMessage="Please input first name">
+                                        <f:validateLength minimum="2" maximum="25" />
+                                        <p:watermark for="firstName" value="Input first name" />
+                                    </p:inputText>
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputLabel for="lastName" value="Last Name: *" /><br />
+                                    <p:inputText style="width:80%;margin-top: 10px;" id="lastName" value="#{externalAccountManagedBean.lastName}" label="lastName" required="true" requiredMessage="Please input last name">
+                                        <f:validateLength minimum="2" maximum="25" />
+                                        <p:watermark for="lastName" value="Input last name" />
+                                    </p:inputText>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin-top: 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputLabel for="password" value="Password: *" /><br />
+                                    <p:password style="width:90%;margin-top: 10px;" id="password" value="#{externalAccountManagedBean.password}" match="password1" label="password" required="true" requiredMessage="Please input password" >
+                                        <p:watermark for="password" value="Please enter old password" />
+                                    </p:password>
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputLabel for="password1" value="Confirm Password: *" /><br />
+                                    <p:password style="width:90%;margin-top: 10px;" id="password1" value="#{externalAccountManagedBean.password1}" label="password1" required="true" requiredMessage="Please confirm password">
+                                        <p:watermark for="password1" value="Please re-enter the password" />
+                                    </p:password>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin-top: 10px;">
+                                <div class="ui-grid-col-12">
+                                    <h:outputLabel for="username" value="Username: *" /><br />
+                                    <p:inputText style="width:90%;margin-top: 10px;" id="username" value="#{externalAccountManagedBean.username}" label="Username" required="true" requiredMessage="Please input username">
+                                        <f:validateLength minimum="4" maximum="25" />
+                                        <p:watermark for="username" value="Input Username" />
+                                    </p:inputText>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin-top: 10px;">
+                                <div class="ui-grid-col-12">
+                                    <h:outputLabel for="email" value="Email: *" /><br />
+                                    <p:inputText style="width:90%;margin-top: 10px;" id="email" value="#{externalAccountManagedBean.email}" label="Email" required="true" validatorMessage="Please input email in correct format">
+                                        <p:watermark for="email" value="Input email" />
+                                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                    </p:inputText>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin-top: 10px;">
+                                <div class="ui-grid-col-12">
+                                    <h:outputLabel for="phoneNo" value="Personal Phone : *" /><br />
+                                    <p:inputMask style="width:90%;margin-top: 10px;" id="phoneNo" value="#{externalAccountManagedBean.contact}" mask="9999-9999" label="PhoneNo" required="true" requiredMessage="Please input phone number">
+                                        <p:watermark for="phoneNo" value="Input personal contact number" />
+                                    </p:inputMask>
+                                </div>
+                            </div>
+                        </p:panel>
+                    </div>
+                </div>
+                <div class="ui-grid-row" style="margin-top: 10px;">
+                    <h3 style="color: #666;">Terms and Conditions</h3>
+                </div>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-8">
+                        <p:panel style="padding: 0 0 10px;">
+                            <div class="ui-grid-row" style="margin-top: 10px;">
+                                <div class="ui-grid-col-12">
+                                    <p:selectBooleanCheckbox style="display:inline;" id="tnc" required="true" requiredMessage="Please accept the terms and conditions" >
+                                        <f:validator validatorId="omnifaces.RequiredCheckboxValidator" />
+                                    </p:selectBooleanCheckbox>
+                                    <h:outputText style="margin-left:10px;display:inline;font-size: 1.3em;" value="I Accept the MerLION Terms and Conditions." />
+                                </div>
+                            </div>
+                        </p:panel>
+                    </div>
+                </div>
+                <div class="ui-grid-row" style="margin-top: 10px;">
+                    <h3 style="color: #666;">Security Check</h3>
+                </div>
+                <p:captcha label="Captcha" theme="white" required="true" secure="true"/>
+
+                <div class="ui-grid-row" style="margin-top: 10px;">
+                    <div class="ui-grid-col-4">
+                        <p:button outcome="loginGRNS" value="Back to Login" icon="ui-icon-circle-triangle-e"></p:button>
+                    </div>
+                    <div class="ui-grid-col-4">
+                        <p:commandButton style="float:right;" ajax="false" type="submit" value="Submit" update="GRNSRegistrationForm" icon="ui-icon-check" actionListener="#{externalAccountManagedBean.createAccount()}" />     
+                    </div>
+                </div>
+            </div> 
+        </h:form>
+    </ui:define>
+</ui:composition>
+

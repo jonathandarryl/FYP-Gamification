@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>View Raw Material List</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfWarehouse()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formMain"> 
+            <p:graphicImage value="../../resources/images/bannerWarehouse.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+            <p:growl id="msgs" />
+            
+            <p:dataTable id="datatable" var="product" value="#{rawMaterialInventoryManagedBean.retrieveAllRawMaterialList()}"
+                         paginator="true" rows="10" emptyMessage="No Product found">
+                <f:facet name="header">
+                    Raw Material of #{rawMaterialInventoryManagedBean.ownerCompany.companyName}
+                </f:facet>
+                <p:column headerText="Product ID" sortBy="#{product.id}">
+                    <h:outputText value="#{product.id}" />
+                </p:column>   
+                <p:column headerText="Raw Material Name" sortBy="#{product.productName}">
+                    <h:outputText value="#{product.productName}">
+                    </h:outputText>
+                </p:column>           
+
+                <p:column headerText="Total Inventory" sortBy="#{product.inventoryLevel}">
+                    <h:outputText value="#{product.inventoryLevel}" />
+                </p:column>        
+                <p:column headerText="Unit" sortBy="#{product.unit}">
+                    <h:outputText value="#{product.unit}" />
+                </p:column>
+                <p:column headerText="Warehouse List">
+                    <p:commandButton icon="ui-icon-search" actionListener="#{rawMaterialInventoryManagedBean.retrieveRawMaterial(product)}" />
+                </p:column>
+                
+                <f:facet name="footer">
+                    <h:outputText value="Number of Raw Materials: #{rawMaterialInventoryManagedBean.getProductListSize(rawMaterialInventoryManagedBean.retrieveAllRawMaterialList())}"/>
+                </f:facet>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

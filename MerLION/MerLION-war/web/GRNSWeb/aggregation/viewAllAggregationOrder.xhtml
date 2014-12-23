@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="../../template/userGRNSTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Service Order list</title>
+    </ui:define>
+
+    <ui:define name="check">
+        #{aggregationManagedBean.viewAllAggregationOrder()}
+        #{externalAccountManagedBean.checkIfMerlionUser()}
+    </ui:define>
+
+    <ui:define name="content">
+        
+        
+        
+        <h:form id="formMain"> 
+            <p:graphicImage value="../../resources/images/grns-banner.jpg" style="width:100%;"></p:graphicImage>
+            <p:breadCrumb>
+            <p:menuitem value="Categories" url="../myGRNS.xhtml" />
+            <p:menuitem value="Service order list" url="viewAllAggregationOrder.xhtml" />
+        </p:breadCrumb>
+            <p:growl id="msgs" />
+            <p:dataTable id="datatable" var="serviceOrder" value="#{aggregationManagedBean.allAggregationOrder}"
+                         rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="No Service order found">
+                <f:facet name="header">
+                    <p style="margin-left: 200px; font-size: 1.5em; display: inline;">Service Order list</p>
+                    <p:commandButton style="float: right;" type="submit" value="View Aggregation Cart" icon="ui-icon-cart" actionListener="#{aggregationManagedBean.retrieveAggregationCart()}" />
+                </f:facet>
+                <p:column headerText="Service Order ID" sortBy="#{serviceOrder.id}">
+                    <h:outputText value="#{serviceOrder.id}" />
+                </p:column>                  
+                <p:column headerText="Start time" sortBy="#{serviceOrder.startTime}">
+                    <h:outputText value="#{serviceOrder.startTime}">
+                        <f:convertDateTime pattern="yy-MM-dd" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="End time" sortBy="#{serviceOrder.endTime}">
+                    <h:outputText value="#{serviceOrder.endTime}">
+                        <f:convertDateTime pattern="yy-MM-dd" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Source Location" sortBy="#{serviceOrder.sourceLoc.city}">
+                    <h:outputText value="#{serviceOrder.sourceLoc}" />
+                </p:column>
+                <p:column headerText="Destination Location" sortBy="#{serviceOrder.destLoc.city}">
+                    <h:outputText value="#{serviceOrder.destLoc}" />
+                </p:column>
+                <p:column headerText="Perishable" sortBy="#{serviceOrder.isPerishable()}">
+                    <h:outputText value="#{serviceOrder.isPerishable()}" />
+                </p:column>
+                <p:column headerText="Flammable" sortBy="#{serviceOrder.isFlammable()}">
+                    <h:outputText value="#{serviceOrder.isFlammable()}" />
+                </p:column>
+                <p:column headerText="Pharmaceutical" sortBy="#{serviceOrder.isPharmaceutical}">
+                    <h:outputText value="#{serviceOrder.isPharmaceutical()}" />
+                </p:column>
+                <p:column headerText="High Value" sortBy="#{serviceOrder.isHighValue()}">
+                    <h:outputText value="#{serviceOrder.isHighValue()}" />
+                </p:column>
+                <p:column headerText="Quantity" sortBy="#{serviceOrder.capacity}">
+                    <h:outputText value="#{serviceOrder.capacity}" />
+                </p:column>
+                <p:column headerText="View Service Order Info">
+                    <center>
+                        <p:commandButton icon="ui-icon-search" oncomplete="PF('soDialog').show()" type="submit" ajax="true" update=":formMain">
+                            <f:setPropertyActionListener value="#{serviceOrder}" target="#{aggregationManagedBean.selectedSo}" />
+                        </p:commandButton>
+                    </center>
+                </p:column>
+                <p:column headerText="Add to Aggregation Cart">
+                    <center>
+                        <p:commandButton type="update"  ajax="false" update="datatable" icon="ui-icon-plus" actionListener="#{aggregationManagedBean.addToAggregateCart(serviceOrder.id)}" styleClass="ui-priority-primary" />
+                    </center>
+                </p:column>
+                <f:facet name="footer">
+                    <p:commandButton type="submit" value="View Aggregation Cart" icon="ui-icon-cart" actionListener="#{aggregationManagedBean.retrieveAggregationCart()}" />
+                </f:facet>
+            </p:dataTable>
+
+            <p:dialog appendTo="@(body)" header="Service Order Info" widgetVar="soDialog"  showEffect="fade" hideEffect="fade" resizable="true">
+                <p:outputPanel id="soDetail" style="text-align:left;">
+                    <p:panelGrid  columns="2" rendered="#{not empty aggregationManagedBean.selectedSo}">
+                        <h:outputText value="Product: " />
+                        <h:outputText value="#{aggregationManagedBean.selectedSo.product.productName}" />
+                        <h:outputText value="Quantity: " />
+                        <h:outputText value="#{aggregationManagedBean.selectedSo.quantity}" />
+                        <h:outputText value="Price: " />
+                        <h:outputText value="#{aggregationManagedBean.selectedSo.price}" />
+                        <h:outputText value="Customer Company Name " />
+                        <h:outputText value="#{aggregationManagedBean.selectedSo.serviceContract.client.companyName}" />
+                        <h:outputText value="Warehouse ID: " />
+                        <h:outputText value="#{aggregationManagedBean.selectedSo.warehouseId}" />
+                        <h:outputText value="Source Location:  " />
+                        <h:outputText value="#{aggregationManagedBean.selectedSo.sourceLoc.street},#{aggregationManagedBean.selectedSo.sourceLoc.blockNo},#{aggregationManagedBean.selectedSo.sourceLoc.city},
+                                      #{aggregationManagedBean.selectedSo.sourceLoc.state},#{aggregationManagedBean.selectedSo.sourceLoc.country},#{aggregationManagedBean.selectedSo.sourceLoc.postalCode}" />
+                        <h:outputText value="Destination Location:  " />
+                        <h:outputText value="#{aggregationManagedBean.selectedSo.destLoc.street},#{aggregationManagedBean.selectedSo.destLoc.blockNo},#{aggregationManagedBean.selectedSo.destLoc.city},
+                                      #{aggregationManagedBean.selectedSo.destLoc.state},#{aggregationManagedBean.selectedSo.destLoc.country},#{aggregationManagedBean.selectedSo.destLoc.postalCode}" />
+                        <h:outputText value="Description: " />
+                        <h:outputText value="#{aggregationManagedBean.selectedSo.description}" />
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+
+
+        </h:form>
+    </ui:define>
+</ui:composition>
+

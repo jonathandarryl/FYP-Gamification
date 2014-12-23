@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Select Trucks to Route</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; 
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <p:graphicImage value="../../resources/images/transportationRoutes3.jpg" style="width:100%;"></p:graphicImage>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:breadCrumb>
+            <p:menuitem value="Transportation Routes" url="./assignVehiclesToRoute.xhtml" />
+            <p:menuitem value="Assign Trucks" url="selectTruckList.xhtml" />
+        </p:breadCrumb>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="images/ajaxloadingbar.gif" />
+        </p:dialog>
+        <h:form id="formMain">
+            <p:growl id="msgs" autoUpdate="true" life="3000"/>
+            <p:dataTable id="vehicleTable" var="vessel" rowKey="#{vessel.vehiclesId}"
+                         value="#{routesManagedBean.truckList}" rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" selection="#{routesManagedBean.vehicleArray}">
+                <f:facet name="header">
+                    <p style="font-size: 1.5em;display:inline;margin-top:0;margin-bottom: 0;text-align: center;">Select Truck for Route</p> 
+                    <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                    <p:columnToggler datasource="vehicleTable" trigger="toggler" />
+                </f:facet>
+                <p:column selectionMode="multiple" style="width:30px" />
+                <p:column headerText="Availibility" style="width:80px">
+                    <p:selectBooleanButton id="avail" value="#{vessel.avail}" disabled="true" 
+                                           onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>
+                </p:column>
+                <p:column headerText="Vehicle ID" style="width:70px">
+                    <h:outputText value="#{vessel.vehiclesId}" />
+                </p:column>
+                <p:column headerText="Capacity" style="width:70px">
+                    <h:outputText value="#{vessel.capacity} tons" />
+                </p:column>
+                <p:column headerText="Max Distance">
+                    <h:outputText value="#{vessel.maxDistance} km" />
+                </p:column>
+                <p:column headerText="Serviced Year">
+                    <h:outputText value="#{vessel.useYear}" />
+                </p:column>
+                <p:column headerText="Cost">
+                    <h:outputText value="S$#{vessel.transCost}/km" />
+                </p:column>
+                <p:column headerText="Velocity">
+                    <h:outputText value="#{vessel.velocity}km/h" />
+                </p:column>
+                <p:column headerText="Flammable">
+                    <p:selectBooleanButton id="flammable" value="#{vessel.flammable}" disabled="true" 
+                                           onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>                    
+                </p:column>
+                <p:column headerText="HighValue">
+                    <p:selectBooleanButton id="highValue" value="#{vessel.highValue}" disabled="true" 
+                                           onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton> 
+                </p:column>
+                <p:column headerText="Perishable">
+                    <p:selectBooleanButton id="perishable" value="#{vessel.perishable}" disabled="true" 
+                                           onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton> 
+                </p:column>
+                <p:column headerText="Pharmaceutical">
+                    <p:selectBooleanButton id="pharmaceutical" value="#{vessel.pharmaceutical}" disabled="true" 
+                                           onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton> 
+                </p:column>
+                <p:column headerText="Current Driver">
+                    <center>
+                        <p:commandButton icon="ui-icon-circle-zoomin"
+                                         actionListener="#{transAssetManagedBean.goToViewDriver(vessel.vehiclesId)}" 
+                                         type= "submit" ajax="true" update=":formMain:dialog1">                 
+                        </p:commandButton>
+                    </center>
+                </p:column>  
+                <p:column headerText="Assign Driver">
+                    <center>
+                        <p:commandButton icon="ui-icon-circle-zoomin"
+                                         actionListener="#{transAssetManagedBean.goToAssignDriver(vessel.vehiclesId)}" 
+                                         type= "submit" ajax="true">                 
+                        </p:commandButton>
+                    </center>
+                </p:column>
+                <f:facet name="footer">
+                <p:commandButton type="submit" value="Submit Selection" actionListener="#{routesManagedBean.assignVehicles()}"/>
+                </f:facet>
+            </p:dataTable>            
+
+            <p:dialog appendTo="@(body)" id="dialog1" header="Assigned Drivers" widgetVar="Dialog1" resizable="false"  
+                      width="700" position="center">
+                <div class="ui-grid ui-grid-responsive">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-6">
+                            <p:graphicImage value="/resources/images/tmsdriver.jpeg" style="height: 100%;width: 100%;float:right;"></p:graphicImage>
+                        </div>
+                        <div class="ui-grid-col-6">
+                            <h1><strong>Information of Assigned Drivers</strong></h1>
+                        </div>
+                    </div>
+                </div>
+                <p:dataTable id="driverTable" var="driver" value="#{transAssetManagedBean.viewAssignedDrivers()}" rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="No driver">
+                    <f:facet name="header">
+                        List of Driver
+                        <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                        <p:columnToggler datasource="driverTable" trigger="toggler" />
+                    </f:facet>
+                    <p:column headerText="Name" sortBy="#{driver.name}">
+                        <h:outputText value="#{driver.name}" />
+                    </p:column>
+                    <p:column headerText="Gender">
+                        <h:outputText value="#{driver.gender}" />
+                    </p:column>
+                    <p:column headerText="Age">
+                        <h:outputText value="#{driver.age}" />
+                    </p:column>
+                    <p:column headerText="License Number">
+                        <h:outputText value="#{driver.licenseNo}" />
+                    </p:column>
+                    <p:column headerText="Driving Age (Year)">
+                        <h:outputText value="#{driver.drivingAge}" />
+                    </p:column>   
+                    <p:column headerText="Trucks ID">
+                        <h:outputText value="#{driver.trucks.vehiclesId}" />
+                    </p:column>   
+                <f:facet name="footer">
+                    <p:button value="Assign Drivers"  outcome="assignDriversToVehicle"/>
+                </f:facet>
+                </p:dataTable>               
+            </p:dialog> 
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,100 @@
+<ui:composition template="../../template/userGRNSTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="head-title">
+        <title>
+            GRNS | Aggregation Post Detail
+        </title>
+    </ui:define>
+
+    <ui:define name="css-style">
+        <style type="text/css">
+            td, th {
+                padding: 5px !important;
+            }
+        </style>
+    </ui:define>
+    
+    <ui:define name="check">
+        #{externalAccountManagedBean.checkIfMerlionUser()}
+    </ui:define>
+
+    <ui:define name="content">
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="images/ajaxloadingbar.gif" />
+        </p:dialog>
+        
+        <p:breadCrumb>
+            <p:menuitem value="Categories" url="../myGRNS.xhtml" />
+            <p:menuitem value="Service order list" url="viewAllAggregationOrder.xhtml" />
+            <p:menuitem value="Aggregation cart" url="retrieveAggregationCart.xhtml" />
+            <p:menuitem value="View aggregated order" url="viewAggregatedOrder.xhtml" />
+            <p:menuitem value="Enter aggregation post detail" url="aggregationPostDetail.xhtml" />
+        </p:breadCrumb>
+
+        <h:form>
+            <p:panel id ="panel" header="Complete Aggregation Post Details">
+
+                <p:growl id="growlId" life="3000" />
+
+                <div class="ui-grid ui-grid-responsive">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-6">
+                            <h:outputLabel style="margin: 10px 0;" for="title" value="Post Title : *" /><br />
+                            <p:inputText size="40" id="title" value="#{aggregationManagedBean.title}" required="true" label="title" requiredMessage="Please input a valid title"/>
+                            <p:message for="title" display="icon"/>
+
+                            <h:outputLabel style="margin: 10px 0;" for="endTime" value="End time : *" /><br />
+                            <p:calendar size="40" id="endTime" value="#{aggregationManagedBean.date}" pattern="MM/dd/yyyy HH:mm:ss" required="true" requiredMessage="Please select ending time of the bid" />
+                            <p:message for="endTime" display="icon"/>
+                            
+                            <h:outputLabel style="margin: 10px 0;" for="serviceEnd" value="Required Service End Time : " />
+                            <h:outputText style="margin-left: 10px;" id="serviceEnd" value="#{aggregationManagedBean.selectedAo.endTime}" />
+                            <p:message for="serviceEnd" display="icon"/>
+
+                            <p:outputLabel style="margin: 10px 0;" for="auctionType" value="Auction Type: " /><br />
+                            <p:selectOneRadio id="auctionType" value="#{aggregationManagedBean.auctionType}" required="true" requiredMessage="Please Select an Auction Type.">
+                                <f:selectItem itemLabel="Vickery Auction" itemValue="vickreyAuction" />
+                                <f:selectItem itemLabel="Blind Auction" itemValue="blindAuction" />
+                                <f:selectItem itemLabel="English Auction" itemValue="englishAuction" />
+                            </p:selectOneRadio>
+                            <p:message for="auctionType" display="icon"/> 
+                        </div>
+                        <div class="ui-grid-col-6">
+                            <p:panel style="margin-top:10px;">
+                                <p:outputLabel style="margin: 10px 0;" for="reservePriceSpecified" value="Do you want to reserve price : " /><br />
+                                <p:selectBooleanButton id="reservePriceSpecified" value="#{aggregationManagedBean.reservePriceSpecified}" onLabel="Yes" offLabel="No" style="width:60px" required="true" requiredMessage="Please select whether you want to have a reserve price" />
+                                <p:message for="reservePriceSpecified" display="icon"/>
+
+                                <h:outputLabel style="margin: 10px 0;" for="reservePrice" value="If Yes, Enter Reserve Price : " /><br />
+                                <p:inputText size="40" id="reservePrice" value="#{aggregationManagedBean.reservePrice}" converterMessage="Price must contain digits only.">
+                                    <f:converter converterId="javax.faces.Double" />
+                                </p:inputText>
+                                <p:message for="reservePrice" display="icon"/>
+
+                                <h:outputLabel style="margin: 10px 0;" for="initBid" value="Initial Bid : " />
+                                <h:outputText style="margin-left: 10px;" id="initBid" value="S$ #{aggregationManagedBean.initBid}" />
+                            </p:panel>
+                        </div>
+                    </div>
+                    <div class="ui-grid-row">
+                        <h:outputLabel style="margin: 10px 0;" for="contentEditor" value="Post Detail : *" /><br />
+                    </div>
+                    <div class="ui-grid-row">
+                        <p:editor required="true" requiredMessage="Please Enter Post Detail." id="contentEditor" widgetVar="editorWidget" value="#{aggregationManagedBean.content}" style="width:100%;"/>
+                    </div>
+                </div>
+                <center>
+                    <p:commandButton style="margin-top: 10px;" ajax="true" type="submit" value="Submit" update="panel" icon="ui-icon-check" actionListener="#{aggregationManagedBean.createAggregationPost()}" />
+                </center>
+            </p:panel>
+
+        </h:form>
+    </ui:define>
+</ui:composition>
+

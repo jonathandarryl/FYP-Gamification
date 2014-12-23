@@ -1,0 +1,201 @@
+<ui:composition template="../../template/adminGRNSTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="head-title">
+        <title>
+            GRNS | View Transport Post Detail
+        </title>
+    </ui:define>
+    <ui:define name="css-style">
+        <style type="text/css">
+            td, th {
+                padding: 5px !important;
+            }
+            .ui-grid-row {
+                padding: 5px 5px !important;
+                margin: 5px 5px !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="images/ajaxloadingbar.gif" />
+        </p:dialog>
+
+        <p:breadCrumb>
+        </p:breadCrumb>
+
+        <h:form id="bidForm">
+            <p:panel id ="bidPanel" style="text-align:left">
+                <p:growl id="growlId" life="3000" />
+                <p:messages id="msgId" autoUpdate="true" closable="true"/>
+                <div class="ui-grid ui-grid-responsive">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4">
+                            <p:graphicImage name="images/tms2.png" style="width: 300px; margin: 10px 10px;" />   
+                        </div>
+                        <div class="ui-grid-col-8">
+                            <div class="ui-grid-row">
+                                <h:outputText value="#{adminManagedBean.selectedTP.title}" style="font-weight: bold; font-size: 3em;"/>
+                            </div>
+                            <hr />
+                            <div class="ui-grid-row">
+                                <div class="ui-grid-col-8">
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-5">
+                                            <h:outputText value="Current Highest Bid:" />
+                                        </div>
+                                        <div class="ui-grid-col-7">
+                                            <h:outputText value="S$ #{adminManagedBean.selectedTP.highestBid}" style="font-weight: bold; color: red; font-size: 2.5em;"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-5">
+                                            <h:outputText value="Auction End Time:" />
+                                        </div>
+                                        <div class="ui-grid-col-7">
+                                            <h:outputText value="#{adminManagedBean.selectedTP.endDateTime}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-5">
+                                            <h:outputText value="Auction Type:" />
+                                        </div>
+                                        <div class="ui-grid-col-7">
+                                            <h:outputText value="#{adminManagedBean.selectedTP.auctionType}" style="font-size: 1.2em;"/>
+                                        </div>
+                                    </div>       
+                                </div>
+                                <div class="ui-grid-col-4">
+                                    <p:panelGrid columns="2"  style="padding: 10px;">
+                                        <h:outputText value="Author Username" />
+                                        <h:outputText value="#{adminManagedBean.selectedTP.account.username}" style="font-size: 1.2em;"/>
+                                        <h:outputText value="Company Name" />
+                                        <h:outputText value="#{adminManagedBean.selectedTP.account.company.companyName}" style="font-size: 1.2em;"/>
+                                    </p:panelGrid>
+                                </div>
+                            </div>        
+                        </div>
+                    </div>
+                </div>
+            </p:panel>
+        </h:form>
+
+        <h:form id="detailForm">
+            <p:tabView>
+                <p:tab title="Description">
+                    <p:panel id="detailPanel">
+                        <p:panelGrid id="detaiPanelGrid">
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-col-6">
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-4">
+                                            <h:outputLabel value="Source Location: "/>
+                                        </div>
+                                        <div class="ui-grid-col-8">
+                                            <h:outputText value="#{adminManagedBean.selectedTP.sourceLoc.street}, #{adminManagedBean.selectedTP.sourceLoc.city}, #{adminManagedBean.selectedTP.sourceLoc.state}, #{adminManagedBean.selectedTP.sourceLoc.country} #{adminManagedBean.selectedTP.sourceLoc.postalCode}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-4">
+                                            <h:outputLabel value="Destination Location: "/>
+                                        </div>
+                                        <div class="ui-grid-col-8">
+                                            <h:outputText value="#{adminManagedBean.selectedTP.destLoc.street}, #{adminManagedBean.selectedTP.destLoc.city}, #{adminManagedBean.selectedTP.destLoc.state}, #{adminManagedBean.selectedTP.destLoc.country} #{adminManagedBean.selectedTP.destLoc.postalCode}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-4">
+                                            <h:outputLabel value="Quantity:" />
+                                        </div>
+                                        <div class="ui-grid-col-8">
+                                            <h:outputText value="#{adminManagedBean.selectedTP.capacity}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-4">
+                                            <h:outputLabel value="Service Order Start Time: "/>
+                                        </div>
+                                        <div class="ui-grid-col-8">
+                                            <h:outputText value="#{adminManagedBean.selectedTP.serviceStartTime}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-4">
+                                            <h:outputLabel value="Service Order End Time: " style="margin: 5px 10px;"/>
+                                        </div>
+                                        <div class="ui-grid-col-8">
+                                            <h:outputText value="#{adminManagedBean.selectedTP.serviceEndTime}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-8">
+                                            <h:outputLabel value="Post Time:" />
+                                        </div>
+                                        <div class="ui-grid-col-4">
+                                            <h:outputText value="#{adminManagedBean.selectedTP.postDateTime}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-8">
+                                            <h:outputLabel value="Does the Order Require to Transport Flammable Products:" />
+                                        </div>
+                                        <div class="ui-grid-col-4">
+                                            <h:outputText value="#{adminManagedBean.selectedTP.flammable}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-8">
+                                            <h:outputLabel value="Does the Order Require to Transport High Value Products:" />
+                                        </div>
+                                        <div class="ui-grid-col-4">
+                                            <h:outputText value="#{adminManagedBean.selectedTP.highValue}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-8">
+                                            <h:outputLabel value="Does the Order Require to Transport Perishable Products:" />
+                                        </div>
+                                        <div class="ui-grid-col-4">
+                                            <h:outputText value="#{adminManagedBean.selectedTP.perishable}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-8">
+                                            <h:outputLabel value="Does the Order Require to Transport Pharmaceutical Products:" />
+                                        </div>
+                                        <div class="ui-grid-col-4">
+                                            <h:outputText value="#{adminManagedBean.selectedTP.pharmaceutical}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </p:panelGrid>
+                    </p:panel>
+                    <p:panel>
+                        <f:facet name="header">
+                            Detail Description
+                        </f:facet>
+                        <h:outputText value="#{adminManagedBean.selectedTP.content}" style="font-size: 1.2em" escape="false"/>
+                    </p:panel>
+                </p:tab>
+                <p:tab title="Payment Info">
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <h:outputText value="Francis Ford Coppola's legendary..." />
+                    </h:panelGrid>
+                </p:tab>
+            </p:tabView>
+
+        </h:form>
+    </ui:define>
+</ui:composition>
+
