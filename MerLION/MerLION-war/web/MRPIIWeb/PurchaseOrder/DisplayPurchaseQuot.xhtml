@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Display Purchase Quotation</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfManufacture()}
+        #{commonFuncManagedBean.checkIfUser()}
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            table.hovertable {
+                font-family: verdana,arial,sans-serif;
+                font-size:13px;
+                color:#333333;
+                border-width: 3px;
+                border-color: #999999;
+                border-collapse: collapse;
+            }
+            table.hovertable th {
+                background-color:#c3dde0;
+                border-width: 3px;
+                padding: 10px;
+                border-style: solid;
+                border-color: #a9c6c9;
+            }
+            table.hovertable tr {
+                background-color:#d4e3e5;
+            }
+            table.hovertable td {
+                border-width: 3px;
+                padding: 10px;
+                border-style: solid;
+                border-color: #a9c6c9;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/banner_internet.png" style="width:100%;"></p:graphicImage>
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+            <p:panel id="panel">
+
+                <f:facet name="header">
+                    Display Purchase Quotation
+                </f:facet>
+
+                <table class="hovertable">
+
+                    <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                        <td><strong>Quotation ID</strong></td>
+                        <td>#{purchaseOrderManagedBean.purQuot.id}</td>
+                    </tr>
+                    <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                        <td><strong>Supplier Name</strong></td>
+                        <td>#{purchaseOrderManagedBean.purQuot.supplier.name}</td>
+                    </tr>
+                    <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                        <td><strong>Quotation Date</strong></td>
+                        <td>#{purchaseOrderManagedBean.purQuot.purchaseQuotationDate}</td>
+                    </tr>
+
+                    <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                        <td><strong>Scheduled Arrival Date</strong></td>
+                        <td>#{purchaseOrderManagedBean.purQuot.scheduledArrivalDate}</td>
+                    </tr>
+                    <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                        <td><strong>Product Type</strong></td>
+                        <td>#{purchaseOrderManagedBean.purQuot.purchaseType}</td>
+                    </tr>
+                    <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                        <td><strong>Product Name</strong></td>
+                        <td>#{purchaseOrderManagedBean.purQuot.product.productName}</td>
+                    </tr>
+                    <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                        <td><strong>Quantity</strong></td>
+                        <td>#{purchaseOrderManagedBean.purQuot.quantity}</td>
+                    </tr>
+                    <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                        <td><strong>Unit</strong></td>
+                        <td>#{purchaseOrderManagedBean.purQuot.product.unit}</td>
+                    </tr>
+                    <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                        <td><strong>Total Price</strong></td>
+                        <td>#{purchaseOrderManagedBean.purQuot.totalPrice}</td>
+                    </tr>
+
+                </table>
+
+            </p:panel>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+

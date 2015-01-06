@@ -1,0 +1,769 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="47b98c66-ab64-4631-b07e-6d1700f8bc19">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="320"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="20214833-e06b-4f8b-b3ad-2e855ab2c2ee"/>
+	<parameter name="PATH1" class="java.lang.String"/>
+	<parameter name="PATH2" class="java.lang.String"/>
+	<parameter name="PATH3" class="java.lang.String"/>
+	<parameter name="CLIENTNAME" class="java.lang.String"/>
+	<parameter name="CLIENTCONTACTNO" class="java.lang.String"/>
+	<parameter name="CLIENTCOUNTRY" class="java.lang.String"/>
+	<parameter name="CLIENTSTATE" class="java.lang.String"/>
+	<parameter name="CLIENTCITY" class="java.lang.String"/>
+	<parameter name="CLIENTSTREET" class="java.lang.String"/>
+	<parameter name="CLIENTBLOCKNO" class="java.lang.String"/>
+	<parameter name="CLIENTPOSTALCODE" class="java.lang.String"/>
+	<parameter name="PROVIDERNAME" class="java.lang.String"/>
+	<parameter name="PROVIDERCONTACTNO" class="java.lang.String"/>
+	<parameter name="PROVIDERCOUNTRY" class="java.lang.String"/>
+	<parameter name="PROVIDERSTATE" class="java.lang.String"/>
+	<parameter name="PROVIDERCITY" class="java.lang.String"/>
+	<parameter name="PROVIDERSTREET" class="java.lang.String"/>
+	<parameter name="PROVIDERBLOCKNO" class="java.lang.String"/>
+	<parameter name="PROVIDERPOSTALCODE" class="java.lang.String"/>
+	<parameter name="SRCOUNTRY" class="java.lang.String"/>
+	<parameter name="SRSTATE" class="java.lang.String"/>
+	<parameter name="SRCITY" class="java.lang.String"/>
+	<parameter name="SRSTREET" class="java.lang.String"/>
+	<parameter name="SRBLOCKNO" class="java.lang.String"/>
+	<parameter name="SRPOSTALCODE" class="java.lang.String"/>
+	<parameter name="DESTCOUNTRY" class="java.lang.String"/>
+	<parameter name="DESTSTATE" class="java.lang.String"/>
+	<parameter name="DESTCITY" class="java.lang.String"/>
+	<parameter name="DESTSTREET" class="java.lang.String"/>
+	<parameter name="DESTBLOCKNO" class="java.lang.String"/>
+	<parameter name="DESTPOSTALCODE" class="java.lang.String"/>
+	<parameter name="CREATIONTIME" class="java.lang.String"/>
+	<parameter name="CONTRACTDESCRIP" class="java.lang.String"/>
+	<parameter name="CONTRACTSTART" class="java.lang.String"/>
+	<parameter name="CONTRACTEND" class="java.lang.String"/>
+	<parameter name="PRODUCTQUANTITY" class="java.lang.String"/>
+	<parameter name="TOTALPRICE" class="java.lang.String"/>
+	<parameter name="PERISHABLE" class="java.lang.String"/>
+	<parameter name="PHARMACEUTICAL" class="java.lang.String"/>
+	<parameter name="HIGHVALUE" class="java.lang.String"/>
+	<parameter name="FLAMMABLE" class="java.lang.String"/>
+	<parameter name="WHNAME" class="java.lang.String"/>
+	<parameter name="WHCONTACTNO" class="java.lang.String"/>
+	<parameter name="WHID" class="java.lang.String"/>
+	<parameter name="WHPPCPD" class="java.lang.String"/>
+	<parameter name="WHDURATION" class="java.lang.String"/>
+	<parameter name="WHQUANTITY" class="java.lang.String"/>
+	<parameter name="WHPRICE" class="java.lang.String"/>
+	<parameter name="WHCOUNTRY" class="java.lang.String"/>
+	<parameter name="WHSTATE" class="java.lang.String"/>
+	<parameter name="WHCITY" class="java.lang.String"/>
+	<parameter name="WHSTREET" class="java.lang.String"/>
+	<parameter name="WHBLOCKNO" class="java.lang.String"/>
+	<parameter name="WHPOSTALCODE" class="java.lang.String"/>
+	<parameter name="TRANPRICE" class="java.lang.String"/>
+	<parameter name="PRODUCTNAME" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     
+     COMPANY.`BLOCKNO` AS COMPANY_BLOCKNO
+FROM
+     `COMPANY` COMPANY]]>
+	</queryString>
+	<field name="COMPANY_BLOCKNO" class="java.lang.String"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="297">
+			<frame>
+				<reportElement mode="Opaque" x="-19" y="-14" width="584" height="89" backcolor="#FFFFFF" uuid="ff6faf02-1fe0-4e72-ad39-8087e4edc866"/>
+				<image scaleImage="RealSize" hAlign="Center">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="576" height="88" uuid="8a852fb6-0c5b-4e59-9a88-605c336c95aa"/>
+					<imageExpression><![CDATA[$P{PATH1}]]></imageExpression>
+				</image>
+			</frame>
+			<textField>
+				<reportElement x="0" y="121" width="139" height="16" uuid="c852118f-b836-4aeb-9c32-10651e689ff0"/>
+				<textFieldExpression><![CDATA[$P{CLIENTNAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="101" width="100" height="16" uuid="7d6be81d-b5a6-4293-8bb0-6bedeeb35450"/>
+				<textElement>
+					<font size="12" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Send To]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="214" width="176" height="16" uuid="50253603-2ff3-4b22-80ea-d8b6b9016af2"/>
+				<text><![CDATA[Dear Customer,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="240" width="504" height="15" uuid="21b48542-f252-4a2d-b51a-5a5580ba9422"/>
+				<text><![CDATA[Please find the service contract below. You need to sign off if all information is correct. ]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="0" y="81" width="308" height="20" uuid="fe709e45-32f1-48c3-827b-145ec50a194c"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="138" width="63" height="16" uuid="7c730dab-411b-4a72-9126-c4f51a039bce"/>
+				<textFieldExpression><![CDATA[$P{CLIENTBLOCKNO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="138" width="139" height="16" uuid="7a7e9c61-c6c5-4b13-8a78-56176404e842"/>
+				<textFieldExpression><![CDATA[$P{CLIENTSTREET}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="152" width="100" height="16" uuid="b1d1eb97-f688-441d-a4ea-ab3d7c966aa3"/>
+				<textFieldExpression><![CDATA[$P{CLIENTCITY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="152" width="100" height="16" uuid="8f53557b-4026-4665-bc99-45c19973cf16"/>
+				<textFieldExpression><![CDATA[$P{CLIENTSTATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="167" width="100" height="16" uuid="c5e451ac-856f-45cb-970d-1700ff1188cf"/>
+				<textFieldExpression><![CDATA[$P{CLIENTCOUNTRY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="167" width="100" height="16" uuid="540aef61-6165-4bfc-8d24-83848d693782"/>
+				<textFieldExpression><![CDATA[$P{CLIENTPOSTALCODE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="182" width="100" height="16" uuid="58ae9727-39f8-4348-8ab6-1cb0e491a9ec"/>
+				<textFieldExpression><![CDATA[$P{CLIENTCONTACTNO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="182" width="77" height="16" uuid="36642159-7b49-4ee9-b07f-e69fd8e9a68d"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Contact No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="254" width="528" height="16" uuid="09f70aa7-902e-49bc-a321-edfb64a6b6a4"/>
+				<text><![CDATA[Please don't feel hesitated to contact us if you have any questions. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="269" width="528" height="16" uuid="947eebad-e63a-4cb5-8e66-4dae4b89bb4f"/>
+				<text><![CDATA[Thank you very much and have a nice day!]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20">
+			<staticText>
+				<reportElement x="0" y="1" width="208" height="16" uuid="d7ac68f5-6550-4998-9a0d-51166a0315ae"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Service Contract Between Party: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="199" y="1" width="100" height="16" uuid="23408705-703d-4cb3-9253-5a1a24834e84"/>
+				<textElement verticalAlignment="Middle">
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CLIENTNAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="289" y="1" width="243" height="16" uuid="e045835b-cf81-4a43-bdda-e6c7b81c2f78"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[and Counter-Party                            .]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="410" y="1" width="100" height="16" uuid="dd6dc791-67f5-4c67-8237-5119f6a35d98"/>
+				<textElement verticalAlignment="Middle">
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PROVIDERNAME}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="285">
+			<rectangle>
+				<reportElement x="0" y="237" width="535" height="15" backcolor="#CCCCCC" uuid="63fe13a2-b32c-4ad4-b75e-396ff5a52f2c"/>
+				<graphicElement>
+					<pen lineColor="#FFFFFF"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="60" width="535" height="15" backcolor="#CCCCCC" uuid="da3833b5-4096-41f5-bb71-268c46b21809"/>
+				<graphicElement>
+					<pen lineColor="#FFFFFF"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="149" width="535" height="15" backcolor="#CCCCCC" uuid="2134f887-f320-48b2-a9a4-c671882127df"/>
+				<graphicElement>
+					<pen lineColor="#FFFFFF"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="0" width="535" height="15" backcolor="#CCCCCC" uuid="5de48422-e5a9-4bb8-9db8-30935319bbfb"/>
+				<graphicElement>
+					<pen lineColor="#FFFFFF"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="194" y="15" width="263" height="16" uuid="2eb4b7dc-e06d-4b58-9397-cb3a2e4cdd7f"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[. It was established on                                              . ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="239" y="30" width="222" height="16" uuid="c9d05815-4c75-4953-9291-546e86dd5e24"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[to                                                             .]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="106" y="30" width="134" height="16" uuid="285a209b-5ad7-43cc-9f2b-e67ec3262a79"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CONTRACTSTART}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="308" y="15" width="135" height="16" uuid="1c873b77-a3f5-47a7-b1df-1e8a57bc23a5"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CREATIONTIME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="153" y="45" width="100" height="16" uuid="9021933f-ac60-424a-b95b-88780a46ff9a"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PRODUCTNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="256" y="30" width="154" height="16" uuid="a1c53c92-393b-4746-9f65-92c729a288f6"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CONTRACTEND}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="221" y="251" width="58" height="16" uuid="0f9a8637-efa0-4dba-b148-c7a2237d0250"/>
+				<textElement verticalAlignment="Middle">
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PERISHABLE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="237" width="139" height="16" uuid="86d8c314-059b-4ba6-90f3-920c7b2e864e"/>
+				<textElement>
+					<font size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Special Requirment]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="221" y="266" width="58" height="16" uuid="2b42abe6-faed-4da2-9c41-4781fd986350"/>
+				<textElement verticalAlignment="Middle">
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PHARMACEUTICAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="500" y="266" width="58" height="16" uuid="05334b54-2055-4ffe-97ce-b57e9986644b"/>
+				<textElement verticalAlignment="Middle">
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FLAMMABLE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="500" y="251" width="58" height="16" uuid="b5f07b80-d31a-4ebe-8e36-678965f9090d"/>
+				<textElement verticalAlignment="Middle">
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{HIGHVALUE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="252" width="170" height="16" uuid="807bb9e2-c2b4-40a4-83a8-624b66e698d1"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Accomodate Perishable Goods? ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="267" width="232" height="16" uuid="dab8d076-b9ab-4bb7-997d-1fd03819c2b2"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Accomodate Pharmaceutical Goods? ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="279" y="252" width="232" height="16" uuid="4ce296f6-8afe-4fdf-9f89-733ff884af44"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Accomodate High Value Goods? ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="279" y="266" width="232" height="16" uuid="ac275b52-673b-4927-9730-f228dc2cb609"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Accomodate Flammable Goods? ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="139" height="16" uuid="b8c23762-a007-4c05-bad6-cce5fb2bfbcb"/>
+				<textElement>
+					<font size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Basic Contract Information]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="111" height="16" uuid="18926999-5275-4bfc-935d-6959311098ed"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[The contract is from]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="15" width="112" height="16" uuid="72a75d9e-a328-4ad8-b813-4442e16e2420"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[The contract costs S$]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="45" width="151" height="16" uuid="0d4df1b0-4b28-4dc8-a13c-480cb7d6e5ca"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[The contract is about product]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="244" y="46" width="291" height="16" uuid="b63a2c22-ffeb-4607-978b-9c43144628d0"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[. Each order has a max quantity of                                  .]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="105" y="15" width="87" height="16" uuid="15f215b0-ce29-4fcf-885b-ac1ef840592e"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TOTALPRICE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="423" y="46" width="134" height="16" uuid="d6556070-5664-4763-8f37-e525b9854aa1"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PRODUCTQUANTITY}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="60" width="243" height="16" uuid="1f842fab-9732-44a7-a210-2e0427b958f9"/>
+				<textElement>
+					<font size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Transportation Information]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="144" y="60" width="307" height="16" uuid="169b6c3c-45fc-4ef8-8cc1-094294ad9b3d"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ (* N.A. means there is no transportation logistics needed.)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="90" width="79" height="16" uuid="5165f32d-5135-4302-8b3d-581f9be382cc"/>
+				<textElement>
+					<font size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Deliver from]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="90" width="79" height="16" uuid="4ef56887-6208-48a1-9850-adc56fffaeb9"/>
+				<textElement>
+					<font size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Deliver to]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="288" y="118" width="100" height="16" uuid="c5a51e50-c297-406a-827c-fd81e9d264d4"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DESTCITY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="288" y="104" width="139" height="16" uuid="5f154f80-3c8d-43de-bf10-0037e138fc75"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DESTSTREET}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="104" width="63" height="16" uuid="0ec7b6ef-a50b-4ce3-9097-02b2aab16db9"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DESTBLOCKNO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="133" width="100" height="16" uuid="e6168fd2-4788-4a36-a41a-4d675f3e25d7"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DESTPOSTALCODE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="118" width="100" height="16" uuid="f4438fc4-737d-4577-a2bd-d77b57a5e97b"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DESTSTATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="288" y="133" width="100" height="16" uuid="8e0e399a-df0e-42b4-99ed-935451ad53e0"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DESTCOUNTRY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="104" width="139" height="16" uuid="4f5d1ef0-fd92-4844-88af-f14f1edf58e7"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SRSTREET}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="141" y="118" width="100" height="16" uuid="417cbaea-9ba1-417d-be11-0a12748201df"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SRSTATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="141" y="104" width="63" height="16" uuid="833d21af-9746-452c-a137-b6c0e3083be3"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SRBLOCKNO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="133" width="100" height="16" uuid="a97f874f-5441-42d0-8c0f-446f67df7083"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SRCOUNTRY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="141" y="133" width="100" height="16" uuid="4695dd24-580c-4357-b86d-65881931acd9"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SRPOSTALCODE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="118" width="100" height="16" uuid="9bdaf6da-af5c-4858-9c84-c8ef9bc5fe5a"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SRCITY}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="75" width="253" height="16" uuid="9cdc33c7-4bb0-42a0-b84b-79231ec98455"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Transportation cost is S$                                    .]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="151" y="75" width="63" height="16" uuid="3e82f5b7-0fba-41b2-baa9-89ddfdf5fcd1"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TRANPRICE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="357" y="193" width="70" height="16" uuid="ea419dd6-b117-42c8-bbe6-96ea7325bb15"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{WHNAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="164" width="253" height="16" uuid="3019dcf6-4f10-4a0c-a34b-e26243f7d716"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Warehouse cost is S$                                    .]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="149" width="243" height="16" uuid="d3b44c65-15ff-49b0-abb9-da6e703f2d37"/>
+				<textElement>
+					<font size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Warehouse Information]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="144" y="149" width="307" height="16" uuid="ad11d511-4dbc-4867-a71a-bb466ce15253"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ (* N.A. means there is no transportation logistics needed.)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="179" width="79" height="16" uuid="e4cf1f0e-3cf5-4f28-b3c6-9253b0444f88"/>
+				<textElement>
+					<font size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Other Info]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="222" width="100" height="16" uuid="96390e50-4d54-4c41-9c5d-c83619e03f54"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{WHCOUNTRY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="373" y="207" width="100" height="16" uuid="b831259e-dcaf-4925-852c-9e7d8a837df4"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{WHDURATION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="141" y="222" width="100" height="16" uuid="4f13c317-f434-47c6-91be-9e55da83db94"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{WHPOSTALCODE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="141" y="207" width="100" height="16" uuid="6635f05b-70e6-4909-94d6-ff5d94b80073"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{WHSTATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="472" y="193" width="63" height="16" uuid="7bed36b7-8880-484a-ab6a-4ead2046c5f8"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{WHID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="373" y="222" width="100" height="16" uuid="ee685b34-e203-4b84-89e4-e68a8beaa67d"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{WHCONTACTNO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="207" width="100" height="16" uuid="c97b08e4-9e35-4da6-acc3-a50f24b5a84b"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{WHCITY}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="179" width="79" height="16" uuid="addb6e2b-b26d-4964-a022-50beaf230406"/>
+				<textElement>
+					<font size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Location]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="141" y="193" width="63" height="16" uuid="91c9b3e9-e805-497d-af12-0fc212cb449f"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{WHBLOCKNO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="193" width="139" height="16" uuid="20c52f69-95ca-4443-bc0f-ecf808a37c90"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{WHSTREET}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="151" y="164" width="63" height="16" uuid="fa462a3c-4347-4c0a-a4bd-113cea083dfb"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{WHPRICE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="288" y="193" width="79" height="16" uuid="f65a63be-39ec-461c-9615-12b10a81918f"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Name:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="207" width="79" height="16" uuid="0dac6ef0-b9e1-4574-a11d-0679c47310ba"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Store Duration:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="428" y="193" width="79" height="16" uuid="57873bdd-0dbf-40ad-81d5-40a61afc3e1d"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ID:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="222" width="79" height="16" uuid="b17188d2-abc5-44bf-8ca4-651ad898a4a7"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Contact No.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="441" y="207" width="79" height="16" uuid="c573904f-d838-439e-947a-2617a0d1ac80"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[days]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="191">
+			<image>
+				<reportElement x="394" y="-4" width="107" height="50" uuid="3d173ef0-77ec-4727-9d7a-8a366c2a530e"/>
+				<imageExpression><![CDATA[$P{PATH3}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="270" y="9" width="299" height="16" uuid="ca7bc790-9d5b-4c8d-bf1f-e0801751f347"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Signature of Provider_________________________]]></text>
+			</staticText>
+			<image>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="-30" y="150" width="594" height="41" uuid="7abd191c-7da8-42a0-958c-f3ed276a88ee"/>
+				<imageExpression><![CDATA[$P{PATH2}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement mode="Opaque" x="-11" y="172" width="63" height="13" backcolor="#FFFFFF" uuid="a2d68ab4-ced4-4f97-8864-f3c06472a8e2"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="57" y="172" width="40" height="13" backcolor="#FFFFFF" uuid="c68f1506-5c93-4c6f-b0a5-7c0c5c1c4fd8"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="332" y="68" width="119" height="16" uuid="2835c810-5961-4b6c-aa1e-b202e73014ba"/>
+				<textFieldExpression><![CDATA[$P{PROVIDERNAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="332" y="53" width="100" height="16" uuid="fc52c2cc-8323-4380-b8b9-9b6dc4b54cda"/>
+				<textElement>
+					<font size="12" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[From]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="332" y="83" width="129" height="16" uuid="7dc8c73e-ca23-4099-a78c-d3b0e59de95e"/>
+				<textFieldExpression><![CDATA[$P{PROVIDERSTREET}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="466" y="98" width="67" height="16" uuid="567c29da-efdf-4b03-816f-3d868374d97c"/>
+				<textFieldExpression><![CDATA[$P{PROVIDERSTATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="332" y="113" width="100" height="16" uuid="5d30098b-24ab-4d15-bcd6-8345400fe255"/>
+				<textFieldExpression><![CDATA[$P{PROVIDERCOUNTRY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="467" y="83" width="65" height="16" uuid="2b69e65a-5063-46ff-8072-c74c54722280"/>
+				<textFieldExpression><![CDATA[$P{PROVIDERBLOCKNO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="332" y="98" width="100" height="16" uuid="90c58a71-f43d-4889-a1db-0e3fc11bcd5e"/>
+				<textFieldExpression><![CDATA[$P{PROVIDERCITY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="466" y="113" width="66" height="16" uuid="33aad799-e821-451c-99c0-6df6098c6913"/>
+				<textFieldExpression><![CDATA[$P{PROVIDERPOSTALCODE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="466" y="129" width="100" height="16" uuid="490cb471-f654-4695-9671-501f8c0bb6d7"/>
+				<textFieldExpression><![CDATA[$P{CLIENTCONTACTNO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="332" y="128" width="77" height="16" uuid="4bae5bd8-8ebb-44c0-9bcc-a95bc82f633a"/>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Contact No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="9" width="279" height="16" uuid="273c174d-db45-4a77-a623-1cfe9ae1fc84"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Signature of Client___________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="29" width="299" height="16" uuid="a6b41584-e461-41c9-a554-ac99160807ef"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Date_________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="29" width="299" height="16" uuid="4962897d-4195-4db6-b1ca-8057ff69e692"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Date_____________________________]]></text>
+			</staticText>
+			<textField pattern="dd-MMM-yyyy">
+				<reportElement x="308" y="25" width="183" height="20" uuid="a8791b86-9799-4674-b98a-5b203230d32a"/>
+				<textElement>
+					<font fontName="Lucida Handwriting" size="14" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

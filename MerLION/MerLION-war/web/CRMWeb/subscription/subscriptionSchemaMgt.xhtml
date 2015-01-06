@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/systemAdminTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Subscription Management Schema</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; 
+            }
+</style>
+    </ui:define>
+    
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/subscription.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:panel id="panel" header="View All Subscription Schema">
+                <p:growl id="msgs" />
+                <p:dataTable var="schema" value="#{subscriptionSchemaManagedBean.getSubscriptionSchema(event)}" paginator="true" rows="5" emptyMessage="No type">
+                    <p:column headerText="Subscription Schema ID" sortBy="#{schema.id}">
+                        <h:outputText value="#{schema.id}" />
+                    </p:column>
+                    <p:column headerText="Number of Years" >
+                        <h:outputText value="#{schema.numOfYears}" />
+                    </p:column>
+                    <p:column headerText="Boundary Price (S$)">
+                        <h:outputText value="#{schema.boundaryPrice}" />
+                    </p:column>
+                    <p:column headerText="Delete">
+                        <p:commandButton id="btn" value="Delete" update=":formMain:panel" icon="ui-icon-trash"
+                                         actionListener="#{subscriptionSchemaManagedBean.deleteSubscriptionSchema(schema.id)}" type= "submit" ajax="false">                 
+                         </p:commandButton>
+                    </p:column>
+                    
+                    <p:column headerText="Update">
+                        <p:commandButton value="Update" type="submit" icon="ui-icon-extlink" actionListener="#{subscriptionSchemaManagedBean.viewSchema(schema)}" ajax="false"/>                       
+                    </p:column>                    
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+        <h:form id="form2">
+            <p:panel id="panel2" header="Add New Subscription Schema">
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/spinner.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:messages />
+                
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="numOfYears" style="font-weight: bold" value="Number Of Years: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="NumOfYears"
+                                    requiredMessage="Number of Years is required." id="numOfYears"
+                                    value="#{subscriptionSchemaManagedBean.numOfYears}" 
+                                    validatorMessage="Number of Years must be integer only.">
+                                  <f:validateRegex pattern="[0-9]+"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="numOfYears" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="boundaryPrice" style="font-weight: bold" value="Boundary Price (S$): " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Boundary Price" requiredMessage="Boundary Price is required." id="boundaryPrice"
+                                         value="#{subscriptionSchemaManagedBean.boundaryPrice}" converterMessage="Price must contain digits only.">
+                                 <f:converter converterId="javax.faces.Double" />
+                            
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="boundaryPrice" />
+                        </p:column>
+                    </p:row>                  
+                </p:panelGrid>
+                <p:commandButton id="btn2" value="Submit" icon="ui-icon-check"
+                                 update=":formMain:panel" actionListener="#{subscriptionSchemaManagedBean.addSubSchema(event)}" ajax="true"/>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

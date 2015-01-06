@@ -1,0 +1,331 @@
+<ui:composition template="../../template/userGRNSTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:define name="head-title">
+        <title>
+            GRNS | View Aggregation Post Detail
+        </title>
+    </ui:define>
+    <ui:define name="leftMenu">
+        <h:form>
+            <p:tieredMenu style="width:225px">
+                <p:menuitem value="Workspace" rendered="#{not externalAccountManagedBean.checkIfExternal}" url="/CommonWeb/companyUserHome.xhtml" icon="ui-icon-home" />
+                <p:separator />
+                <p:menuitem value="Control Panel" icon="ui-icon-gear" url="/GRNSWeb/myGRNS.xhtml" />
+            </p:tieredMenu>
+
+            <p:accordionPanel multiple="true">
+                <p:tab title="Categories">
+                    <p:commandLink id="ap" actionListener="#{postManagedBean.viewAllAggregationPost()}">
+                        <h:outputText value="View All Aggregation Post" />
+                    </p:commandLink>
+                    <p:separator />
+                    <p:commandLink id="sp" actionListener="#{postManagedBean.viewAllStoragePost()}">
+                        <h:outputText value="View All Storage Post" />
+                    </p:commandLink>
+                    <p:separator />
+                    <p:commandLink id="tp" actionListener="#{postManagedBean.viewAllTransportPost()}">
+                        <h:outputText value="View All Transportation Post" />
+                    </p:commandLink>
+                </p:tab>
+
+                <p:tab title="Auction Type">
+                    <p:commandLink id="ea" type="submit" actionListener="#{postManagedBean.setFilterEnglish()}">
+                        <h:outputText value="English Auction" />
+                    </p:commandLink>
+                    <p:separator />
+                    <p:commandLink id="ba" type="submit" actionListener="#{postManagedBean.setFilterBlind()}">
+                        <h:outputText value="Blind Auction" />
+                    </p:commandLink>
+                    <p:separator />
+                    <p:commandLink id="va" type="submit" actionListener="#{postManagedBean.setFilterVickrey()}">
+                        <h:outputText value="Vickrey Auction" />
+                    </p:commandLink>
+                </p:tab>
+
+                <p:tab title="By Status">
+                    <p:commandLink id="np" type="submit" actionListener="#{postManagedBean.setFilterNew()}">
+                        <h:outputText value="New Post" />
+                    </p:commandLink>
+                    <p:separator />
+                    <p:commandLink id="es" type="submit" actionListener="#{postManagedBean.setFilterEnding()}">
+                        <h:outputText value="Closing Soon"  />
+                    </p:commandLink>
+                </p:tab>
+
+                <p:tab title="Within Price Range">
+                    <p:panelGrid id="price" columns="2" style="width:180px">
+                        <p:outputLabel value="Min Price: S$" />
+                        <p:inputText style="width: 90px" value="#{postManagedBean.minPrice}" />
+                        <p:outputLabel value="Max Price: S$" />
+                        <p:inputText style="width: 90px" value="#{postManagedBean.maxPrice}"/>
+                    </p:panelGrid>
+                    <p:commandButton type="submit" value="Search" actionListener="#{postManagedBean.filterByPrice()}" id="p" style="float:right;"/>
+                </p:tab>
+
+            </p:accordionPanel>
+
+        </h:form>
+    </ui:define>
+    <ui:define name="css-style">
+        <style type="text/css">
+            td, th {
+                padding: 5px !important;
+            }
+            .ui-grid-row {
+                padding: 5px 5px !important;
+                margin: 5px 5px !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="images/ajaxloadingbar.gif" />
+        </p:dialog>
+
+        <p:breadCrumb>
+        </p:breadCrumb>
+
+        <h:outputText id="showEnd" value="Bidding for this post has already ended" rendered="#{postManagedBean.checkIfEnded}" class="bg-success" style="font-size: 1.5em;margin: 10px 10px;" />
+        <h:form id="bidForm">
+            <p:panel id ="bidPanel" style="text-align:left">
+                <p:growl id="growlId" life="3000" />
+                <p:messages id="msgId" autoUpdate="true" closable="true"/>
+                <div class="ui-grid ui-grid-responsive">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4">
+                            <p:graphicImage name="images/merlion-logo.png" style="width: 300px; margin: 10px 10px;" />   
+                        </div>
+                        <div class="ui-grid-col-8">
+                            <div class="ui-grid-row">
+                                <h:outputText value="#{postManagedBean.selectedAP.title}" style="font-weight: bold; font-size: 3em;"/>
+                            </div>
+                            <hr />
+                            <div class="ui-grid-row">
+                                <div class="ui-grid-col-8">
+                                    <div class="ui-grid-row" >
+                                        <div class="ui-grid-col-5">
+                                            <h:outputText value="Current Lowest Bid:"  rendered="#{not((postManagedBean.selectedAP.blindAuctionSpecified) and (postManagedBean.checkIfNotAuthor))}"/>
+                                        </div>
+                                        <div class="ui-grid-col-7">
+                                            <h:outputText value="S$ #{postManagedBean.selectedAP.lowestBid}" style="font-weight: bold; color: red; font-size: 2.5em;"  rendered="#{not((postManagedBean.selectedAP.blindAuctionSpecified) and (postManagedBean.checkIfNotAuthor))}"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row" >
+                                        <div class="ui-grid-col-5">
+                                            <h:outputText value="Initial Bid:" rendered="#{postManagedBean.selectedAP.blindAuctionSpecified}" />
+                                        </div>
+                                        <div class="ui-grid-col-7">
+                                            <h:outputText value="S$ #{postManagedBean.selectedAP.initBid}" style="font-weight: bold; color: red; font-size: 2.5em;" rendered="#{postManagedBean.selectedAP.blindAuctionSpecified}" />
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-5">
+                                            <h:outputText value="Price to be Paid:" rendered="#{postManagedBean.selectedAP.ended}"/>
+                                        </div>
+                                        <div class="ui-grid-col-7">
+                                            <h:outputText value="S$ #{postManagedBean.selectedAP.winningPrice}" rendered="#{postManagedBean.selectedAP.ended}" style="font-weight: bold; color: red; font-size: 2.5em;"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-5">
+                                            <h:outputText value="Auction End Time:" />
+                                        </div>
+                                        <div class="ui-grid-col-7">
+                                            <h:outputText value="#{postManagedBean.selectedAP.endDateTime}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row" >
+                                        <div class="ui-grid-col-5">
+                                            <h:outputText value="Ending In (HH:mm:ss) : " rendered="#{not postManagedBean.selectedAP.ended}"/>
+                                        </div>
+                                        <div class="ui-grid-col-7">
+                                            <h:outputText rendered="#{not postManagedBean.selectedAP.ended}" style="display: inline;" value="#{postManagedBean.getDayLeftAP(postManagedBean.selectedAP)} Day(s)"/>
+                                            <pe:timer rendered="#{not postManagedBean.selectedAP.ended}" timeout="#{postManagedBean.getTimeLeftAP(postManagedBean.selectedAP)}"  format="HH : mm : ss"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-5">
+                                        </div>
+                                        <div class="ui-grid-col-7">
+                                            <p:commandLink onclick="PF('bidsHistory').show();" rendered="#{not postManagedBean.selectedAP.blindAuctionSpecified}">
+                                                <h:outputText value="#{postManagedBean.bidsCount} Bids" style="color: blue; font-size: 1.0em;"/>
+                                            </p:commandLink>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-5">
+                                            <h:outputText value="Place Your Bid: S$" rendered="#{postManagedBean.checkStatus}" />
+                                        </div>
+                                        <div class="ui-grid-col-7">
+                                            <p:inputText id="bid" value="#{postManagedBean.placeBid}" rendered="#{postManagedBean.checkStatus}" />
+                                            <p:commandButton id="enterBid" ajax="false" rendered="#{postManagedBean.checkStatus}" type="submit" value="Place Bid" update=":bidForm:bidPanel" 
+                                                             actionListener="#{postManagedBean.placeBid(postManagedBean.selectedAP.id)}" onclick="if (!confirm('Are you sure you want to place bid?'))
+                                                                         return false;"/> 
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-5">
+                                        </div>
+                                        <div class="ui-grid-col-7">
+                                            <h:outputText value="Enter S$ #{postManagedBean.selectedAP.lowestBid-10} or less" rendered="#{postManagedBean.checkStatus and (not postManagedBean.selectedAP.blindAuctionSpecified)}" style="color: grey; font-size: 1.0em;"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-5">
+                                            <h:outputText value="Auction Type:" />
+                                        </div>
+                                        <div class="ui-grid-col-7">
+                                            <h:outputText value="#{postManagedBean.selectedAP.auctionType}" style="font-size: 1.2em;"/>
+                                        </div>
+                                    </div>       
+                                </div>
+                                <div class="ui-grid-col-4">
+                                    <p:panelGrid columns="2"  style="padding: 10px;">
+                                        <h:outputText value="Author Username" />
+                                        <h:outputText value="#{postManagedBean.selectedAP.account.username}" style="font-size: 1.2em;"/>
+                                        <h:outputText value="Company Name" />
+                                        <h:outputText value="#{postManagedBean.selectedAP.account.company.companyName}" style="font-size: 1.2em;" />
+                                    </p:panelGrid>
+                                </div>
+                            </div>        
+                        </div>
+                    </div>
+                </div>
+            </p:panel>
+        </h:form>
+
+        <h:form id="detailForm">
+            <p:tabView>
+                <p:tab title="Description">
+                    <p:panel id="detailPanel">
+                        <p:panelGrid id="detaiPanelGrid">
+                            <div class="ui-grid ui-grid-responsive">
+                                <div class="ui-grid-col-6">
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-4">
+                                            <h:outputLabel value="Source Location: "/>
+                                        </div>
+                                        <div class="ui-grid-col-8">
+                                            <h:outputText value="#{postManagedBean.selectedAP.sourceLoc.street}, #{postManagedBean.selectedAP.sourceLoc.city}, #{postManagedBean.selectedAP.sourceLoc.state}, #{postManagedBean.selectedAP.sourceLoc.country} #{postManagedBean.selectedAP.sourceLoc.postalCode}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-4">
+                                            <h:outputLabel value="Destination Location: "/>
+                                        </div>
+                                        <div class="ui-grid-col-8">
+                                            <h:outputText value="#{postManagedBean.selectedAP.destLoc.street}, #{postManagedBean.selectedAP.destLoc.city}, #{postManagedBean.selectedAP.destLoc.state}, #{postManagedBean.selectedAP.destLoc.country} #{postManagedBean.selectedAP.destLoc.postalCode}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-4">
+                                            <h:outputLabel value="Quantity:" />
+                                        </div>
+                                        <div class="ui-grid-col-8">
+                                            <h:outputText value="#{postManagedBean.selectedAP.quantity}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-4">
+                                            <h:outputLabel value="Service Order Start Time: "/>
+                                        </div>
+                                        <div class="ui-grid-col-8">
+                                            <h:outputText value="#{postManagedBean.selectedAP.requestStartTime}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-4">
+                                            <h:outputLabel value="Service Order End Time: " style="margin: 5px 10px;"/>
+                                        </div>
+                                        <div class="ui-grid-col-8">
+                                            <h:outputText value="#{postManagedBean.selectedAP.requestEndTime}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-8">
+                                            <h:outputLabel value="Post Time:" />
+                                        </div>
+                                        <div class="ui-grid-col-4">
+                                            <h:outputText value="#{postManagedBean.selectedAP.postDateTime}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-8">
+                                            <h:outputLabel value="Does the Order Require to Transport Flammable Products:" />
+                                        </div>
+                                        <div class="ui-grid-col-4">
+                                            <h:outputText value="#{postManagedBean.selectedAP.flammable}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-8">
+                                            <h:outputLabel value="Does the Order Require to Transport High Value Products:" />
+                                        </div>
+                                        <div class="ui-grid-col-4">
+                                            <h:outputText value="#{postManagedBean.selectedAP.highValue}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-8">
+                                            <h:outputLabel value="Does the Order Require to Transport Perishable Products:" />
+                                        </div>
+                                        <div class="ui-grid-col-4">
+                                            <h:outputText value="#{postManagedBean.selectedAP.perishable}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-8">
+                                            <h:outputLabel value="Does the Order Require to Transport Pharmaceutical Products:" />
+                                        </div>
+                                        <div class="ui-grid-col-4">
+                                            <h:outputText value="#{postManagedBean.selectedAP.pharmaceutical}" style="font-size: 1.2em"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </p:panelGrid>
+                    </p:panel>
+                    <p:panel>
+                        <f:facet name="header">
+                            Detail Description
+                        </f:facet>
+                        <h:outputText value="#{postManagedBean.selectedAP.content}" style="font-size: 1.2em" escape="false"/>
+                    </p:panel>
+                </p:tab>
+<!--                <p:tab title="Payment Info">
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <h:outputText value="Francis Ford Coppola's legendary..." />
+                    </h:panelGrid>
+                </p:tab>-->
+            </p:tabView>
+
+        </h:form>
+        <p:dialog header="Bids History" widgetVar="bidsHistory" appendTo="@(body)" modal="true" closable="true" width="500">
+            <p:dataTable var="bid" value="#{postManagedBean.allBids}" >
+                <p:column headerText="Bidder" sortBy="#{bid.bidderUsername}">
+                    <h:outputText value="#{bid.bidderUsername}" />
+                </p:column>
+
+                <p:column headerText="Amount" sortBy="#{bid.currentBid}">
+                    <h:outputText value="#{bid.currentBid}" />
+                </p:column>
+
+                <p:column headerText="Bid Time" sortBy="#{bid.placeDateTime}">
+                    <h:outputText value="#{bid.placeDateTime}" />
+                </p:column>
+            </p:dataTable>
+        </p:dialog>
+    </ui:define>
+</ui:composition>
+

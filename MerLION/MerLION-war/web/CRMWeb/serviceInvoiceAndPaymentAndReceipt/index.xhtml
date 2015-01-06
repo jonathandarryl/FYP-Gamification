@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Service Invoice, Payment and Receipt Management</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <p:menubar>                
+                <p:menuitem value="Back to CRM Homepage" url="../CRMIndex.xhtml" />
+                <p:submenu label="Service Invoice Management">
+                    <p:menuitem value="View Incoming Invoice and Make Payment" actionListener="#{serviceInvoiceAndPaymentManagedBean.retrieveIncomingServiceInvoiceList()}" icon="ui-icon-contact"/>
+                    <p:menuitem value="View Issued Invoice" actionListener="#{serviceInvoiceAndPaymentManagedBean.retrieveOutgoingServiceInvoiceList()}" icon="ui-icon-contact"/> 
+                </p:submenu>
+                <p:submenu label="Service Payment Management">
+                    <p:menuitem value="View Incoming Payment" actionListener="#{serviceInvoiceAndPaymentManagedBean.retrieveIncomingServicePaymentList()}" />
+                    <p:menuitem value="View Outgoing Payment" actionListener="#{serviceInvoiceAndPaymentManagedBean.retrieveOutgoingServicePaymentList()}" icon="ui-icon-contact"/> 
+                </p:submenu>
+                <p:submenu label="Service Receipt Management">
+                    <p:menuitem value="View Incoming Receipt" actionListener="#{serviceInvoiceAndPaymentManagedBean.retrieveIncomingServicePaymentReceiptList()}" />
+                    <p:menuitem value="View Issued Receipt" actionListener="#{serviceInvoiceAndPaymentManagedBean.retrieveOutgoingServicePaymentReceiptList()}" icon="ui-icon-contact"/> 
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

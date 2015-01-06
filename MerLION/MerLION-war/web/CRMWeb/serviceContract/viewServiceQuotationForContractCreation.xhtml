@@ -1,0 +1,411 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:o="http://omnifaces.org/ui">
+    <ui:define name="head-title">
+        <title>Create New Service Contract</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfSalesAndMarketing()}
+    </ui:define>
+
+    <ui:define name="content">
+
+        <h:form>
+                     <p:graphicImage value="../../resources/images/c1.jpg" style="width:100%; "></p:graphicImage>
+
+            <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+            <p:growl id="msgs" />
+            <p:layout style="height:650px;" >
+                <p:layoutUnit position="west" resizable="true" size="40%" header="Service Quotation Information">
+                    <p:panelGrid>
+                        <p:row >
+                            <p:column>
+                                <h:outputText value="Client:" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{serviceContractManagedBean.sq.clientCompany.companyName}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel value="Start Time:*" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{serviceContractManagedBean.sq.startDate}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel value="End Time:*" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{serviceContractManagedBean.sq.endDate}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel value="Service Description:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{serviceContractManagedBean.sq.description}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column>
+                                <h:outputText value="Service Price (S$):" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{serviceContractManagedBean.sq.totalPrice}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel value="Total Order Number:" />      
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{serviceContractManagedBean.sq.orderNumber}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column style="background-color: #E1EDF9; font-size: 12px">
+                                <h:outputText style="font-weight: bold" value="Product Info" />
+                            </p:column>
+                            <p:column style="background-color: #E1EDF9">
+                            </p:column >
+                        </p:row>
+
+                        <p:row >
+                            <p:column>
+                                <h:outputText value="Product Owner Company: " style="font-weight: bold"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{serviceContractManagedBean.sq.product.ownerCompanyName}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column>
+                                <h:outputText value="Product Name: " style="font-weight: bold"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{serviceContractManagedBean.sq.product.productName}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel value="Quantity Per Order (#{serviceContractManagedBean.sq.product.unit}):" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{serviceContractManagedBean.sq.estimatedQuantity}"/>
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                    <h:outputText value="Fields with * can be updated." style="font-style: italic; font-weight: lighter"/>
+
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+
+                    <h:panelGrid columns="2">
+                        <h:outputText value="Approved by client?"/>
+                        <p:selectBooleanButton value="#{serviceContractManagedBean.sq.clientApprovedOrNot}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+                        <h:outputText value="Approved by service provider?"/>
+                        <p:selectBooleanButton value="#{serviceContractManagedBean.sq.isApprovedOrNot()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+                    </h:panelGrid>
+                    
+                    <br></br>
+
+                    <p:commandButton ajax="true" type="submit" value="Create New Contract" icon="ui-icon-check" actionListener="#{serviceContractManagedBean.createServiceContractInViewPage()}" /> 
+
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" resizable="true" size="30%" header="Transportation Information">
+                    <p:panelGrid id="panelGrid2">
+
+                        <p:row >
+                            <p:column style="background-color: #E1EDF9; font-size: 12px">
+                                <h:outputText style="font-weight: bold" value="Source Location" />
+                            </p:column>
+                            <p:column style="background-color: #E1EDF9">
+                            </p:column >
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="sourceCountry" style="font-weight: bold" 
+                                               value="Country: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="sourceCountry" style="width:150px" 
+                                              value="#{serviceContractManagedBean.sq.source.country}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="sourceState" style="font-weight: bold" value="State:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="sourceState" value="#{serviceContractManagedBean.sq.source.state}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="sourceCity" style="font-weight: bold" value="City: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="sourceCity" value="#{serviceContractManagedBean.sq.source.city}">
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="sourceStreet" style="font-weight: bold" value="Street: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText  id="sourceStreet" value="#{serviceContractManagedBean.sq.source.street}">
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="sourceBlockNo" style="font-weight: bold" value="Block: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText 
+                                    id="sourceBlockNo" value="#{serviceContractManagedBean.sq.source.blockNo}">
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="sourcePostalCode" style="font-weight: bold" value="Postal Code: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText   id="sourcePostalCode" value="#{serviceContractManagedBean.sq.source.postalCode}">
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column style="background-color: #E1EDF9; font-size: 12px">
+                                <h:outputText style="font-weight: bold" value="Destinaion" />
+                            </p:column>
+                            <p:column style="background-color: #E1EDF9">
+                            </p:column >
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="destCountry" style="font-weight: bold" value="Country: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="destCountry" 
+                                              value="#{serviceContractManagedBean.sq.dest.country}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="destState" style="font-weight: bold" value="State:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText
+                                    id="destState"
+                                    value="#{serviceContractManagedBean.sq.dest.state}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="destCity" style="font-weight: bold" value="City: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText  id="destCity" value="#{serviceContractManagedBean.sq.dest.city}">
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="destStreet" style="font-weight: bold" value="Street: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="destStreet" 
+                                              value="#{serviceContractManagedBean.sq.dest.street}">
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="destBlockNo" style="font-weight: bold" value="Block: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText
+                                    id="destBlockNo" value="#{serviceContractManagedBean.sq.dest.blockNo}">
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="destPostalCode" style="font-weight: bold" value="Postal Code: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="destPostalCode" value="#{serviceContractManagedBean.sq.dest.postalCode}">
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br></br>
+                    <br></br>                    
+                </p:layoutUnit>
+                
+                <p:layoutUnit position="east" resizable="true" size="30%" header="Warehouse Information">                    
+                    <p:panelGrid id="panelGrid3">                        
+                        <p:row >
+                            <p:column style="background-color: #E1EDF9; font-size: 12px">
+                                <h:outputText style="font-weight: bold" value="Warehouse Info" />
+                            </p:column>
+                            <p:column style="background-color: #E1EDF9">
+
+                            </p:column >
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="warehouse" style="font-weight: bold" value="Warehouse Name: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText  id="warehouse" value="#{serviceContractManagedBean.sq.warehouse.name}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="warehCountry" style="font-weight: bold" value="Country: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="warehCountry" value ="#{serviceContractManagedBean.sq.warehouse.location.country}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="warehState" style="font-weight: bold" value="State:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="warehState" value="#{serviceContractManagedBean.sq.warehouse.location.state}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="warehCity" style="font-weight: bold" value="City: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="warehCity" value="#{serviceContractManagedBean.sq.warehouse.location.city}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="warehStreet" style="font-weight: bold" value="Street: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="warehStreet" value="#{serviceContractManagedBean.sq.warehouse.location.street}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="warehBlockNo" style="font-weight: bold" value="Block: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="warehBlockNo" value="#{serviceContractManagedBean.sq.warehouse.location.blockNo}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="warehPostalCode" style="font-weight: bold" value="Postal Code: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id = "warehPostalCode" value="#{serviceContractManagedBean.sq.warehouse.location.postalCode}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Required Warehouse Capacity:" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{serviceContractManagedBean.sq.requiredWarehouseCapacity}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Storage Duration Per Order (days):" />    
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{serviceContractManagedBean.sq.storageDurationDays}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br></br>
+
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputText value="Persihable" />
+                        <p:selectBooleanButton id="perishable" value="#{serviceContractManagedBean.sq.isPerishable()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+
+                        <h:outputText value="Flammable" />
+                        <p:selectBooleanButton id="flammable" value="#{serviceContractManagedBean.sq.isFlammable()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+
+                        <h:outputText value="Pharmaceutical:" />
+                        <p:selectBooleanButton id="pharmaceutical" value="#{serviceContractManagedBean.sq.isPharmaceutical()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+
+                        <h:outputText value="HighValue:" />
+                        <p:selectBooleanButton id="highValue" value="#{serviceContractManagedBean.sq.isHighValue()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>     
+                    </h:panelGrid>
+                </p:layoutUnit>          
+
+            </p:layout>
+                
+                
+                <p:dialog resizable="false" header="Contract Created Successfully" widgetVar="dlg" showEffect="fold">
+                    <p:commandButton type="submit" value="Return to Service Contract List" icon="ui-icon-check" actionListener="#{serviceContractManagedBean.redirectToViewServiceContractList()}" /> 
+                </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

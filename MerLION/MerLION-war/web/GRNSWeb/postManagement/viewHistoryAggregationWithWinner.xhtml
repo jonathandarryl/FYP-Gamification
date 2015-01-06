@@ -1,0 +1,153 @@
+<ui:composition template="../../template/userGRNSTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            GRNS | View History Aggregation Post
+        </title>
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            td th {
+                padding: 5px !important;
+            }
+            td {
+                color: black !important;
+            }
+        </style> 
+    </ui:define>
+    <ui:define name="content"> 
+
+        <center>
+
+            <h:form id="form">
+                <p:messages id="viewAP" autoUpdate="true" closable="true"/>
+
+                <p:dataGrid id="dataGridAP" var="ap" widgetVar="apTable" value="#{postManagedBean.historyAPList}" columns="1" rows="4" paginator="true"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="4,8,12" >
+                    <f:facet name="header">
+                        <p style="margin-left:200px; font-size: 1.5em; display: inline;">View History Aggregation Post With Winner</p>
+                        <p:menuButton value="Navigate Aggregation Posts" style="float:right">
+                            <p:menuitem value="View All Post" url="viewUserHistoryAggregationPost.xhtml"/>
+                            <p:menuitem value="View Posts With Winner" actionListener="#{postManagedBean.retrieveAggregationPostWithWinner()}"/>
+                        </p:menuButton>
+                    </f:facet>
+
+                    <p:panel header="#{ap.title}" style="text-align:left;width:auto;">
+                        <f:facet name="header">
+                            <p style="text-align:left; display: inline; font-size: 1.5em;">#{ap.title}</p>
+                            <p:menuButton value="Available Actions" style="float:right;">
+                                <p:menuitem value="View Detail" actionListener="#{postManagedBean.viewDetailAggregationPost(ap.id)}"/>
+                                <p:menuitem value="Create Order" actionListener="#{postManagedBean.createAggregationOrder(ap.id)}" 
+                                            rendered="#{not ap.orderCreated}" onclick="if (!confirm('Are you sure you want to create order?'))
+                                                        return false;" ajax="false"/>
+                            </p:menuButton>
+                        </f:facet>
+                        <p:panelGrid style="width:100%;">
+                            <p:row>
+                                <p:column rowspan="13" style="width:200px;">
+                                    <p:graphicImage name="images/merlion-logo.png" width="200" rendered="#{not ap.orderCreated}"/> 
+                                    <p:graphicImage name="images/merlion-logoOrderCreated.png" width="200" rendered="#{ap.orderCreated}"/> 
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Post Time:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{ap.postDateTime}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Bidding End Time:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{ap.endDateTime}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Number of Transport Service To Be Aggregated:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{ap.serviceOrderIdList.size()}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Required Capacity :" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{ap.quantity}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Initial Bid:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{ap.initBid}" />
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Reserve Price:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{ap.reservePrice}" rendered="#{ap.reservePriceSpecified}" />
+                                    <h:outputText value="Not Specified" rendered="#{not ap.reservePriceSpecified}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Winning Bid :" rendered="#{not ap.winnerId.equals(null)}"/>
+                                    <h:outputText value="Lowest Bid :" rendered="#{ap.winnerId.equals(null)}"/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{ap.winningPrice}" rendered="#{not ap.winnerId.equals(null)}"/>
+                                    <h:outputText value="#{ap.lowestBid}" rendered="#{ap.winnerId.equals(null)}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="Winner Username / Company :" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{ap.winnerUsername} / #{ap.winnerCompanyName}" rendered="#{not ap.winnerUsername.equals(null)}" />
+                                    <h:outputText value="No Winner" rendered="#{ap.winnerUsername.equals(null)}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="Source Location :" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="#{ap.sourceLoc}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="Destination Location:" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="#{ap.destLoc}" />
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>      
+                </p:dataGrid>
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>

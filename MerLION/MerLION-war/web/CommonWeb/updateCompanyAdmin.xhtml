@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="../template/systemAdminTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="css-style">
+        <style type="text/css">
+            td, th {
+                padding: 5px !important;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkStatus()}
+        #{commonFuncManagedBean.checkIfSystemAdmin()} 
+    </ui:define>
+    <ui:define name="content">
+
+        <p:fieldset legend="Update Company Admin Profile">
+            <h:form>
+                <p:panel id ="panel">
+
+                    <p:growl id="updateProfile" life="3000" />
+
+                    <h:panelGrid columns="3" cellpadding="5">
+
+                        <h:outputLabel for="username" value="Userame * : "  />  
+                        <h:outputText id="username" value="#{systemAdminManagedBean.username3}" >  
+                        </h:outputText>
+                        <p:message for="username" display="icon"/>
+                        
+                        <h:outputLabel for="oldDepartment" value="Original Department * : "  />  
+                        <h:outputText id="oldDepartment" value="#{systemAdminManagedBean.adminDepartment}" >  
+                        </h:outputText>
+                        <p:message for="oldDepartment" display="icon"/>
+                        
+                        <h:outputLabel for="oldTitlet" value="Original Title * : "  />  
+                        <h:outputText id="oldTitlet" value="#{systemAdminManagedBean.oldAdminTitle}" >  
+                        </h:outputText>
+                        <p:message for="oldTitlet" display="icon"/>
+
+                        <p:outputLabel for="title" value="Title: " />
+                        <p:selectOneMenu id="title" value="#{systemAdminManagedBean.adminTitle}" label="title" required="true" requiredMessage="Please select one title" converter="omnifaces.SelectItemsConverter">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItems value="#{systemAdminManagedBean.adminTList}" />
+                        </p:selectOneMenu>
+                        <p:messages for="title"/>
+
+                        <h:outputLabel for="fn" value="First Name * : "  />  
+                        <p:inplace editor="true">
+                            <p:inputText id="fn" value="#{systemAdminManagedBean.adminfn}" required="true" label="First Name">  
+                                <f:validateLength minimum="2" maximum="25" />
+                            </p:inputText>
+                        </p:inplace>
+                        <p:message for="fn" display="icon"/>
+
+                        <h:outputLabel for="ln" value="Last Name * : " />  
+                        <p:inplace editor="true">
+                            <p:inputText id="ln" value="#{systemAdminManagedBean.adminln}" required="true" label="Last Name">  
+                                <f:validateLength minimum="2" maximum="25" />
+                            </p:inputText>
+                        </p:inplace>
+                        <p:message for="ln" display="icon"/>
+                        
+                        <h:outputLabel for="contactNo" value="Contact No. * : " />  
+                        <p:inplace editor="true">
+                            <p:inputMask id="contactNo" value="#{systemAdminManagedBean.adminPhoneNo}" mask="9999-9999" required="true" label="contactNo" >  
+                            </p:inputMask>
+                        </p:inplace>
+                        <p:message for="contactNo" display="icon"/>
+
+                        <h:outputLabel for="email" value="Email * : " />  
+                        <p:inplace editor="true">
+                            <p:inputText id="email" value="#{systemAdminManagedBean.adminEmail}" required="true" label="Email">  
+                                <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                            </p:inputText>
+                        </p:inplace>
+                        <p:message for="email" display="icon"/>
+                        
+                    </h:panelGrid> 
+                    
+                    <p:commandButton ajax="true" type="submit" update="panel" icon="ui-icon-check" id="updateBtn" value="Save Changes" actionListener="#{systemAdminManagedBean.updateCompanyAdmin()}" /> 
+                </p:panel>
+            </h:form>
+        </p:fieldset> 
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Transportation Asset Management</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; 
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <p:graphicImage value="../../resources/images/transportationAsset.jpg" style="width:100%;"></p:graphicImage>
+
+        <h:form id="formMain">
+            <p:growl id="msgs" autoUpdate="true" life="3000" />
+            <p:dataTable id="vehicleTable" var="vehicle" value="#{transAssetManagedBean.transVehicles}" rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="Currently No vehicle">
+
+                    <f:facet name="header" >                  
+                        <p style="font-size: 1.5em;margin-bottom: 0;display:inline;">Assets Listing</p>
+                        <p:commandButton id="toggler" type="button" value="Columns" style="float:right;" icon="ui-icon-calculator" />
+                        <p:columnToggler datasource="vehicleTable" trigger="toggler" />                   
+                    </f:facet>
+
+                <p:column headerText="Type" sortBy="#{vehicle.type}">
+                    <h:outputText value="#{vehicle.type}" />
+                </p:column>
+                <p:column headerText="Capacity (ton)">
+                    <h:outputText value="#{vehicle.capacity}" />
+                </p:column>
+                <p:column headerText="Maximum Distance (KM)">
+                    <h:outputText value="#{vehicle.maxDistance}" />
+                </p:column>
+                <p:column headerText="Serviced Year">
+                    <h:outputText value="#{vehicle.useYear}" />
+                </p:column>
+                <p:column headerText="Transportation Cost (S$/KM)">
+                    <h:outputText value="#{vehicle.transCost}" />
+                </p:column>
+                <p:column headerText="Velocity (KM/H)">
+                    <h:outputText value="#{vehicle.velocity}" />
+                </p:column>
+                <p:column headerText="Flammable">
+                    <p:selectBooleanButton id="flammable" value="#{vehicle.flammable}" disabled="true" 
+                                           onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>                    
+                </p:column>
+                <p:column headerText="HighValue">
+                    <p:selectBooleanButton id="highValue" value="#{vehicle.highValue}" disabled="true" 
+                                           onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton> 
+                </p:column>
+                <p:column headerText="Perishable">
+                    <p:selectBooleanButton id="perishable" value="#{vehicle.perishable}" disabled="true" 
+                                           onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton> 
+                </p:column>
+                <p:column headerText="Pharmaceutical">
+                    <p:selectBooleanButton id="pharmaceutical" value="#{vehicle.pharmaceutical}" disabled="true" 
+                                           onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton> 
+                </p:column>
+                <p:column headerText="Retire">
+                    <center>
+                        <p:commandButton id="btn" update=":formMain" icon="ui-icon-trash" 
+                                         actionListener="#{transAssetManagedBean.deleteTransAsset(vehicle.vehiclesId, vehicle.type)}" type= "submit" ajax="false"
+                                         onclick="if (!confirm('Are you sure you want to retire this asset?'))
+                                                     return false;">                 
+                        </p:commandButton>
+                    </center>
+                </p:column>
+
+                <p:column headerText="Update">
+                    <center>
+                        <p:commandButton type="submit" icon="ui-icon-extlink" actionListener="#{transAssetManagedBean.viewTransAsset(vehicle)}" ajax="false"/>   
+                    </center>
+                </p:column>                    
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

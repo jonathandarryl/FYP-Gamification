@@ -1,0 +1,97 @@
+<ui:composition template="../template/companyAdminTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            MerLION Platform | Company User Registration
+        </title>
+    </ui:define>
+    <ui:define name="css-style">
+        <style type="text/css">
+            td, th {
+                padding: 5px !important;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCompanyAdmin()}
+    </ui:define>
+    <ui:define name="content">
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+ 
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <p:graphicImage name="images/ajaxloadingbar.gif" />
+                </p:dialog>
+        <p:fieldset legend="Register New MerLION User">
+            <h:form>
+                <p:panel id ="panel">
+
+                    <p:messages id="msgId" autoUpdate="true" closable="true"/>
+
+                    <h:panelGrid columns="3" cellpadding="10">
+                        <f:facet name="header">
+                            Create Company User
+                        </f:facet>
+
+                        <h:outputLabel for="username" value="Username: *" />
+                        <p:inputText id="username" value="#{commonFuncManagedBean.companyUserAccount.username}" label="Username" required="true" requiredMessage="Please input username">
+                            <f:validateLength minimum="4" maximum="25" />
+                            <p:watermark for="username" value="Input Username" />
+                        </p:inputText>                        
+                        <p:messages for="username" />
+
+                        <h:outputLabel for="firstName" value="First name: *" />
+                        <p:inputText id="firstName" value="#{commonFuncManagedBean.companyUser.firstName}" label="FirstName" required="true" requiredMessage="Please input first name">
+                            <f:validateLength minimum="2" maximum="25" />
+                            <p:watermark for="firstName" value="Input first name" />
+                        </p:inputText>                        
+                        <p:messages for="firstName" />
+
+                        <h:outputLabel for="lastname" value="Last Name: *" />
+                        <p:inputText id="lastname" value="#{commonFuncManagedBean.companyUser.lastName}" label="lastName" required="true" requiredMessage="Please input last name">
+                            <f:validateLength minimum="2" maximum="25" />
+                            <p:watermark for="lastname" value="Input last name" />
+                        </p:inputText>                        
+                        <p:messages for="lastname" />
+                        
+                        <h:outputLabel for="contactNo" value="Contact No. * : " />  
+                        <p:inputMask id="contactNo" value="#{commonFuncManagedBean.companyUserAccount.contactNo}" mask="9999-9999" required="true" label="contactNo" requiredMessage="Please input contact no">  
+                            <p:watermark for="contactNo" value="Input contact number" />
+                        </p:inputMask>
+                        <p:message for="contactNo" display="icon"/>
+
+                        <h:outputLabel for="email" value="Email: *" />
+                        <p:inputText id="email" value="#{commonFuncManagedBean.companyUser.email}" label="email" required="true" requiredMessage="Please input email" validatorMessage="Please input in the correct format">
+                            <p:watermark for="email" value="Input email" />
+                            <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                        </p:inputText>
+                        <p:messages for="email" />
+
+                        <p:outputLabel for="department" value="Department: " />
+                        <p:selectOneMenu id="department" value="#{commonFuncManagedBean.companyUserAccount.department}" label="department" required="true" requiredMessage="Please select one department" converter="omnifaces.SelectItemsConverter">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItems value="#{commonFuncManagedBean.departmentList}" />
+                            <f:ajax event="change" execute="@this" render="title" listener="#{commonFuncManagedBean.setTitleOption()}" />
+                        </p:selectOneMenu>
+                        <p:messages for="department" />
+
+                        <p:outputLabel for="title" value="Title: " />
+                        <p:selectOneMenu id="title" value="#{commonFuncManagedBean.companyUser.title}" label="title" required="true" requiredMessage="Please select one title" converter="omnifaces.SelectItemsConverter">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItems value="#{commonFuncManagedBean.titleList}" />
+                        </p:selectOneMenu>
+                        <p:messages for="title"/>                            
+
+                    </h:panelGrid>
+
+                    <p:commandButton update="panel" ajax="true" type="submit" value="Submit" icon="ui-icon-check" actionListener="#{commonFuncManagedBean.saveUser()}" />
+
+                </p:panel>
+            </h:form>
+        </p:fieldset>
+    </ui:define>
+</ui:composition>
+

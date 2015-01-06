@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="../template/systemAdminTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:m="http://code.google.com/p/gmaps4jsf/">
+    <ui:define name="css-style">
+        <style type="text/css">
+            td, th {
+                padding: 5px !important;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="js">
+        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAxrVS1QxlpJHXxQ2Vxg2bJBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxS9AOPy_YJl48ifAy4mq6I8SgK8fg" type="text/javascript">
+        </script> 
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfSystemAdmin()}
+        #{commonFuncManagedBean.populateLocation()}
+    </ui:define>
+    <ui:define name="content">
+
+        <p:fieldset legend="Update Company Profile">  
+            <h:form>
+                <p:panel id ="panel">
+                    <p:growl id="updateCompany" life="3000" />
+                    <div class="row">
+                        <div class="col-md-5 col-sm-5 col-lg-5">
+                            <h:panelGrid columns="3" cellpadding="5" style="width:100%;">
+
+                                <h:outputLabel for="companyID" value="Company ID * : "  />  
+                                <h:outputText id="companyID" value="#{commonFuncManagedBean.cid}">  
+                                </h:outputText>
+                                <p:message for="companyID" display="icon"/>
+
+                                <h:outputLabel for="companyName" value="Company Name * : "  />  
+                                <h:outputText id="companyName" value="#{commonFuncManagedBean.companyName}" >  
+                                </h:outputText>
+                                <p:message for="companyName" display="icon"/>
+
+                                <h:outputLabel for="companyType" value="Company Type * : " />  
+                                <h:outputText id="companyType" value="#{commonFuncManagedBean.companyType}" >  
+                                </h:outputText>
+                                <p:message for="companyType" display="icon"/>
+                                
+                                <h:outputLabel for="VAT" value="Company VAT * : " />  
+                                    <h:outputText id="VAT" value="#{commonFuncManagedBean.companyVAT}" >  
+                                    </h:outputText>
+                                    <p:message for="VAT" display="icon"/>
+
+                                <h:outputLabel for="contactNo" value="Contact No. * : " />  
+                                <p:inplace editor="true">
+                                    <p:inputMask id="contactNo" value="#{commonFuncManagedBean.contactNo}" mask="9999-9999" required="true" label="contactNo.">  
+                                    </p:inputMask>
+                                </p:inplace>
+                                <p:message for="contactNo" display="icon"/>
+
+                                <h:outputLabel for="street" value="Address Line 1 : " />  
+                                <p:inputText style="width:100%;" id="street" value="#{commonFuncManagedBean.street}" required="true" label="Street">  
+                                    <f:validateLength minimum="5" />
+                                </p:inputText>
+                                <p:message for="street" display="icon"/>
+
+                                <h:outputLabel for="blockNo" value="Address Line 2 : " />  
+                                <p:inputText style="width:100%;" id="blockNo" value="#{commonFuncManagedBean.blockNo}" label="BlockNo">  
+                                </p:inputText>
+                                <p:message for="blockNo" display="icon"/>
+
+                                <h:outputLabel for="city" value="City : " />  
+                                <p:inputText style="width:100%;" id="city" value="#{commonFuncManagedBean.city}" required="true" label="City">  
+                                    <f:validateLength minimum="2" />
+                                </p:inputText>
+                                <p:message for="city" display="icon"/>
+
+                                <h:outputLabel for="state" value="State : " />  
+                                <p:inputText style="width:100%;" id="state" value="#{commonFuncManagedBean.state}" required="true" label="State">  
+                                    <f:validateLength minimum="2" />
+                                </p:inputText>
+                                <p:message for="state" display="icon"/>
+
+                                <h:outputLabel for="country" value="Country : " />  
+                                <p:inputText style="width:100%;" id="country" value="#{commonFuncManagedBean.country}" required="true" label="Country">  
+                                    <f:validateLength minimum="2" />
+                                </p:inputText>
+                                <p:message for="country" display="icon"/>
+
+                                <h:outputLabel for="postalCode" value="Postal Code : " />  
+                                <p:inputMask style="width:100%;" id="postalCode" value="#{commonFuncManagedBean.postalCode}" mask="999 999" required="true" label="PostalCode.">  
+                                </p:inputMask>
+                                <p:message for="postalCode" display="icon"/>
+                            </h:panelGrid> 
+                        </div>
+                        <div class="col-md-7 col-sm-7 col-lg-7">
+                            <h:panelGrid>
+                                <f:facet name="header">
+                                    Company Location
+                                </f:facet>
+                                <m:map width="500px" height="350px" address="#{commonFuncManagedBean.companyAddress}">
+                                    <m:marker/>
+                                    <m:htmlInformationWindow htmlText="#{commonFuncManagedBean.companyAddress}"/>
+                                </m:map>
+                            </h:panelGrid> 
+                        </div>
+                    </div>
+
+
+                    <p:commandButton ajax="false" type="submit" update="panel" icon="ui-icon-check" id="updateCom" value="Update Company Profile" actionListener="#{commonFuncManagedBean.updateCompany()}" /> 
+                </p:panel>
+            </h:form>
+        </p:fieldset> 
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Service Contracts list</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfSalesAndMarketing()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formMain">  
+            <p:graphicImage value="../../resources/images/order2.jpg" style="width:100%; height: 150px;"></p:graphicImage>
+
+            <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+            <p:dataTable id="datatable" var="serviceContract" value="#{serviceOrderManagedBean.retrieveOutgoingServiceContractList()}"
+                         rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="No Service contract found">
+                <f:facet name="header">
+                    <p style="font-size: 1.5em;margin-bottom: 0;">Create Order from Service Contract</p>
+                </f:facet>
+                <p:growl id="msgs" autoUpdate="true" life="3000" />
+                <p:column headerText="Service ID" sortBy="#{serviceContract.id}">
+                    <h:outputText value="#{serviceContract.id}" />
+                </p:column> 
+                <p:column headerText="Creation time"
+                          sortBy="#{serviceContract.creationTime}">
+                    <h:outputText value="#{serviceContract.creationTime}" />
+                </p:column>                    
+                <p:column headerText="Service Provider" sortBy="#{serviceContract.serviceQuotation.getpCompany().companyName}">
+                    <h:outputText value="#{serviceContract.serviceQuotation.getpCompany().companyName}" />
+                </p:column>
+                <p:column headerText="Product">
+                    <h:outputText value="#{serviceContract.serviceQuotation.product.productName}" />
+                </p:column>
+                <p:column headerText="Description">
+                    <h:outputText value="#{serviceContract.serviceQuotation.description}" />
+                </p:column>                    
+                <p:column headerText="Create Service Order">
+                    <center>
+                        <p:commandButton icon="ui-icon-extlink" actionListener="#{serviceOrderManagedBean.retrieveServiceContract(serviceContract)}" />
+                    </center>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

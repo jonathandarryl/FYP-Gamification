@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>View BOM</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfManufacture()}
+        #{commonFuncManagedBean.checkIfUser()}
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            table.hovertable {
+                font-family: verdana,arial,sans-serif;
+                font-size:13px;
+                color:#333333;
+                border-width: 3px;
+                border-color: #999999;
+                border-collapse: collapse;
+            }
+            table.hovertable th {
+                background-color:#c3dde0;
+                border-width: 3px;
+                padding: 10px;
+                border-style: solid;
+                border-color: #a9c6c9;
+            }
+            table.hovertable tr {
+                background-color:#d4e3e5;
+            }
+            table.hovertable td {
+                border-width: 3px;
+                padding: 10px;
+                border-style: solid;
+                border-color: #a9c6c9;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="content">
+
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/banner_business_promotion.png" style="width:100%;"></p:graphicImage>
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+
+            <table class="hovertable">
+                <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                    <td><strong>BOM ID</strong></td>
+                    <td>#{bomManagedBean.selectedBOM.id}</td>
+                </tr>
+                <tr height="30" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                    <td><strong>Product Name</strong></td>
+                    <td>#{bomManagedBean.selectedBOM.finishedGood.productName}</td>
+                </tr>
+            </table>
+            <br/>
+
+            <h:panelGrid columns="2">
+
+                <p:dataTable var="material" value="#{bomManagedBean.selectedBOM.rawMaterialList}"
+                             rows="10" paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15" emptyMessage="No Materials">
+                    <f:facet name="header">
+                        <p style="font-size:1.5em;display:inline;">Raw Material List</p>
+                    </f:facet>
+                    <p:column headerText="Material Name">
+                        <h:outputText value="#{material.productName}" />
+                    </p:column>
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{bomManagedBean.getQuantity(material)}" />
+                    </p:column>
+                </p:dataTable>
+                <br/>
+                <f:facet name="footer">
+                    <p:commandButton type="submit" value="Update BOM" actionListener="#{bomManagedBean.preUpdateBOM()}"/>
+                </f:facet>
+                <br/>
+                <f:facet name="footer">
+                    <p:commandButton type="update" value="Delete BOM" actionListener="#{bomManagedBean.deleteBOM()}"/>
+                </f:facet>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

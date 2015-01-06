@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>View Incoming Warehouse Order list</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}        
+        #{commonFuncManagedBean.checkIfPartnerCompany()}
+        #{commonFuncManagedBean.checkIfWarehouse()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formMain"> 
+            <p:graphicImage value="../../resources/images/bannerWarehouse.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+            <p:growl id="msgs" />
+            <p:dataTable id="datatable" var="warehouseOrder" value="#{warehouseOrderManagedBean.retrieveAllOwningWarehouseOrderList()}"
+                         rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="No Warehouse order found">
+
+                <f:facet name="header">
+                    <p style="font-size:1.5em;display:inline;">Inbound Storage Service</p>
+                </f:facet>
+                <p:column headerText="Warehouse Order ID" sortBy="#{warehouseOrder.id}">
+                    <h:outputText value="#{warehouseOrder.id}" />
+                </p:column>   
+                <p:column headerText="Creation time" sortBy="#{warehouseOrder.creationTime}">
+                    <h:outputText value="#{warehouseOrder.creationTime}">
+                        <f:convertDateTime pattern="yy-MM-dd" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Start time" sortBy="#{warehouseOrder.serviceOrder.startTime}">
+                    <h:outputText value="#{warehouseOrder.serviceOrder.startTime}">
+                        <f:convertDateTime pattern="yy-MM-dd" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="End time" sortBy="#{warehouseOrder.serviceOrder.endTime}">
+                    <h:outputText value="#{warehouseOrder.serviceOrder.endTime}">
+                        <f:convertDateTime pattern="yy-MM-dd" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Client Company" sortBy="#{warehouseOrder.serviceOrder.serviceContract.serviceQuotation.clientCompany.companyName}">
+                    <h:outputText value="#{warehouseOrder.serviceOrder.serviceContract.serviceQuotation.clientCompany.companyName}" />
+                </p:column>
+                <p:column headerText="Product" sortBy="#{warehouseOrder.serviceOrder.product.productName}">
+                    <h:outputText value="#{warehouseOrder.serviceOrder.product.productName}" />
+                </p:column>
+                <p:column headerText="Quantity" sortBy="#{warehouseOrder.serviceOrder.quantity}">
+                    <h:outputText value="#{warehouseOrder.serviceOrder.quantity}" />
+                </p:column>
+                <p:column headerText="Warehouse Location City" sortBy="#{warehouseOrder.serviceOrder.destLoc.city}">
+                    <h:outputText value="#{warehouseOrder.serviceOrder.destLoc.city}" />
+                </p:column>
+                <p:column headerText="Payment received?" sortBy="#{warehouseOrder.serviceOrder.serviceInvoice.isPaidOrNot.toString}">
+                    <p:selectBooleanButton id="approvedOrNot1" value="#{warehouseOrder.serviceOrder.serviceInvoice.isPaidOrNot()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>
+                </p:column>
+                <p:column headerText="Fulfilled?" sortBy="#{warehouseOrder.isFulfilledOrNot().toString}">
+                    <p:selectBooleanButton id="fulfilledOrNot1" value="#{warehouseOrder.isFulfilledOrNot()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>
+                </p:column>
+                <p:column headerText="Detail Info">
+                    <center>
+                        <p:commandButton icon="ui-icon-extlink" actionListener="#{warehouseOrderManagedBean.retrieveIncomingWarehouseOrder(warehouseOrder)}" />
+                    </center>
+                </p:column>
+                <p:column headerText="Fulfill Warehouse Order">
+                    <center>
+                        <p:commandButton disabled="#{warehouseOrder.isFulfilledOrNot()}" type="update" icon="ui-icon-check" ajax="true" update="datatable" actionListener="#{warehouseOrderManagedBean.fulfillWarehouseOrder(warehouseOrder)}" styleClass="ui-priority-primary" />
+                    </center>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

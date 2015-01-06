@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Key Client</title>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formMain"> 
+            <p:growl life="3000"></p:growl>
+            <p:graphicImage value="../../resources/images/keyClient.jpg" style="width:100%;"></p:graphicImage>
+            <p:dataTable var="client" value="#{keyClientManagedBean.getKeyClient(event)}" rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="Currently No Key Client">
+                <f:facet name="header">
+                    <p style="font-size: 1.5em;margin-bottom: 0;">View All Key Client</p>
+                </f:facet>
+                <p:column headerText="Key Client ID" sortBy="#{client.id}">
+                    <h:outputText value="#{client.id}" />
+                </p:column>
+                <p:column headerText="Company Name" >
+                    <h:outputText value="#{client.companyName}" />
+                </p:column>
+                <p:column headerText="Membership Tier">
+                    <h:outputText value="#{client.membershipTier}" />
+                </p:column>
+                <p:column headerText="Membership Point">
+                    <h:outputText value="#{client.cumulativeMembershipPoints}" />
+                </p:column>
+                <p:column headerText="Contact No">
+                    <h:outputText value="#{client.contactNo}" />
+                </p:column>
+                <p:column headerText="Delete">
+                    <center>
+                        <p:commandButton id="btn" update=":formMain" icon="ui-icon-trash"
+                                         actionListener="#{keyClientManagedBean.deleteKeyClient(client.id)}" type= "submit" ajax="false">                 
+                        </p:commandButton>
+                    </center>
+                </p:column>
+
+                <p:column headerText="Update">
+                    <center>
+                        <p:commandButton type="submit" icon="ui-icon-extlink" actionListener="#{keyClientManagedBean.viewClient(client)}" ajax="false"/>                       
+                    </center>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+        <!--
+        <h:form id="form2">
+            <p:panel id="panel2" header="Add New Key Client">
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/spinner.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:messages />
+                
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="companyName" style="font-weight: bold" value="Company Name: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Company Name"
+                                    requiredMessage="Company Name is required." id="companyName"
+                                    value="#{keyClientManagedBean.companyName}">
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="companyName" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="contactNo" style="font-weight: bold" value="Contact No: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Contact No" requiredMessage="Contact No is required." id="contactNo"
+                                         value="#{keyClientManagedBean.contactNo}">
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="contactNo" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+                <p:commandButton id="btn2" value="Submit" icon="ui-icon-check"
+                                 update=":formMain:panel" actionListener="" ajax="true"/>
+            </p:panel>
+        </h:form>
+        -->
+    </ui:define>
+</ui:composition>

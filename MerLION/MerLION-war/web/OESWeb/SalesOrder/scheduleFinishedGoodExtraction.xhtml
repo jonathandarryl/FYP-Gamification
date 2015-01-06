@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:o="http://omnifaces.org/ui">
+    <ui:define name="head-title">
+        <title>Schedule Finished Goods for Sales Order</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfOperating()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <p:graphicImage value="../../resources/images/sales_banner.jpg" style="width:100%; height: 200px"></p:graphicImage>
+
+            <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+            <p:growl id="msgs" />
+            <p:layout id="layout" style="height:650px;" >
+                <p:layoutUnit position="west" resizable="true" size="20%" header="Sales Order Information">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputLabel value="Sales Order ID:"/>
+                        <h:outputText value="#{salesOrderManagedBean.salesOrder.id}"/>
+
+                        <h:outputLabel value="Total Price:"/>
+                        <h:outputText value="#{salesOrderManagedBean.salesOrder.salesQuotation.totalPrice}"/>
+
+                        <h:outputLabel value="All Finished Goods Ready for Fulfillment?"/>
+                        <p:selectBooleanButton value="#{salesOrderManagedBean.salesOrder.productReadyOrNot}" disabled="true" 
+                                               onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+                        
+                        <h:outputLabel value="Fulfilled Or Not?"/>
+                        <p:selectBooleanButton value="#{salesOrderManagedBean.salesOrder.isIsFulfilled()}" disabled="true" 
+                                               onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+
+                        <h:outputLabel value="Confirm Fulfillment"/>
+                        <p:commandButton type="update" update="layout" icon="ui-icon-check" style="width:70px" actionListener="#{salesOrderManagedBean.fulfillSalesOrder()}"/>
+
+                    </h:panelGrid>
+                </p:layoutUnit>
+                <p:layoutUnit position="center" resizable="true" size="80%" header="Product Information">
+
+                    <p:dataTable var="product" value="#{salesOrderManagedBean.salesOrder.salesQuotation.productList}"
+                                 paginator="true" rows="5" emptyMessage="No Product">
+                        <p:column headerText="Product Name">
+                            <h:outputText value="#{product.productName}" />
+                        </p:column>
+                        <p:column headerText="Required Quantity">
+                            <h:outputText value="#{salesOrderManagedBean.getOrderSingleQuantity(product)}" />
+                        </p:column>
+                        <p:column headerText="Unit">
+                            <h:outputText value="#{product.unit}" />
+                        </p:column>
+                        <p:column headerText="Current Inventory">
+                            <h:outputText value="#{product.inventoryLevel}" />
+                        </p:column>
+                        <p:column headerText="Arrived in Factory?">
+                            <center>
+                                <p:selectBooleanButton id="arrivedOrNot" value="#{salesOrderManagedBean.checkOneRawMaterialReadyOrNot(product)}" disabled="true" 
+                                                       onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                                </p:selectBooleanButton>
+                            </center>
+                        </p:column>
+                        <p:column headerText="Request for Finished Good">
+                            <center>
+                                <p:commandButton type="submit" icon="ui-icon-gear" actionListener="#{salesOrderManagedBean.retrieveProductForExtraction(product)}"/>
+                            </center>
+                        </p:column>
+                    </p:dataTable>
+                </p:layoutUnit>
+            </p:layout>
+        </h:form>
+    </ui:define>
+</ui:composition>

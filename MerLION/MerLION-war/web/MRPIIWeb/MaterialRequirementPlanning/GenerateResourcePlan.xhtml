@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Generate Resource Plan</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfManufacture()}
+        #{commonFuncManagedBean.checkIfUser()}
+        #{materialReqPlanningManagedBean.retrieveAllProducts()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/resourceplan.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+            <p:panel id="panel">
+
+                <f:facet name="header">
+                    <p style="font-size:1.5em;display:inline;">Generate Resource Plan for a Particular Month</p>
+                </f:facet>
+                
+                <p:panelGrid columns="2">
+                    <p:outputLabel for="year" value="Year: " style="font-weight: bold"/>
+                <p:selectOneMenu id="year" value="#{materialReqPlanningManagedBean.yearStr}" label="year" required="true" requiredMessage="year cannot be empty" effect="fold" editable="true">
+                    <f:selectItem itemLabel="Select Or Type" itemValue="" />
+                    <f:selectItem itemLabel="2016" itemValue="2016" />
+                    <f:selectItem itemLabel="2015" itemValue="2015" />
+                    <f:selectItem itemLabel="2014" itemValue="2014" />
+                </p:selectOneMenu>
+                <p:outputLabel for="month" value="Month: " style="font-weight: bold"/>
+                <p:selectOneMenu id="month" value="#{materialReqPlanningManagedBean.monthStr}" label="month" required="true" requiredMessage="Month cannot be empty" effect="fold">
+                    <f:selectItem itemLabel="Select" itemValue="" />
+                    <f:selectItem itemLabel="Jan" itemValue="1" />
+                    <f:selectItem itemLabel="Feb" itemValue="2" />
+                    <f:selectItem itemLabel="Mar" itemValue="3" />
+                    <f:selectItem itemLabel="Apr" itemValue="4" />
+                    <f:selectItem itemLabel="May" itemValue="5" />
+                    <f:selectItem itemLabel="Jun" itemValue="6" />
+                    <f:selectItem itemLabel="Jul" itemValue="7" />
+                    <f:selectItem itemLabel="Aug" itemValue="8" />
+                    <f:selectItem itemLabel="Sep" itemValue="9" />
+                    <f:selectItem itemLabel="Oct" itemValue="10" />
+                    <f:selectItem itemLabel="Nov" itemValue="11" />
+                    <f:selectItem itemLabel="Dec" itemValue="12" />
+                </p:selectOneMenu>
+                </p:panelGrid>
+                
+                <p:dataTable var="products" value="#{materialReqPlanningManagedBean.productList}" rowKey="#{products.id}"
+                             rows="10" paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15" emptyMessage="No Materials" selection="#{materialReqPlanningManagedBean.selectProduct}">
+                    <f:facet name="header">
+                        <p style="font-size:1.5em;display:inline;">Select Product</p>
+                    </f:facet>
+                    <p:column selectionMode="single" />  
+                    <p:column headerText="Product ID">
+                        <h:outputText value="#{products.id}" />
+                    </p:column>
+                    <p:column headerText="Product Name"
+                              sortBy="#{products.productName}">
+                        <h:outputText value="#{products.productName}" />
+                    </p:column>
+                    <p:column headerText="Product Price">
+                        <h:outputText value="#{products.productPrice}">
+                            <f:convertNumber type="currency" currencySymbol="S$" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Product Description">
+                        <h:outputText value="#{products.productDescription}" />
+                    </p:column>
+                    <p:column headerText="Inventory Level">
+                        <h:outputText value="#{products.inventoryLevel}" />
+                    </p:column>
+                    <p:column headerText="Unit">
+                        <h:outputText value="#{products.unit}" />
+                    </p:column>
+                </p:dataTable>
+
+                <f:facet name="footer">
+                    <center>
+                        <p:commandButton type="submit" value="Next" actionListener="#{materialReqPlanningManagedBean.retrieveMaterialList()}"/>
+                    </center>
+                </f:facet>
+                
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

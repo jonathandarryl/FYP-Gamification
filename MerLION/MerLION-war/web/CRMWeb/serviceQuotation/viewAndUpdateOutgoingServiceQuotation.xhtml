@@ -1,0 +1,471 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:o="http://omnifaces.org/ui">
+    <ui:define name="head-title">
+        <title>Update Outgoing Service Quotation</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfSalesAndMarketing()}
+    </ui:define>
+
+    <ui:define name="content">
+
+        <h:form>
+            <p:graphicImage value="../../resources/images/sq1.jpg" style="width:100%;"></p:graphicImage>
+            <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+
+            <p:layout style="height:650px;" >
+                <p:growl id="msgs" />
+                <p:layoutUnit position="west" resizable="true" size="40%" header="Service Quotation Information">
+                    <p:panelGrid>
+                        <p:row >
+                            <p:column>
+                                <h:outputText value="Service Provider:" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{serviceQuotationManagedBean.sq.getpCompany().companyName}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column>
+                                <h:outputText value="Rejected by Provider Or Not:" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanButton id="rejectOrNot1" value="#{serviceQuotationManagedBean.sq.rejectedByProivderOrNot}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                                </p:selectBooleanButton>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel for="startDate" value="Start Time:*" />
+                            </p:column>
+                            <p:column>
+                                <p:inplace id="startDate">
+                                    <p:calendar id="startDate1" value="#{serviceQuotationManagedBean.startDate}" pattern="yy-MM-dd" mode="inline" />
+                                </p:inplace>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel for="endDate" value="End Time:*" />
+                            </p:column>
+                            <p:column>
+                                <p:inplace id="endDate">
+                                    <p:calendar id="endDate1" value="#{serviceQuotationManagedBean.endDate}" pattern="yy-MM-dd" mode="inline" />
+                                </p:inplace>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel for="description" value="Service Description:" />
+                            </p:column>
+                            <p:column>
+                                <p:inplace>
+                                    <h:inputText required="true" label="description"
+                                                 requiredMessage="Description is required." id="description"
+                                                 value="#{serviceQuotationManagedBean.description}"/>
+                                </p:inplace>     
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column>
+                                <h:outputText value="Service Price (S$):" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{serviceQuotationManagedBean.sq.totalPrice}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel for="orderNumber" value="Total Order Number:" />      
+                            </p:column>
+                            <p:column>
+                                <p:inplace>
+                                    <p:inputText required="true" label="orderNumber"
+                                                 requiredMessage="Order number is required." id="orderNumber"
+                                                 value="#{serviceQuotationManagedBean.orderNumber}">
+                                        <f:convertNumber type="number" />
+                                    </p:inputText>
+                                </p:inplace>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column style="background-color: #E1EDF9; font-size: 12px">
+                                <h:outputText style="font-weight: bold" value="Product Info" />
+                            </p:column>
+                            <p:column style="background-color: #E1EDF9">
+                            </p:column >
+                        </p:row>
+
+                        <p:row >
+                            <p:column>
+                                <h:outputText value="Product Owner Company: " style="font-weight: bold"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{serviceQuotationManagedBean.sq.product.ownerCompanyName}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column>
+                                <h:outputText value="Product Name: " style="font-weight: bold"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{serviceQuotationManagedBean.sq.product.productName}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column>
+                                <p:outputLabel for="quantity" value="Quantity Per Order (#{serviceQuotationManagedBean.sq.product.unit}):" />
+                            </p:column>
+                            <p:column>
+                                <p:inplace>
+                                    <p:inputText required="true" label="quantity"
+                                                 requiredMessage="Estimate Total Quantity is required." id="quantity"
+                                                 value="#{serviceQuotationManagedBean.quantity}">
+                                        <f:convertNumber type="number" />
+                                    </p:inputText>
+                                </p:inplace>
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                    <h:outputText value="Fields with * can be updated." style="font-style: italic; font-weight: lighter"/>
+
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+
+                    <h:panelGrid columns="2">
+                        <h:outputText value="Approved by client?"/>
+                        <p:selectBooleanButton value="#{serviceQuotationManagedBean.sq.clientApprovedOrNot}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+                        <h:outputText value="Approved by service provider?"/>
+                        <p:selectBooleanButton value="#{serviceQuotationManagedBean.sq.isApprovedOrNot()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+                    </h:panelGrid>
+
+                    <br></br>
+
+                    <h:panelGrid columns="3">
+                        <p:commandButton style="width: 120px" ajax="true" type="submit" value="Update" actionListener="#{serviceQuotationManagedBean.updateServiceQuotation()}" /> 
+                        <p:commandButton style="width: 120px" ajax="true" type="submit" value="Approve" actionListener="#{serviceQuotationManagedBean.approveOutsourcingServiceQuotationInViewPage()}" 
+                                         icon="ui-icon-check" disabled="#{serviceQuotationManagedBean.sq.clientApprovedOrNot}"/> 
+                        </h:panelGrid>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" resizable="true" size="30%" header="Transportation Information">
+                    <p:panelGrid id="panelGrid2">
+
+                        <p:row >
+                            <p:column style="background-color: #E1EDF9; font-size: 12px">
+                                <h:outputText style="font-weight: bold" value="Source Location" />
+                            </p:column>
+                            <p:column style="background-color: #E1EDF9">
+                            </p:column >
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="sourceCountry" style="font-weight: bold" 
+                                               value="Country: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="sourceCountry" style="width:150px" 
+                                              value="#{serviceQuotationManagedBean.sq.source.country}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="sourceState" style="font-weight: bold" value="State:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="sourceState" value="#{serviceQuotationManagedBean.sq.source.state}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="sourceCity" style="font-weight: bold" value="City: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="sourceCity" value="#{serviceQuotationManagedBean.sq.source.city}">
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="sourceStreet" style="font-weight: bold" value="Street: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText  id="sourceStreet" value="#{serviceQuotationManagedBean.sq.source.street}">
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="sourceBlockNo" style="font-weight: bold" value="Block: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText 
+                                    id="sourceBlockNo" value="#{serviceQuotationManagedBean.sq.source.blockNo}">
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="sourcePostalCode" style="font-weight: bold" value="Postal Code: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText   id="sourcePostalCode" value="#{serviceQuotationManagedBean.sq.source.postalCode}">
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+
+                        <p:row >
+                            <p:column style="background-color: #E1EDF9; font-size: 12px">
+                                <h:outputText style="font-weight: bold" value="Destinaion" />
+                            </p:column>
+                            <p:column style="background-color: #E1EDF9">
+                            </p:column >
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="destCountry" style="font-weight: bold" value="Country: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="destCountry" 
+                                              value="#{serviceQuotationManagedBean.sq.dest.country}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="destState" style="font-weight: bold" value="State:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText
+                                    id="destState"
+                                    value="#{serviceQuotationManagedBean.sq.dest.state}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="destCity" style="font-weight: bold" value="City: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText  id="destCity" value="#{serviceQuotationManagedBean.sq.dest.city}">
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="destStreet" style="font-weight: bold" value="Street: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="destStreet" 
+                                              value="#{serviceQuotationManagedBean.sq.dest.street}">
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="destBlockNo" style="font-weight: bold" value="Block: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText
+                                    id="destBlockNo" value="#{serviceQuotationManagedBean.sq.dest.blockNo}">
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="destPostalCode" style="font-weight: bold" value="Postal Code: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="destPostalCode" value="#{serviceQuotationManagedBean.sq.dest.postalCode}">
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br></br>
+                    <br></br>
+                    <p:commandButton value="Verify transportation capacity" update="msgs" ajax="true" actionListener="#{serviceQuotationManagedBean.verifyServiceQuotationTransportation()}" icon="ui-icon-check" />
+
+                </p:layoutUnit>
+                <p:layoutUnit position="east" resizable="true" size="30%" header="Warehouse Information">                    
+                    <p:panelGrid id="panelGrid3">                        
+                        <p:row >
+                            <p:column style="background-color: #E1EDF9; font-size: 12px">
+                                <h:outputText style="font-weight: bold" value="Warehouse Info" />
+                            </p:column>
+                            <p:column style="background-color: #E1EDF9">
+
+                            </p:column >
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="warehouse" style="font-weight: bold" value="Warehouse Name: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText  id="warehouse" value="#{serviceQuotationManagedBean.sq.warehouse.name}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="warehCountry" style="font-weight: bold" value="Country: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="warehCountry" value ="#{serviceQuotationManagedBean.sq.warehouse.location.country}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="warehState" style="font-weight: bold" value="State:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="warehState" value="#{serviceQuotationManagedBean.sq.warehouse.location.state}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="warehCity" style="font-weight: bold" value="City: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="warehCity" value="#{serviceQuotationManagedBean.sq.warehouse.location.city}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="warehStreet" style="font-weight: bold" value="Street: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="warehStreet" value="#{serviceQuotationManagedBean.sq.warehouse.location.street}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="warehBlockNo" style="font-weight: bold" value="Block: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="warehBlockNo" value="#{serviceQuotationManagedBean.sq.warehouse.location.blockNo}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="warehPostalCode" style="font-weight: bold" value="Postal Code: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText id = "warehPostalCode" value="#{serviceQuotationManagedBean.sq.warehouse.location.postalCode}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Required Warehouse Capacity:" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{serviceQuotationManagedBean.sq.requiredWarehouseCapacity}"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="duration" value="Storage Duration Per Order (days):" />    
+                            </p:column>
+                            <p:column>
+                                <p:inplace>
+                                    <p:inputText required="true" label="duration"
+                                                 requiredMessage="Duration is required." id="duration"
+                                                 value="#{serviceQuotationManagedBean.duration}">
+                                        <f:convertNumber type="number" />
+                                    </p:inputText>
+                                </p:inplace>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <h:outputText value="Fields with * can be updated." style="font-style: italic; font-weight: lighter"/>
+                    <br></br>
+
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputText value="Persihable" />
+                        <p:selectBooleanButton id="perishable" value="#{serviceQuotationManagedBean.sq.isPerishable()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+
+                        <h:outputText value="Flammable" />
+                        <p:selectBooleanButton id="flammable" value="#{serviceQuotationManagedBean.sq.isFlammable()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+
+                        <h:outputText value="Pharmaceutical:" />
+                        <p:selectBooleanButton id="pharmaceutical" value="#{serviceQuotationManagedBean.sq.isPharmaceutical()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+
+                        <h:outputText value="HighValue:" />
+                        <p:selectBooleanButton id="highValue" value="#{serviceQuotationManagedBean.sq.isHighValue()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>                    
+
+                        <o:validateOrder type="lte" components="startDate1 endDate1" message="Start Date must be early than End Date"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Verify warehouse capacity" update="msgs" ajax="true" actionListener="#{serviceQuotationManagedBean.verifyServiceQuotationWarehouse()}" icon="ui-icon-check" />
+
+                </p:layoutUnit>   
+            </p:layout>
+            <p:dialog resizable="false" header="Please Choose Service Type" widgetVar="dlg5" showEffect="fold" dynamic="true">
+
+                <p:outputLabel for="basic" value="Please Choose Service Type:" />
+                <p:selectOneListbox id="basic" value="#{serviceQuotationManagedBean.price}">
+                    <f:selectItem itemLabel="Cheapest Price: $#{serviceQuotationManagedBean.priceList.get(0)}" itemValue="#{serviceQuotationManagedBean.priceList.get(0)}" />
+                    <f:selectItem itemLabel="Shortest Transportation Duration: $#{serviceQuotationManagedBean.priceList.get(1)}" itemValue="#{serviceQuotationManagedBean.priceList.get(1)}" />
+                    <f:selectItem itemLabel="Most Cost-effective: $#{serviceQuotationManagedBean.priceList.get(2)}" itemValue="#{serviceQuotationManagedBean.priceList.get(2)}" />
+                </p:selectOneListbox>
+
+                <p:commandButton type="submit" value="Choose" actionListener="#{serviceQuotationManagedBean.choosePrice()}"/>
+            </p:dialog>
+
+            <p:dialog resizable="false" header="Update Successful" widgetVar="dlg" showEffect="fold">
+                <p:commandButton type="submit" value="Back to Outgoing Service Quotation List" icon="ui-icon-check" actionListener="#{serviceQuotationManagedBean.redirectToViewOutgoingServiceQuotationList()}" /> 
+            </p:dialog>
+
+            <p:dialog resizable="false" header="Approval Successful" widgetVar="dlg1" showEffect="fold">
+                <p:commandButton type="submit" value="Back to Outgoing Service Quotation List" icon="ui-icon-check" actionListener="#{serviceQuotationManagedBean.redirectToViewOutgoingServiceQuotationList()}" /> 
+            </p:dialog>
+
+
+        </h:form>
+    </ui:define>
+</ui:composition>
+

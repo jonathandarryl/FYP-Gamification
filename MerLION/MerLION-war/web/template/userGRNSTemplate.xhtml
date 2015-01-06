@@ -1,0 +1,260 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view>
+        <h:head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <meta name="author" content="Sunnie" />
+            <ui:insert name="head-title">
+                <title>GRNS | Homepage</title>
+            </ui:insert>
+            <ui:insert name="css-style">
+
+            </ui:insert>
+
+            <f:facet name="middle">
+                <h:outputStylesheet name="bootstrap/css/bootstrap.css" />
+                <h:outputStylesheet name="css/font-awesome.css" />
+                <h:outputStylesheet name="css/merlion-platform.css" />
+                <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" type="text/javascript" />-->
+                <!--<h:outputScript name="bootstrap/js/bootstrap.js" />-->
+            </f:facet>
+
+            <style type="text/css">
+                .ui-layout-north {
+                    z-index:20 !important;
+                }
+
+                .ui-layout-north .ui-layout-unit-content {
+                    overflow:visible !important;
+                }
+
+                .ui-layout-north .ui-menubar {
+                    margin-top: 15px;
+                    margin-left: 180px;
+                    border: none;
+                }
+                .ui-layout-west {
+                    z-index:19 !important;
+                    overflow:visible !important;;
+                }
+                .ui-layout-west .ui-layout-unit-content {
+                    overflow:visible !important;
+                }
+                .ui-datepicker-inline {
+                    width: 100% !important;
+                }
+                .ui-datepicker table {
+                    font-size: .7em !important;
+                }
+                .ui-datepicker-calendar td, .ui-datepicker-calendar th {
+                    padding: 0 !important;
+                }
+                .label {
+                    color: #222222;
+                }
+                hr {
+                    margin-top: 5px !important;
+                    margin-bottom: 10px !important;
+                }
+                #searchrow {
+                    padding: 0px 0px !important;
+                }
+                .ui-wizard-step-title {
+                    font-size: 12px;
+                }
+                .ui-menu.ui-megamenu .ui-menu-child .ui-menu-list {
+                    width: 15em;
+                }
+                .ui-menu .ui-menu-parent .ui-menu-child {
+                    width: 19em;
+                }
+            </style>
+
+            <!-- Add custom CSS here -->
+            <!--<link href="../resources/css/merlion-platform.css" rel="stylesheet" type="text/css"/>-->
+            <!--<link href="../resources/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>-->
+
+        </h:head>
+        <h:body>
+            <ui:insert name="onlyforresetpassword">
+                #{externalAccountManagedBean.checkIfExternalAccount()}
+                #{commonFuncManagedBean.checkStatus()}
+                #{externalAccountManagedBean.checkIfMerlion()}
+            </ui:insert>
+            <ui:insert name="check">
+            </ui:insert>
+            <p:layout fullPage="true">
+                <p:layoutUnit position="north" size="60">
+                    <a href="/MerLION-war/index.xhtml"><img src="/MerLION-war/resources/css/images/logo.png" class="logoImage" ></img></a>
+                    <ui:insert name="externalMenu">
+                        <h:form id="searchForm" style="margin-left: 230px; margin-top: 10px;">
+                            <div id="searchrow" class="ui-grid-row">
+                                <div class="ui-grid-col-6">
+                                    <p:inputText id="searchCriteria" style="font-size: 1.5em; width: 100%;" value="#{postManagedBean.searchCriteria}" placeholder="Search..."/>
+                                </div>
+                                <div class="ui-grid-col-2">
+                                    <p:selectOneMenu id="searchType" value="#{postManagedBean.searchType}" style="font-size:1.5em; width: 100%;">
+                                        <f:selectItem itemLabel="Aggregation Post" itemValue="aggregation" />
+                                        <f:selectItem itemLabel="Storage Post" itemValue="storage" />
+                                        <f:selectItem itemLabel="TransportPost" itemValue="transport" />
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="ui-grid-col-2">
+                                    <p:commandButton id="searchButton" actionListener="#{postManagedBean.searchPost()}" style="font-size:1.5em; width: 100%;" ajax="false" type="submit" value="Search" update=":searchForm"/> 
+                                </div>
+                                <div class="ui-grid-col-2">
+                                    <p:commandButton type="submit" value="Logout" icon="ui-icon-extlink" actionListener="#{loginManagedBean.logout()}" onclick="if (!confirm('Are you sure you want to log out?'))
+                                                return false;" style="float: right;margin-top: 10px; margin-right: 10px;"/>
+                                </div>
+                            </div>
+                        </h:form>
+                    </ui:insert>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">                                                         
+                    <ui:insert name="content">
+                    </ui:insert>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="230" header="GRNS Menu" collapsible="true">    
+                    <ui:insert name="leftMenu">
+                        <h:form>
+                            <p:tieredMenu style="width:225px">
+                                <p:menuitem value="Workspace" rendered="#{not externalAccountManagedBean.checkIfExternal}" url="/CommonWeb/companyUserHome.xhtml" icon="ui-icon-home" />
+                                <p:separator rendered="#{not externalAccountManagedBean.checkIfExternal}"/>
+                                <p:menuitem value="Control Panel" icon="ui-icon-gear" url="/GRNSWeb/myGRNS.xhtml" />
+                                <p:separator />
+                                <p:menuitem value="E-Market Place" icon="ui-icon-cart" url="/GRNSWeb/postManagement/viewAllPost.xhtml" />
+                                <p:separator />
+                                <p:submenu label=" Manage Account" rendered="#{externalAccountManagedBean.checkIfExternal}" icon="ui-icon-clipboard">
+                                    <p:menuitem value=" Update Profile" url="/GRNSWeb/externalAccount/updateProfile.xhtml" />
+                                    <p:separator />
+                                    <p:menuitem value=" Change Password" url="/GRNSWeb/externalAccount/changePassword.xhtml" />
+                                </p:submenu>
+                                <p:separator rendered="#{externalAccountManagedBean.checkIfExternal}" />
+                                <p:submenu label=" Create Post" icon="ui-icon-clipboard">
+                                    <p:submenu label="Create Aggregation Post" rendered="#{externalAccountManagedBean.checkIfML}">
+                                        <p:menuitem value=" Create Directly" url="/GRNSWeb/postManagement/createAggregationPost.xhtml" />
+                                        <p:separator />
+                                        <p:menuitem value=" Create From Aggregated Orders" url="/GRNSWeb/aggregation/viewAggregatedOrder.xhtml" />
+                                        <p:separator />
+                                        <p:menuitem value=" Create From Service Order" url="/GRNSWeb/aggregation/viewAllAggregationOrder.xhtml" />
+                                    </p:submenu>                                    
+                                    <p:separator rendered="#{externalAccountManagedBean.checkIfML}" />
+                                    <p:menuitem value=" Create Storage Post" url="/GRNSWeb/postManagement/createStoragePost.xhtml" />
+                                    <p:separator />
+                                    <p:menuitem value=" Create Transport Post" url="/GRNSWeb/postManagement/createTransportPost.xhtml" />                         
+                                </p:submenu>
+                                <p:separator />
+                                <p:submenu label=" Manage Aggregation Post" rendered="#{externalAccountManagedBean.checkIfML}" icon="ui-icon-document">
+                                    <p:menuitem value=" View Post History" url="/GRNSWeb/postManagement/viewUserHistoryAggregationPost.xhtml" />
+                                    <p:separator />
+                                    <p:menuitem value=" Manage Current Post" url="/GRNSWeb/postManagement/viewUserCurrentAggregationPost.xhtml" />
+                                </p:submenu>
+                                <p:separator rendered="#{externalAccountManagedBean.checkIfML}" />
+                                <p:submenu label=" Manage Storage Post" icon="ui-icon-document">
+                                    <p:menuitem value=" View Post History" url="/GRNSWeb/postManagement/viewUserHistoryStoragePost.xhtml" />
+                                    <p:separator />
+                                    <p:menuitem value=" Manage Current Post" url="/GRNSWeb/postManagement/viewUserCurrentStoragePost.xhtml" />
+                                </p:submenu>
+                                <p:separator />
+                                <p:submenu label=" Manage Transport Post" icon="ui-icon-document">
+                                    <p:menuitem value=" View Post History" url="/GRNSWeb/postManagement/viewUserHistoryTransportPost.xhtml" />
+                                    <p:separator />
+                                    <p:menuitem value=" Manage Current Post" url="/GRNSWeb/postManagement/viewUserCurrentTransportPost.xhtml" />
+                                </p:submenu>
+                                <p:separator />
+                                <p:submenu label=" Manage Bidding" icon="ui-icon-document">
+                                    <p:submenu label="Bidding for Aggregation Post" >
+                                        <p:menuitem value=" Current Bid" url="/GRNSWeb/postManagement/viewAggregationBid.xhtml" />
+                                        <p:separator />
+                                        <p:menuitem value=" History Bid" url="/GRNSWeb/postManagement/viewAggregationBidHistory.xhtml" />
+                                    </p:submenu>
+                                    <p:separator />
+                                    <p:submenu label="Bidding for Storage Post" >
+                                        <p:menuitem value=" Current Bid" url="/GRNSWeb/postManagement/viewStorageBid.xhtml" />
+                                        <p:separator />
+                                        <p:menuitem value=" History Bid" url="/GRNSWeb/postManagement/viewStorageBidHistory.xhtml" />
+                                    </p:submenu>
+                                    <p:separator />
+                                    <p:submenu label="Bidding for Transport Post" >
+                                        <p:menuitem value=" Current Bid" url="/GRNSWeb/postManagement/viewTransportBid.xhtml" />
+                                        <p:separator />
+                                        <p:menuitem value=" History Bid" url="/GRNSWeb/postManagement/viewTransportBidHistory.xhtml" />
+                                    </p:submenu>
+                                    <p:separator />
+                                    <p:submenu label="Purchase History" >
+                                        <p:menuitem value="Aggregation Post" url="/GRNSWeb/purchaseHistory/viewPurchaseHistoryAggregation.xhtml" />
+                                        <p:separator />
+                                        <p:menuitem value="Storage Post" url="/GRNSWeb/purchaseHistory/viewPurchaseHistoryStorage.xhtml" />
+                                        <p:separator />
+                                        <p:menuitem value="Transport Post" url="/GRNSWeb/purchaseHistory/viewPurchaseHistoryTransport.xhtml" />
+                                        <p:separator />
+                                    </p:submenu>
+                                </p:submenu>
+                                <p:separator />
+                                <p:submenu label="Billing Management" icon="ui-icon-clipboard">
+                                    <p:menuitem value="Commission Payment Management" url="/GRNSWeb/commission/commissionPaymentList.xhtml" />
+                                    <p:separator />
+                                    <p:menuitem value="Commission Payment Receipt Management" url="/GRNSWeb/commission/commissionReceiptList.xhtml" />
+                                </p:submenu>
+
+                                <ui:insert name="leftMenuItem" ></ui:insert>
+                            </p:tieredMenu>
+                            <p:calendar id="inline" mode="inline" />
+                        </h:form>   
+                        <p:idleMonitor timeout="1800000" onidle="PF('dlg').show()"/>
+                        <p:dialog header="Idled for 30 Minutes" modal="true" appendTo="@(body)" widgetVar="dlg" resizable="false" closable="false">  
+                            <h:form id="timeoutForm">  
+                                <h:panelGrid columns="1" style="margin-bottom:10px">  
+                                    <h:outputLabel value="You have been logged out." />
+                                </h:panelGrid>
+                                <center><p:commandButton id="submitButton" value="Ok" oncomplete="PF('dlg').hide();" actionListener="#{commonFuncManagedBean.forcelogout()}"/></center>  
+                            </h:form>  
+                        </p:dialog>
+                    </ui:insert>
+                    <ui:insert name="externalLeftMenuInfo">
+                        <h:form>
+                            <p:panel style="width:225px;">
+                                <f:facet name="header">
+                                    <center><p:clock /></center>
+                                </f:facet>
+                                    <h:outputLabel for="displayusername" value="Username : " style="margin-right:5px" rendered="#{not externalAccountManagedBean.checkIfExternal}"/>
+                                    <h:outputLabel for="displayusernameexternal" value="Username : " style="margin-right:5px" rendered="#{externalAccountManagedBean.checkIfExternal}"/>
+                                    <h:outputText id="displayusername" style="margin-right:10px" value="#{commonFuncManagedBean.username}" rendered="#{not externalAccountManagedBean.checkIfExternal}"/>
+                                    <h:outputText id="displayusernameexternal" style="margin-right:10px" value="#{externalAccountManagedBean.username}" rendered="#{externalAccountManagedBean.checkIfExternal}"/><br />
+                                    <h:outputLabel for="displayfirst" value="Name : " style="margin-right:5px" rendered="#{not externalAccountManagedBean.checkIfExternal}"/>
+                                    <h:outputLabel for="displayfirstexternal" value="Name : " style="margin-right:5px" rendered="#{externalAccountManagedBean.checkIfExternal}"/>
+                                    <h:outputText id="displayfirst" style="margin-right:10px" value="#{commonFuncManagedBean.firstName} #{commonFuncManagedBean.lastName}" rendered="#{not externalAccountManagedBean.checkIfExternal}"/>
+                                    <h:outputText id="displayfirstexternal" style="margin-right:10px" value="#{externalAccountManagedBean.firstName} #{externalAccountManagedBean.lastName}" rendered="#{externalAccountManagedBean.checkIfExternal}"/><br />
+                                    <h:outputLabel for="displaycompany" value="Company : " style="margin-right:5px" rendered="#{not externalAccountManagedBean.checkIfExternal}"/>
+                                    <h:outputLabel for="displaycompanyexternal" value="Company : " style="margin-right:5px" rendered="#{externalAccountManagedBean.checkIfExternal}"/>
+                                    <h:outputText id="displaycompany" style="margin-right:10px" value="#{commonFuncManagedBean.companyName}" rendered="#{not externalAccountManagedBean.checkIfExternal}"/>
+                                    <h:outputText id="displaycompanyexternal" style="margin-right:10px" value="#{externalAccountManagedBean.companyName}" rendered="#{externalAccountManagedBean.checkIfExternal}"/><br />
+                                    <h:outputLabel for="displaycompanytype" value="Company Type : " style="margin-right:5px" rendered="#{not externalAccountManagedBean.checkIfExternal}"/>
+                                    <h:outputLabel for="displaycompanytypeexternal" value="Company Type : " style="margin-right:5px" rendered="#{externalAccountManagedBean.checkIfExternal}"/>
+                                    <h:outputText id="displaycompanytype" style="margin-right:10px" value="#{commonFuncManagedBean.companyType}" rendered="#{not externalAccountManagedBean.checkIfExternal}"/>
+                                    <h:outputText id="displaycompanytypeexternal" style="margin-right:10px" value="#{externalAccountManagedBean.companyType}" rendered="#{externalAccountManagedBean.checkIfExternal}"/>
+                            </p:panel>
+                        </h:form>
+                    </ui:insert>
+
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="30">
+                    <ui:insert name="footer">
+                        <ui:include src="./defaultFooter.xhtml" />
+                    </ui:insert>
+                </p:layoutUnit>
+            </p:layout>
+
+        </h:body>
+    </f:view>
+</html>
+

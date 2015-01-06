@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Home</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; 
+            }
+</style>
+    </h:head>
+    <h:body>
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/keyClient.jpg" style="width:100%;"></p:graphicImage>
+            <h1>Key Client Type Management Page -- Add New Type</h1>
+            <p:menubar>
+                <p:menuitem value="Home" url="CRMindex.xhtml" />
+                <p:menuitem value="Add New Key Client Type" url="addNewKeyClientType.xhtml"/>
+                <p:menuitem value="View All Key Client Type" url="viewAllKeyClientType.xhtml" />
+                <p:menuitem value="Update Key Client Type" url="updateKeyClientType.xhtml" />
+            </p:menubar>
+        <br/>
+        
+            <p:panel id="panel" header="Add New Key Client Type">
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/spinner.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:messages />
+                
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="membershipTier" style="font-weight: bold" value="Membership Tier: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Membership Tier"
+                                    requiredMessage="Membership Tier is required." id="membershipTier"
+                                    value="#{keyClientTypeManagedBean.membershipTier}">
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="membershipTier" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="boundaryPoint" style="font-weight: bold" value="Boundary Point: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Boundary Point" requiredMessage="Boundary Point is required." id="boundaryPoint"
+                                         value="#{keyClientTypeManagedBean.boundaryPoint}" validatorMessage="Boundary point must contain integer only.">
+                              <f:validateRegex pattern="[0-9]+"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="boundaryPoint" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="discountPerOrder" style="font-weight: bold" value="Discount Per Order: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="DiscountPerOrder" 
+                                         requiredMessage="Discount Per Order is required." id="discountPerOrder"
+                                         value="#{keyClientTypeManagedBean.discountPerOrder}">
+                                
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="discountPerOrder" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="ownerId" style="font-weight: bold" value="ownerId: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="OwnerId" 
+                                         requiredMessage="ownerId is required." id="ownerId"
+                                         value="#{keyClientTypeManagedBean.ownerId}">
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="ownerId" />
+                        </p:column>
+                    </p:row>             
+                </p:panelGrid>               
+                <p:commandButton id="btn" value="Submit New Type"
+                                 update="panel" actionListener="#{keyClientTypeManagedBean.addNewKeyClientType}" ajax="true"/>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>

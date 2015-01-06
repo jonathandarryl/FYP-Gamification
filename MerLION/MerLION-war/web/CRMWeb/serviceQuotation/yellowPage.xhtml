@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Yellow Page</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/rfq3.png" style="width:100%;"></p:graphicImage>
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+
+            <p:dataTable id="dataTable" var="sc" value="#{serviceQuotationManagedBean.retrievePublicServiceCatalogList()}"
+                         rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="No Service Catalog">
+                <f:facet name="header">
+                    <p style="font-size: 1.5em;margin-bottom: 0;">Yellow Page @ MerLION</p>
+                </f:facet>
+                <p:column style="width:5%;" headerText="Service ID" filterBy="#{sc.id}" filterMatchMode="contains" filterStyle="width:100%;" >
+                    <h:outputText value="#{sc.id}" />
+                </p:column>
+                <p:column style="width:9%;" headerText="Service Provider" 
+                          filterBy="#{sc.company.companyName}" filterMatchMode="contains" filterStyle="width:100%;">
+                    <h:outputText value="#{sc.company.companyName}"/>
+                </p:column>
+
+                <p:column headerText="Service Name" filterBy="#{sc.serviceName}" filterMatchMode="contains" filterStyle="width:100%;" >
+                    <h:outputText value="#{sc.serviceName}" />
+                </p:column>
+
+                <p:column headerText="Source Location" filterBy="#{sc.source}" filterMatchMode="contains" filterStyle="width:100%;">
+                    <h:outputText value="N.A." rendered="#{not sc.transport.booleanValue()}" />
+                    <h:outputText value="#{sc.source}" rendered="#{sc.transport.booleanValue()}" />
+                </p:column>
+
+                <p:column headerText="Destination Location" filterBy="#{sc.dest}" filterMatchMode="contains" filterStyle="width:100%;">
+                    <h:outputText value="N.A." rendered="#{not sc.transport.booleanValue()}" />
+                    <h:outputText value="#{sc.dest}" rendered="#{sc.transport.booleanValue()}"/>
+                </p:column>
+
+                <p:column headerText="Warehouse Location" filterBy="#{sc.warehLoca}" filterMatchMode="contains" filterStyle="width:100%;">
+                    <h:outputText value="N.A." rendered="#{not sc.storage.booleanValue()}" />
+                    <h:outputText value="#{sc.warehLoca}" rendered="#{sc.storage.booleanValue()}"/>
+                </p:column>
+
+                <p:column style="width:9%;" headerText="Perishable" filterBy="#{sc.perishable}" filterMatchMode="exact" filterStyle="width:100%;" >
+                    <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('catalogTable').filter()">
+                            <f:converter converterId="javax.faces.Boolean" />
+                            <f:selectItem itemLabel="All" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="true" />
+                            <f:selectItem itemLabel="No" itemValue="false" />
+                        </p:selectOneButton>
+                    </f:facet>
+
+                    <p:selectBooleanButton id="perishable" value="#{sc.perishable}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>
+                </p:column>  
+
+                <p:column style="width:9%;" headerText="Flammable" filterBy="#{sc.flammable}" filterMatchMode="exact" >
+                    <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('catalogTable').filter()">
+                            <f:converter converterId="javax.faces.Boolean" />
+                            <f:selectItem itemLabel="All" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="true" />
+                            <f:selectItem itemLabel="No" itemValue="false" />
+                        </p:selectOneButton>
+                    </f:facet>
+
+                    <p:selectBooleanButton id="flammable" value="#{sc.flammable}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>
+                </p:column>
+
+                <p:column style="width:9%;" headerText="Pharmaceutical" filterBy="#{sc.pharmaceutical}" filterMatchMode="exact">
+                    <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('catalogTable').filter()">
+                            <f:converter converterId="javax.faces.Boolean" />
+                            <f:selectItem itemLabel="All" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="true" />
+                            <f:selectItem itemLabel="No" itemValue="false" />
+                        </p:selectOneButton>
+                    </f:facet>
+
+                    <p:selectBooleanButton id="pharmaceutical" value="#{sc.pharmaceutical}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>
+                </p:column>  
+
+                <p:column style="width:9%;" headerText="HighValue" filterBy="#{sc.pharmaceutical}" filterMatchMode="exact">
+                    <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('catalogTable').filter()" >
+                            <f:converter converterId="javax.faces.Boolean" />
+                            <f:selectItem itemLabel="All" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="true" />
+                            <f:selectItem itemLabel="No" itemValue="false" />
+                        </p:selectOneButton>
+                    </f:facet>
+
+                    <p:selectBooleanButton id="highValue" value="#{sc.highValue}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>                     
+                </p:column>  
+
+                <p:column style="width:5%;" headerText="Create RFQ" >
+                    <center>
+                        <p:commandButton type="submit" icon="ui-icon-pencil" actionListener="#{serviceQuotationManagedBean.retrievePublicServiceCatalog(sc)}" /> 
+                    </center>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,90 @@
+<ui:composition template="../template/defaultTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            MerLION Platform | Login
+        </title>
+    </ui:define>
+    <ui:define name="css-style">
+        <style type="text/css">
+            td, th {
+                padding: 5px !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="left">
+        <h:form>
+            <p:growl life="2000"/> 
+            <p:panel id="panel">
+                <f:facet name="header">
+                    Platform User Login
+                </f:facet>
+                <p:messages id="login" autoUpdate="true" closable="true"/>
+                <p:graphicImage value="../resources/images/Banner_login.jpg" style="width:260px;"></p:graphicImage>
+                <h:panelGrid id ="loginPG" columns="2" cellpadding="5" style="margin-bottom: 10px;">
+
+                    <h:outputLabel for="username" value="Username: *" />
+                    <p:inputText style="width:100%;" id="username" value="#{loginManagedBean.username}" label="Username" required="true" requiredMessage="Please input your username">
+                        <f:validateLength minimum="4" maximum="25" />
+                        <p:watermark for="username" value="Please enter username" />
+                    </p:inputText>                        
+
+                    <h:outputLabel for="password" value="Password: *" />
+                    <p:password style="width:100%;" id="password" value="#{loginManagedBean.password}" label="Password" required="true" requiredMessage="Please input password">
+                        <p:watermark for="password" value="Please enter password" />
+                    </p:password>
+                </h:panelGrid>
+
+                <center><p:captcha label="Captcha" theme="white" rendered="#{loginManagedBean.logInAttempts>=3}" required="#{loginManagedBean.logInAttempts>=3}" secure="true"/></center>
+                <a href="../GRNSWeb/externalAccount/loginGRNS.xhtml" ><i class="fa fa-angle-right"></i> External User? Login Here!</a><br /><br />
+                <a href="./companyAdminRegistration.xhtml" ><i class="fa fa-angle-right"></i> New User? Register Now!</a><br /><br />
+                <a href="./resetPassword.xhtml" ><i class="fa fa-angle-right"></i> Forgot Your Password or Username?</a><br /><br /><br /><br /><br />
+                <p:commandButton  style="margin-top:-30px; float:right;" update="panel" ajax="false" type="submit" value="Login" actionListener="#{loginManagedBean.login()}"  icon="ui-icon-circle-triangle-e" />
+            </p:panel>
+        </h:form>
+    </ui:define>
+    <ui:define name="content"> 
+        
+            <p:tabView>
+                <p:tab title="Getting Started">
+                    <h2>How do you register to start using MerLION Platform?</h2>
+                    <br />
+                    <p>It’s easy! Whether you’re already a MerLION customer or partner, or are new to MerLION, just follow the registration steps – it only takes a few minutes!</p>
+                    <br />
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <h:outputText value="The registration process guides you through making selections according to your shipping and tracking needs." />
+                        <p:graphicImage name="images/step1.png" style="margin-top: 20px; margin-bottom: 20px;"/>
+                        <h:outputText value="After you register, you’ll receive an email of your account details. You'll need to wait for the approval of your account by system admin. Be sure to check your MerLION login details and change your password." />
+                        <p:graphicImage name="images/step2.png" style="margin-top: 20px; margin-bottom: 20px;"/>
+                        <h:outputText value="Upon the approval of your account, you are able to log in and ready to start using MerLION Platform and it's services." />
+                        <p:graphicImage name="images/step3.png" style="margin-top: 20px; margin-bottom: 20px;"/>
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab title="Benefits">
+                    <p:graphicImage value="../resources/images/banner3.jpg" style="width:100%;"></p:graphicImage>
+                    <h4>Whether you are a new customer or a MerLION account holder, you are just a click away to ship, track, import and more!</h4>
+                    <h:panelGrid columns="2" cellpadding="20">
+                        <strong>Fast and Easy Online Shipping</strong>
+                        <h:outputText value="It’s easy to register – then you are ready to ship online with just a few clicks." />
+                        <strong>One Single Sign-on for Everything</strong>
+                        <h:outputText value="No more multiple passwords and login credentials - quick and easy access to the full suite of MerLION solutions with one single login."/>
+                        <strong>Secure and Convenient Access</strong>
+                        <h:outputText value="Easy and secure access to your personal customized shipping preferences, shipping history tracking details and more."/>
+                        <strong>Easy Tracking</strong>
+                        <h:outputText value="Quickly track your Express shipments and setup easy and convenient status alerts."/>
+                        <strong>Manage Your Profile</strong>
+                        <h:outputText value="By telling us a little bit about yourself, we can provide you with even more and tailored MerLION Logistic solutions. Companies with multiple users will benefit from MerLION's centralized profile management."/>
+                    </h:panelGrid>
+                </p:tab>
+                
+            </p:tabView>
+
+    </ui:define>
+
+</ui:composition>
+

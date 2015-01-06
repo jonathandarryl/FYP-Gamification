@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Create Invoice</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfOperating()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+            <p:panel id="panel">
+
+                <f:facet name="header">
+                    Create Invoice
+                </f:facet>
+                <h:panelGrid columns="2">
+
+                    <p:outputLabel value="Sales Order ID: " style="font-weight: bold"/>
+                    <p:inputText id="orderID" value="#{invoiceAndPaymentManagedBean.orderID}" required="true" requiredMessage="Sales order ID cannot be empty"/>
+
+                    <p:outputLabel value="Country: " style="font-weight: bold"/>
+                    <p:inputText id="country" value="#{invoiceAndPaymentManagedBean.country}" required="true" requiredMessage="Country cannot be empty"/>
+
+                    <p:outputLabel value="State: " style="font-weight: bold"/>
+                    <p:inputText id="state" value="#{invoiceAndPaymentManagedBean.state}" required="true" requiredMessage="State cannot be empty"/>
+
+                    <p:outputLabel value="City: " style="font-weight: bold"/>
+                    <p:inputText id="city" value="#{invoiceAndPaymentManagedBean.city}" required="true" requiredMessage="City cannot be empty"/> 
+
+                    <p:outputLabel value="Street: " style="font-weight: bold"/>
+                    <p:inputText id="street" value="#{invoiceAndPaymentManagedBean.street}" required="true" requiredMessage="Street cannot be empty"/>
+
+                    <p:outputLabel value="Block No: " style="font-weight: bold"/>
+                    <p:inputText id="blockNo" value="#{invoiceAndPaymentManagedBean.blockNo}" required="true" requiredMessage="Block No cannot be empty"/>
+
+                    <p:outputLabel value="Postal Code:" style="font-weight: bold"/>
+                    <p:inputText id="postalCode" value="#{invoiceAndPaymentManagedBean.postalCode}" required="true" requiredMessage="Postal Code cannot be empty"/>
+
+                    <f:facet name="footer">
+                        <p:commandButton type="submit" value="Create Invoice" actionListener="#{invoiceAndPaymentManagedBean.createInvoice}"/>
+                    </f:facet>
+                </h:panelGrid>
+
+            </p:panel>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>

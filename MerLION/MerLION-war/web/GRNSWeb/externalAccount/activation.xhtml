@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../../template/defaultTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>GRNS | Activate Account</title>
+    </ui:define>
+    <ui:define name="externalCheck">
+        #{externalAccountManagement.checkAlreadyLoggedIn()}
+    </ui:define>
+    <ui:define name="activation">
+        <f:metadata>
+            <f:viewParam name="uuid" value="#{activationBean.uuid}" />
+            <f:event type="preRenderView" listener="#{activationBean.activate()}" />
+        </f:metadata>
+    </ui:define>
+    <ui:define name="content">
+        <center>
+            <h:panelGroup style="font-size: 1.7em;" layout="block" rendered="#{activationBean.valid}">
+                <p>Your account has been successfully activated!</p>
+                <p>You are welcome to <a href="./loginGRNS.xhtml"><strong>Login</strong></a>!</p>
+            </h:panelGroup>
+            <h:panelGroup layout="block" rendered="#{!activationBean.valid}">
+                <p>Activation failed! Please contact the administrator!</p> 
+            </h:panelGroup>
+        </center>
+    </ui:define>
+</ui:composition>
+

@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Transportation Order Management Module</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; 
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <p:graphicImage value="../../resources/images/transportationService.jpg" style="width:100%;"></p:graphicImage>
+        <p:breadCrumb>
+            <p:menuitem value="Transportation Order" url="./viewTransOrder.xhtml" />
+            <p:menuitem value="Select Routes" url="assignRoutesToOrder.xhtml" />
+            <p:menuitem value="Select Vehicles" url="assignVehicleToRouteToOrder.xhtml" />
+        </p:breadCrumb>
+        <h:form id="formMain">
+            <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+            <p:growl id="msgs" />
+            <p:dataTable id="vehicleTable2" var="vehicle" rowKey="#{vehicle.vehiclesId}" value="#{transportationOrderManagedBean.capableVehicles}" 
+                         selection="#{transportationOrderManagedBean.vehicleArray}" rows="5" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="No vehicle assigned, please go to Route-->Assign Vehicles Module to assign! ">
+                <f:facet name="header">
+                    <b style="font-size:1.5em;margin-bottom: 0">View List of Assigned Vehicle</b>
+                    <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                    <p:columnToggler datasource="vehicleTable2" trigger="toggler" />
+                </f:facet>
+                <p:column selectionMode="multiple" />
+                <p:column headerText="Vehicle ID" sortBy="#{vehicle.vehiclesId}">
+                    <h:outputText value="#{vehicle.vehiclesId}" />
+                </p:column>
+                <p:column headerText="Type" sortBy="#{vehicle.type}">
+                    <h:outputText value="#{vehicle.type}" />
+                </p:column>
+                <p:column headerText="Capacity (ton)">
+                    <h:outputText value="#{vehicle.capacity}" />
+                </p:column>
+                <p:column headerText="Years have used">
+                    <h:outputText value="#{vehicle.useYear}" />
+                </p:column>
+                <p:column headerText="Transportation Cost (S$/KM)">
+                    <h:outputText value="#{vehicle.transCost}" />
+                </p:column>
+                <p:column headerText="Velocity (KM/H)">
+                    <h:outputText value="#{vehicle.velocity}" />
+                </p:column>
+                <p:column headerText="Flammable">
+                    <p:selectBooleanButton id="flammable" value="#{vehicle.flammable}" disabled="true" 
+                                           onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>                    
+                </p:column>
+                <p:column headerText="HighValue">
+                    <p:selectBooleanButton id="highValue" value="#{vehicle.highValue}" disabled="true" 
+                                           onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton> 
+                </p:column>
+                <p:column headerText="Perishable">
+                    <p:selectBooleanButton id="perishable" value="#{vehicle.perishable}" disabled="true" 
+                                           onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton> 
+                </p:column>
+                <p:column headerText="Pharmaceutical">
+                    <p:selectBooleanButton id="pharmaceutical" value="#{vehicle.pharmaceutical}" disabled="true" 
+                                           onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton> 
+                </p:column>
+                <p:column headerText="Availibility">
+                    <p:selectBooleanButton id="avail" value="#{vehicle.avail}" disabled="true" 
+                                           onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>
+                </p:column>
+            </p:dataTable>
+            <p:panel header="Schedule Transportation Start Time">
+                <h:panelGrid columns="2" cellpadding="5" width="500">
+                    <h:outputLabel for="sTime" value="Schedule Start time: *" />
+                    <p:calendar size="50" id="sTime" value="#{transportationOrderManagedBean.startDate}" pattern="MM/dd/yyyy HH:mm:ss" required="true" requiredMessage="Please select start time of the delivery" />                
+                    <h:outputLabel value="Service Order Start Time" />
+                    <h:outputText style="color: #ababab" value="#{transportationOrderManagedBean.toForRoutes.serviceOrder.startTime}"/>
+                    <h:outputLabel value="Service Order End Time" />
+                    <h:outputText style="color: #ababab" value="#{transportationOrderManagedBean.toForRoutes.serviceOrder.endTime}"/>
+
+                </h:panelGrid>
+
+                <p:commandButton id="btn2" value="Submit" icon="ui-icon-check" 
+                                 actionListener="#{transportationOrderManagedBean.assignVehiclesToRouteToOrder()}" ajax="true"/>
+
+            </p:panel>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,263 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Create New Transportation Order</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfPartnerCompany()}
+    </ui:define>
+
+    <ui:define name="content">
+        <p:graphicImage value="../../resources/images/transportationService.jpg" style="width:100%;"></p:graphicImage>
+        <h:form>
+            <p:panel id ="panel" header="Create New Transportation Order based on Service Order #{transportationOrderManagedBean.soId}">
+                <f:facet name="header">
+                    <b style="font-size: 1.5em;margin-bottom: 0;">Create New Transportation Order based on Service Order #{transportationOrderManagedBean.soId}</b>
+                </f:facet>
+                <p:growl id="msgs" />
+                <div class="ui-grid ui-grid-responsive">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4">
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Creation Date(yyyy-MM-dd):" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.creationTime}">
+                                        <f:convertDateTime pattern="yy-MM-dd" />
+                                    </h:outputText>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Service Provider:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.ownerCompanyName}">
+                                    </h:outputText>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Client Company Name:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.clientCompanyName}">
+                                    </h:outputText>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                     <h:outputText value="Related Service Contract Id:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.serviceContractId}">
+                                    </h:outputText>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Start Date(yy-MM-dd):" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.startDate}">
+                                            <f:convertDateTime pattern="yy-MM-dd" />
+                                    </h:outputText>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="End Date(yy-MM-dd):" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.endDate}" >
+                                            <f:convertDateTime pattern="yy-MM-dd" />
+                                    </h:outputText>                 
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Order description:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.description}"/>                
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Product:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.productName}"/>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Product Quantity:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.quantity}"/>
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="ui-grid-col-4">
+                            <p:panel>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Source country:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.sourceCountry}"/>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Source state:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.sourceState}"/>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Source city:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.sourceCity}"/>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Source street number:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.sourceStreet}"/>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Source block No:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.sourceBlockNo}"/>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Source postal code:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.sourcePostalCode}"/>
+                                </div>
+                            </div>
+                                <hr />
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Destination country:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.destCountry}"/>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Destination state:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.destState}"/>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Destination city:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.destCity}"/>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Destination street number:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.destStreet}"/>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Destination block No:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.destBlockNo}"/>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Destination postal code:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transportationOrderManagedBean.destPostalCode}"/>
+                                </div>
+                            </div>
+                                </p:panel>
+                        </div>
+                   
+                        <div class="ui-grid-col-4">
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Persihable:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:selectBooleanButton id="perishable" value="#{transportationOrderManagedBean.perishable}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                                    </p:selectBooleanButton>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Flammable:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:selectBooleanButton id="flammable" value="#{transportationOrderManagedBean.flammable}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                                     </p:selectBooleanButton>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="Pharmaceutical:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:selectBooleanButton id="pharmaceutical" value="#{transportationOrderManagedBean.pharmaceutical}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                                     </p:selectBooleanButton>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="HighValue:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:selectBooleanButton id="highValue" value="#{transportationOrderManagedBean.highValue}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                                    </p:selectBooleanButton>
+                                </div>
+                            </div>                          
+                        </div>
+                    </div>
+                    <div class="ui-grid-row">
+                        <p:commandButton value="Create New Transportation Order" id="create" update="msgs" ajax="true" actionListener="#{transportationOrderManagedBean.createTransOrder()}" styleClass="ui-priority-primary"/>
+                    </div>
+                </div>
+                <p:dialog resizable="false" header="#{transportationOrderManagedBean.statusMessage}" widgetVar="dlg" showEffect="fold">
+                    <p:commandButton type="submit" value="Return to Service Order List" icon="ui-icon-check" actionListener="#{transportationOrderManagedBean.redirectToViewOwningServiceOrderListForTransOrderCreation}" /> 
+                </p:dialog>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

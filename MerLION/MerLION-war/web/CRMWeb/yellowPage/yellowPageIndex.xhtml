@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="../../template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:o="http://omnifaces.org/ui">
+    <ui:define name="head-title">
+        <title>Customer Relationship Management | Yellow Page Management</title>
+    </ui:define>
+
+
+    <ui:define name="check">
+
+
+    </ui:define>
+
+
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/banner4.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:messages id="updateServiceItem" autoUpdate="true" closable="true"/>
+
+            <p:dataTable widgetVar="catalogTable" id="sCatalog" var="sc" value="#{serviceCatalogManagedBean.getAllPublicServiceCatalogItems()}" rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="Service catalog is empty!"
+                         selection="#{serviceCatalogManagedBean.particularServiceItem}" 
+                         selectionMode="single"
+                         rowKey="#{sc.id}">
+
+                <f:facet name="header" >
+                    <p style="font-size: 1.3em;margin-bottom: 0;margin-left: 100px;display: inline;text-align: center;">My Yellow Page Entry</p>
+                    <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                    <p:columnToggler datasource="sCatalog" trigger="toggler" />
+                </f:facet>
+
+                <p:column style="width:6%" headerText="Service ID" filterBy="#{sc.id}" filterMatchMode="contains" filterStyle="width:100%;">
+                    <h:outputText value="#{sc.id}" />
+                </p:column>
+
+                <p:column style="width:12%" headerText="Service Name" filterBy="#{sc.serviceName}" filterMatchMode="contains" filterStyle="width:100%;">
+                    <h:outputText value="#{sc.serviceName}" />
+                </p:column>
+
+                <p:column style="width:12%" headerText="Source Location" filterBy="#{sc.source}" filterMatchMode="contains" filterStyle="width:100%;">
+                    <h:outputText value="N.A." rendered="#{not sc.transport.booleanValue()}" />
+                    <h:outputText value="#{sc.source}" rendered="#{sc.transport.booleanValue()}" />
+                </p:column>
+
+                <p:column style="width:12%" headerText="Destination Location" filterBy="#{sc.dest}" filterMatchMode="contains" filterStyle="width:100%;">
+                    <h:outputText value="N.A." rendered="#{not sc.transport.booleanValue()}" />
+                    <h:outputText value="#{sc.dest}" rendered="#{sc.transport.booleanValue()}"/>
+                </p:column>
+
+                <p:column style="width:12%" headerText="Warehouse Location" filterBy="#{sc.warehLoca}" filterMatchMode="contains" filterStyle="width:100%;">
+                    <h:outputText value="N.A." rendered="#{not sc.storage.booleanValue()}" />
+                    <h:outputText value="#{sc.warehLoca}" rendered="#{sc.storage.booleanValue()}"/>
+                </p:column>
+
+                <p:column headerText="Perishable" filterBy="#{sc.perishable}" filterMatchMode="exact" >
+                    <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('catalogTable').filter()">
+                            <f:converter converterId="javax.faces.Boolean" />
+                            <f:selectItem itemLabel="All" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="true" />
+                            <f:selectItem itemLabel="No" itemValue="false" />
+                        </p:selectOneButton>
+                    </f:facet>
+
+                    <p:selectBooleanButton id="perishable" value="#{sc.perishable}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>
+                </p:column>  
+
+
+
+
+                <p:column headerText="Flammable" filterBy="#{sc.flammable}" filterMatchMode="exact" >
+                    <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('catalogTable').filter()">
+                            <f:converter converterId="javax.faces.Boolean" />
+                            <f:selectItem itemLabel="All" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="true" />
+                            <f:selectItem itemLabel="No" itemValue="false" />
+                        </p:selectOneButton>
+                    </f:facet>
+
+                    <p:selectBooleanButton id="flammable" value="#{sc.flammable}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>
+                </p:column>
+
+
+
+
+                <p:column headerText="Pharmaceutical" filterBy="#{sc.pharmaceutical}" filterMatchMode="exact">
+                    <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('catalogTable').filter()">
+                            <f:converter converterId="javax.faces.Boolean" />
+                            <f:selectItem itemLabel="All" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="true" />
+                            <f:selectItem itemLabel="No" itemValue="false" />
+                        </p:selectOneButton>
+                    </f:facet>
+
+                    <p:selectBooleanButton id="pharmaceutical" value="#{sc.pharmaceutical}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>
+                </p:column>  
+
+                <p:column headerText="HighValue" filterBy="#{sc.pharmaceutical}" filterMatchMode="exact">
+                    <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('catalogTable').filter()" >
+                            <f:converter converterId="javax.faces.Boolean" />
+                            <f:selectItem itemLabel="All" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="true" />
+                            <f:selectItem itemLabel="No" itemValue="false" />
+                        </p:selectOneButton>
+                    </f:facet>
+
+
+                    <p:selectBooleanButton id="highValue" value="#{sc.highValue}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>                     
+                </p:column>  
+
+                <p:column headerText="PublicOrNot" filterBy="#{sc.publicOrNot}" filterMatchMode="exact">
+                    <f:facet name="filter">
+                        <p:selectOneButton onchange="PF('catalogTable').filter()" >
+                            <f:converter converterId="javax.faces.Boolean" />
+                            <f:selectItem itemLabel="All" itemValue="" />
+                            <f:selectItem itemLabel="Yes" itemValue="true" />
+                            <f:selectItem itemLabel="No" itemValue="false" />
+                        </p:selectOneButton>
+                    </f:facet>
+
+
+                    <p:selectBooleanButton id="PublicOrNot" value="#{sc.publicOrNot}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>                     
+                </p:column>  
+
+
+                <f:facet name="footer">
+
+
+
+                    <p:commandButton process="sCatalog"  
+                                     value="View"
+                                     actionListener="#{serviceCatalogManagedBean.viewYellowPage(event)}" type="submit">
+
+                    </p:commandButton>
+
+                    <p:commandButton value="Delete" 
+                                     actionListener="#{serviceCatalogManagedBean.hideIt(event)}" 
+                                     type="submit" 
+                                     process="sCatalog"
+                                     update=":formMain">
+                    </p:commandButton>
+
+                    <p:dialog resizable="false" widgetVar="dlgDelete" header="Congrats!">
+                        <h:outputText value="#{serviceCatalogManagedBean.msgCatalogDeleted}"/>                            
+                    </p:dialog>
+
+
+
+                    <p:dialog resizable="false" widgetVar="dlgHideIt" header="Congrats!">
+                        <h:outputText value="#{serviceCatalogManagedBean.particularServiceItem.id} has been removed from yellow page!"/>                            
+                    </p:dialog>
+                    
+                     <p:dialog resizable="false" widgetVar="noEntry" header="Not Entry Selected!">
+                        <h:outputText value="Please select an entry before clicking on any button."/>                            
+                    </p:dialog>
+
+                         <p:dialog resizable="false" widgetVar="alreadyUnpublic" header="Attention!">
+                        <h:outputText value="The entry that you have selected is already made unpublic."/>                            
+                    </p:dialog>
+
+                </f:facet>
+            </p:dataTable>
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>

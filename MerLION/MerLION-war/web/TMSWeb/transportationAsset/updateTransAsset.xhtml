@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="head-title">
+        <title>Transportation Asset Management</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; 
+            }
+</style>
+    </ui:define>
+    
+    <ui:define name="content">
+        <p:graphicImage value="../../resources/images/transportationAsset.jpg" style="width:100%;"></p:graphicImage>
+
+        <h:form id="form2">
+            <p:panel id="panel2" header="Update Transportation Asset">
+                <f:facet name="header" >
+                        <p style="font-size: 1.5em;display:inline;margin-top:0;margin-bottom: 0;text-align: center;">Update Transportation Asset Information</p> 
+                </f:facet>
+                <p:growl id="msgs" autoUpdate="true" life="3000" />
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/spinner.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:messages />
+                <div class="ui-grid ui-grid-responsive">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-6">
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Vehicle ID: " />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <h:outputText value="#{transAssetManagedBean.vehiclesId}" />  
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Type: " />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                <h:outputText value="#{transAssetManagedBean.type}" />                                                    
+                                </div>  
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Capacity (ton): " />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inplace id="capa" editor="true">
+                                        <p:inputText required="true" label="capacity"
+                                                     requiredMessage="capacity is required." id="capacity"
+                                                     value="#{transAssetManagedBean.capacity}" validatorMessage="Capacity must be integer only.">
+                                            <f:validateRegex pattern="[0-9]+"/>
+                                        </p:inputText>
+                                    </p:inplace>                             
+                                </div>  
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Maximum Distance (km): " />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inplace id="mDis" editor="true">
+                                        <p:inputText required="true" label="maxDistance"
+                                                requiredMessage="maxDistance is required." id="maxDistance"
+                                                value="#{transAssetManagedBean.maxDistance}" validatorMessage="maxDistance must be integer only.">
+                                              <f:validateRegex pattern="[0-9]+"/>
+                                        </p:inputText>
+                                    </p:inplace>                            
+                                </div>  
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Serviced year: " />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inplace id="useY" editor="true">
+                                        <p:inputText required="true" label="useYear"
+                                                requiredMessage="useYear is required." id="useYear"
+                                                value="#{transAssetManagedBean.useYear}" validatorMessage="useYear must be integer only.">
+                                              <f:validateRegex pattern="[0-9]+"/>
+                                        </p:inputText>
+                                    </p:inplace>                           
+                                </div>  
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Transportation Cost (S$/KM): " />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inplace id="tranC" editor="true">
+                                        <p:inputText required="true" label="transCost"
+                                                requiredMessage="transCost is required." id="transCost"
+                                                value="#{transAssetManagedBean.transCost}" >
+                                        </p:inputText>
+                                    </p:inplace>                        
+                                </div>  
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Velocity (KM/H): " />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inplace id="vel" editor="true">
+                                        <p:inputText required="true" label="velocity"
+                                            requiredMessage="velocity is required." id="velocity"
+                                            value="#{transAssetManagedBean.velocity}" >
+                                       </p:inputText>
+                                    </p:inplace>                      
+                                </div>  
+                            </div>
+                        </div>
+                        <div class="ui-grid-col-6" style="margin-left:20px;">                           
+                            <p:panelGrid style="width:100%;">                   
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="perishable" style="font-weight: bold" value="Perishable : " />
+                                </p:column>
+                                <p:column>
+                                    <p:inplace id="peri" editor="true">
+                                        <p:selectBooleanButton id="perishable" value="#{transAssetManagedBean.perishable}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px">
+                                            <p:ajax update="msgs" listener="#{transAssetManagedBean.addPerishableMessage}" />
+                                        </p:selectBooleanButton>
+                                        </p:inplace>
+                                </p:column>
+                            </p:row> 
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="flammable" style="font-weight: bold" value="Flammable : " />
+                                </p:column>
+                                <p:column>
+                                    <p:inplace id="flam" editor="true">
+                                        <p:selectBooleanButton id="flammable" value="#{transAssetManagedBean.flammable}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px">
+                                            <p:ajax update="msgs" listener="#{transAssetManagedBean.addFlammableMessage}" />
+                                        </p:selectBooleanButton>
+                                    </p:inplace>
+                                </p:column>
+                            </p:row>                     
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="highValue" style="font-weight: bold" value="High Value : " />
+                                </p:column>
+                                <p:column>
+                                    <p:inplace id="high" editor="true">
+                                        <p:selectBooleanButton id="highValue" value="#{transAssetManagedBean.highValue}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px">
+                                            <p:ajax update="msgs" listener="#{transAssetManagedBean.addHighValueMessage()}" />
+                                        </p:selectBooleanButton>
+                                    </p:inplace>
+                                </p:column>
+                            </p:row>  
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="pharmaceutical" style="font-weight: bold" value="Pharmaceutical : " />
+                                </p:column>
+                                <p:column>
+                                    <p:inplace id="phar" editor="true">
+                                        <p:selectBooleanButton id="pharmaceutical" value="#{transAssetManagedBean.pharmaceutical}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px">
+                                            <p:ajax update="msgs" listener="#{transAssetManagedBean.addPharmaceuticalMessage()}" />
+                                        </p:selectBooleanButton>
+                                    </p:inplace>
+                                </p:column>
+                            </p:row>                  
+                </p:panelGrid>
+                        </div>
+                    </div>
+                    <div class="ui-grid-row" style="float:right;">
+                        <p:commandButton id="btn2" value="Submit" icon="ui-icon-check" update="panel2"
+                                         actionListener="#{transAssetManagedBean.updateTransAsset(event)}" ajax="true"/>
+                    </div>
+                </div>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

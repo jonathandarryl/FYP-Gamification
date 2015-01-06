@@ -1,0 +1,66 @@
+<ui:composition template="../template/systemAdminTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            MerLION Platform | Search company users
+        </title>
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            td {
+                color: black !important;
+            }
+        </style> 
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkStatus()}
+        #{commonFuncManagedBean.checkIfSystemAdmin()}
+    </ui:define>
+    <ui:define name="content">         
+        <center>
+            <h:form id="form">
+                <p:panel id ="panel">
+
+                    <p:messages id="viewUser" autoUpdate="true" closable="true"/>
+
+                    <p:dataTable var="account" value="#{companyAdminManagedBean.accountList}" resizableColumns="true" rows="10" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" >
+
+                        <p:column headerText="Username" sortBy="#{account.username}" >
+                            <h:outputText value="#{account.username}" />
+                        </p:column>
+
+                        <p:column headerText="Department" sortBy="#{account.department}" >
+                            <h:outputText value="#{account.department}" />
+                        </p:column>
+
+                        <p:column headerText="Title" >
+                            <h:outputText value="#{companyAdminManagedBean.viewSelectedTitleSearch(account.id)}" />
+                        </p:column>
+
+                        <p:column headerText="First name" >
+                            <h:outputText value="#{companyAdminManagedBean.viewSelectedFNSearch(account.id)}" />
+                        </p:column>
+
+                        <p:column headerText="Last name" >
+                            <h:outputText value="#{companyAdminManagedBean.viewSelectedLNSearch(account.id)}" />
+                        </p:column>
+
+                        <p:column headerText="Email" >
+                            <h:outputText value="#{companyAdminManagedBean.viewSelectedEmailSearch(account.id)}" />
+                        </p:column>
+
+                    </p:dataTable>
+
+                </p:panel>
+
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
+

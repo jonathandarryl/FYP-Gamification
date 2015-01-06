@@ -1,0 +1,70 @@
+<ui:composition template="../template/adminGRNSTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            GRNS | Admin
+        </title>
+    </ui:define>
+    <ui:define name="css-style">
+        <style type="text/css">
+            td, th {
+                padding: 5px !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content"> 
+        <p:tabView>
+            <p:tab title="Getting Started">
+                <p:panelGrid style="width: 100%;">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2" >Manage Existing Post</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="1">Post Type</p:column>
+                            <p:column>Link</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column><h:outputText value="Aggregation Post" /></p:column>
+                        <p:column>
+                            <a href="/MerLION-war/GRNSWeb/admin/manageAggregationPost.xhtml" class="btn btn-default btn-sm btn-block"><strong>Manage aggregation post</strong></a>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="Storage Post" /></p:column>
+                        <p:column>
+                            <a href="/MerLION-war/GRNSWeb/admin/manageStoragePost.xhtml" class="btn btn-default btn-sm btn-block"><strong>Manage storage post</strong></a>
+                        </p:column> 
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="Transport Post" /></p:column> 
+                        <p:column>
+                            <a href="/MerLION-war/GRNSWeb/admin/manageTransportPost.xhtml" class="btn btn-default btn-sm btn-block"><strong>Manage transport post</strong></a>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <p:panelGrid style="width: 100%;">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2" ><strong>View Information of External User</strong></p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column><h:outputText value="View User" /></p:column>
+                        <p:column>
+                            <a href="/MerLION-war/GRNSWeb/admin/viewAllUser.xhtml" class="btn btn-default btn-sm btn-block"><strong>Manage users</strong></a>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:tab>
+        </p:tabView>
+    </ui:define>
+
+</ui:composition>
+

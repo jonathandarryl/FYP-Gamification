@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Product Catalog</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfManufacture()}
+        #{productCatalogManagedBean.retrieveAllProduct()}   
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/product.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+
+            <p:dataTable id="productList" var="products" value="#{productCatalogManagedBean.allProducts}"
+                         rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="No Product"
+                         rowKey="#{products.id}">
+                <f:facet name="header">
+                    <p style="font-size:1.5em;display:inline;">Product Catalog</p>
+                </f:facet>
+                <p:column headerText="Product ID">
+                    <h:outputText value="#{products.id}" />
+                </p:column>
+                <p:column filterBy="#{products.productName}" headerText="Product Name"
+                          sortBy="#{products.productName}" filterMatchMode="contains">
+                    <h:outputText value="#{products.productName}" />
+                </p:column>
+                <p:column filterBy="#{products.ownerCompanyName}" headerText="Company Name"
+                          sortBy="#{products.ownerCompanyName}" filterMatchMode="contains">
+                    <h:outputText value="#{products.ownerCompanyName}" />
+                </p:column>
+                <p:column filterBy="#{products.ownerCompany.contactNo}" headerText="Company Contact No"
+                          sortBy="#{products.ownerCompany.contactNo}" filterMatchMode="contains">
+                    <h:outputText value="#{products.ownerCompany.contactNo}" />
+                </p:column>
+                <p:column headerText="Product Price"
+                          sortBy="#{products.productPrice}">
+                    <h:outputText value="#{products.productPrice}">
+                        <f:convertNumber type="currency" currencySymbol="S$" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Product Description">
+                    <h:outputText value="#{products.productDescription}" />
+                </p:column>
+                <p:column headerText="Unit">
+                    <h:outputText value="#{products.unit}" />
+                </p:column>
+                <p:column headerText="Capacity Quantity">
+                    <h:outputText value="#{products.quantityInOneUnitCapacity}" />
+                </p:column>
+                <p:column headerText="Batch Quantity">
+                    <h:outputText value="#{products.quantityInOneBatch}" />
+                </p:column>
+                <p:column headerText="View Detail" >
+                    <center>
+                        <p:commandButton type="submit"  icon="ui-icon-extlink" actionListener="#{productCatalogManagedBean.retrieveProduct(products.ownerCompanyName, products.productName)}" oncomplete="PF('dlg').show()" ajax="true">
+                            <f:setPropertyActionListener value="#{products}" target="#{productCatalogManagedBean.product}" />
+                        </p:commandButton>
+                    </center>
+                </p:column>
+            </p:dataTable>
+
+            <p:dialog resizable="true" header="Product Detail" widgetVar="dlg" showEffect="fold" dynamic="true">
+                <p:panelGrid>
+                    <p:row >
+                        <p:column>
+                            <p:outputLabel value="Product Name:" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productCatalogManagedBean.product.productName}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row >
+                        <p:column>
+                            <h:outputText value="Product Price:" style="font-weight: bold"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productCatalogManagedBean.product.productPrice}">
+                                <f:convertNumber type="currency" currencySymbol="S$" />
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+                    <p:row >
+                        <p:column>
+                            <p:outputLabel value="Owner Company:" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productCatalogManagedBean.product.ownerCompanyName}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row >
+                        <p:column>
+                            <p:outputLabel value="Product Description:" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productCatalogManagedBean.product.productDescription}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row >
+                        <p:column>
+                            <p:outputLabel value="Product Unit:" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productCatalogManagedBean.product.unit}"/> 
+                        </p:column>
+                    </p:row>
+                    <p:row >
+                        <p:column>
+                            <h:outputText value="Capacity Quantity:" style="font-weight: bold"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productCatalogManagedBean.product.quantityInOneUnitCapacity}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row >
+                        <p:column>
+                            <h:outputText value="Batch Quantity: " style="font-weight: bold"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productCatalogManagedBean.product.quantityInOneBatch}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+

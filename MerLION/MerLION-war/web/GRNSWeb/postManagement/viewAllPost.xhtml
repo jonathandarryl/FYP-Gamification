@@ -1,0 +1,107 @@
+<ui:composition template="../../template/userGRNSTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            GRNS | View All Posts
+        </title>
+    </ui:define>
+    <ui:define name="css-style">
+        <style type="text/css">
+            td, th {
+                padding: 5px !important;
+            }
+            .pricerange {
+                padding: 1em 0.2em !important;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="leftMenu">
+        <h:form>
+            <p:tieredMenu style="width:225px">
+                <p:menuitem value="Workspace" url="/CommonWeb/companyUserHome.xhtml" rendered="#{not externalAccountManagedBean.checkIfExternal}" icon="ui-icon-home" />
+                <p:separator rendered="#{not externalAccountManagedBean.checkIfExternal}"/>
+                <p:menuitem value="Control Panel" icon="ui-icon-gear" url="/GRNSWeb/myGRNS.xhtml" />
+            </p:tieredMenu>
+
+            <p:accordionPanel multiple="true">
+                <p:tab title="Categories">
+                    <p:commandLink id="ap" actionListener="#{postManagedBean.viewAllAggregationPost()}">
+                        <h:outputText value="View All Aggregation Post" />
+                    </p:commandLink>
+                    <p:separator />
+                    <p:commandLink id="sp" actionListener="#{postManagedBean.viewAllStoragePost()}">
+                        <h:outputText value="View All Storage Post" />
+                    </p:commandLink>
+                    <p:separator />
+                    <p:commandLink id="tp" actionListener="#{postManagedBean.viewAllTransportPost()}">
+                        <h:outputText value="View All Transportation Post" />
+                    </p:commandLink>
+                </p:tab>
+            </p:accordionPanel>
+        </h:form>
+    </ui:define>
+    <ui:define name="content"> 
+        <p:tabView>
+            <p:tab title="Instruction">
+                <p:graphicImage value="../../resources/images/banner1.jpg" style="width:100%" ></p:graphicImage>
+                <p:panelGrid style="width: 100%;">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="3" >Different Post Type We Offer</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="1">Post Type</p:column>
+                            <p:column colspan="1">Auction/Reverse Auction</p:column>
+                            <p:column>Details</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column><h:outputText value="Aggregation Post" /></p:column>
+                        <p:column><h:outputText value="Reverse Auction" /></p:column>
+                        <p:column><h:outputText value="This kind of post can only be posted by MerLION, providers can bid for the deal." /> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="Storage Post" /></p:column>
+                        <p:column><h:outputText value="Auction" /></p:column>
+                        <p:column><h:outputText value="Service Providers can post their spare capacity here for customers to bid." /></p:column> 
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="Transport Post" /></p:column> 
+                        <p:column><h:outputText value="Auction" /></p:column>
+                        <p:column><h:outputText value="Service Providers can post their spare capacity here for customers to bid." /></p:column> 
+                    </p:row>
+
+                </p:panelGrid>
+                <p:panelGrid style="width: 100%; margin-top: 20px;">
+                    
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">Different Auction Type We Provide</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="1">Auction Type</p:column>
+                            <p:column>Details</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column><h:outputText value="Vickrey Auction" /></p:column>
+                        <p:column><h:outputText value="In this type of auction, winner will need to pay the next winning bid price." /> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="English Auction" /> </p:column>
+                        <p:column><h:outputText value="In this type of auction, winner will need to pay the winning bid price." /> </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column><h:outputText value="Blind Auction" /> </p:column>
+                        <p:column><h:outputText value="In this type of auction, one cannot view others' bidding price." /> </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:tab>
+        </p:tabView>
+    </ui:define>
+</ui:composition>
+

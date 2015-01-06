@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Update Sales Quotation</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfOperating()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/Quotation_Banner.png" style="width:100%; height: 200px"></p:graphicImage>
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+            <p:panel id="panel">
+
+                <h:panelGrid columns="2">
+
+                    <p:panel header="Update Existing Sales Quotation">
+                        <p:contextMenu for="productList">
+                            <p:menuitem value="Delete" update="productList" icon="ui-icon-close" actionListener="#{salesOrderManagedBean.removeFromProductList()}"/>
+                        </p:contextMenu>
+
+                        <p:dataTable id="productList" var="products" value="#{salesOrderManagedBean.salesQ.productList}"
+                                     paginator="true" rows="5" emptyMessage="No Product"
+                                     rowKey="#{products.id}" selection="#{salesOrderManagedBean.selectedProduct}" selectionMode="single">
+                            <p:column headerText="Product Name">
+                                <h:outputText value="#{products.productName}" />
+                            </p:column>
+                            <p:column headerText="Customer Company">
+                                <h:outputText value="#{salesOrderManagedBean.customerName}" />
+                            </p:column>
+                            <p:column headerText="Product Quantity">
+                                <h:outputText value="#{salesOrderManagedBean.getSingleQuantity(products)}" />
+                            </p:column>
+                            <p:column headerText="Change Quantity" >
+                                <p:commandButton type="submit" value="Change" actionListener="#{salesOrderManagedBean.preChangeQuantity(products)}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+

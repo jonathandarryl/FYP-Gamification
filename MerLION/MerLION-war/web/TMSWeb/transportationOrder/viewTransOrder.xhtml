@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Transportation Order Management</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; 
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <p:graphicImage value="../../resources/images/transportationService.jpg" style="width:100%;"></p:graphicImage>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="images/ajaxloadingbar.gif" />
+        </p:dialog>
+
+        <p:growl id="msgs" autoUpdate="true" life="3000"/>
+        
+        <h:form id="formMain">
+            <p:dataTable id="orderTable" var="order" value="#{transportationOrderManagedBean.allTransOrder}" rows="10" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" emptyMessage="No transportation order">
+                <f:facet name="header">
+                    <p style="font-size: 1.5em;display:inline;margin-top:0;margin-bottom: 0;text-align: center;">Transport Service Listing</p> 
+                    <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                    <p:columnToggler datasource="orderTable" trigger="toggler" />
+                </f:facet>
+                <p:column headerText="Tracking Number">
+                    <center>
+                    <p:commandButton disabled="#{order.fulfilledOrNot}" type="submit" icon="ui-icon-extlink" actionListener="#{transportationOrderManagedBean.goToTrackingNumber(order)}" ajax="false"/>    
+                    </center>
+                </p:column> 
+                <p:column style="width:13%" headerText="Source Location" sortBy="#{order.startPoint}">
+                    <h:outputText value="#{order.startPoint}" />
+                </p:column>
+                <p:column style="width:13%" headerText="Destination Location" sortBy="#{order.endPoint}">
+                    <h:outputText value="#{order.endPoint}" />
+                </p:column>
+                <p:column style="width:13%" headerText="Current Location" sortBy="#{order.currentLocation}">
+                    <h:outputText value="#{order.currentLocation}" />
+                </p:column>
+                <p:column style="width:12%" headerText="Product">
+                    <h:outputText value="#{order.product.productName}" />
+                </p:column>
+                <p:column headerText="Quantity">
+                    <h:outputText value="#{order.quantity}" />
+                </p:column>        
+                <p:column headerText="Fulfilled?" >
+                    <p:selectBooleanButton id="fulfilledOrNot1" value="#{order.fulfilledOrNot}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:50px">
+                    </p:selectBooleanButton>
+                </p:column>
+                <p:column headerText="View Detail">
+                    <center>
+                        <p:commandButton type="submit" icon="ui-icon-search" actionListener="#{transportationOrderManagedBean.goToUpdate(order)}" ajax="false"/>                       
+                    </center>
+                </p:column>                                                     
+                <p:column headerText="Design Routes">
+                    <center>
+                        <p:commandButton disabled="#{order.fulfilledOrNot}" id="btn" update=":formMain:panel" icon="ui-icon-flag"
+                                         actionListener="#{transportationOrderManagedBean.goToAssign(order)}" type= "submit" ajax="false">                 
+                        </p:commandButton>
+                    </center>
+                </p:column>       
+                <p:column headerText="Optimal Routes">
+                    <center>
+                        <p:commandButton disabled="#{order.fulfilledOrNot}" id="btn8" update=":formMain:panel" icon="ui-icon-check"
+                                         actionListener="#{transportationOrderManagedBean.goToOptiRoute(order)}" type= "submit" ajax="false">                 
+                        </p:commandButton>
+                    </center>
+                </p:column>
+                <p:column headerText="View Assigned Routes">
+                    <center>
+                        <p:commandButton icon="ui-icon-circle-zoomin"
+                                         actionListener="#{transportationOrderManagedBean.viewAssignedRoutes(order)}" 
+                                         type= "submit" ajax="true" update=":formMain:dialog1">                 
+                        </p:commandButton>
+                    </center>
+                </p:column>
+            </p:dataTable>
+
+            <p:dialog appendTo="@(body)" id="dialog1" header="Assigned Routes" widgetVar="Dialog1" resizable="false" width="1000px" position="center">
+
+                        <p:graphicImage value="/resources/images/banner3.jpg" style="width: 100%;"></p:graphicImage>           
+
+                <p:dataTable id="orderTable2" var="route" value="#{transportationOrderManagedBean.viewAssignedRoutesList()}" rows="5" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" emptyMessage="No Routes Assigned">
+                    <f:facet name="header">
+                        <b style="font-size:1.5em;">Assigned Routes</b>
+                        <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                        <p:columnToggler datasource="orderTable2" trigger="toggler" />
+                    </f:facet>
+                    <p:column headerText="Source Country">
+                        <h:outputText value="#{route.startOfRoute.country}" />
+                    </p:column>
+                    <p:column headerText="Source State">
+                        <h:outputText value="#{route.startOfRoute.state}" />
+                    </p:column>
+                    <p:column headerText="Source City">
+                        <h:outputText value="#{route.startOfRoute.city}" />
+                    </p:column>
+                    <p:column headerText="Destination Country">
+                        <h:outputText value="#{route.destOfRoute.country}" />
+                    </p:column>
+                    <p:column headerText="Destination State">
+                        <h:outputText value="#{route.destOfRoute.state}" />
+                    </p:column>
+                    <p:column headerText="Destination City">
+                        <h:outputText value="#{route.destOfRoute.city}" />
+                    </p:column>
+                    <p:column headerText="Transport Mode">
+                        <h:outputText value="#{route.mode}" />
+                    </p:column>
+                    <p:column headerText="Distance">
+                        <h:outputText value="#{route.distance}km" />
+                    </p:column>                            
+                </p:dataTable>             
+            </p:dialog>
+
+            <p:dialog modal="true" appendTo="@(body)" id="dialog2" header="Tracking Number" widgetVar="Dialog2" resizable="false" position="center">
+                <h:outputText value="#{transportationOrderManagedBean.trackingNumber}" style="font-size: 1.5em;"/>
+            </p:dialog>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

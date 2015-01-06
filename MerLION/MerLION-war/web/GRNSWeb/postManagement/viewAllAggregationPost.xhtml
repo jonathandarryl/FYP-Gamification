@@ -1,0 +1,177 @@
+<ui:composition template="../../template/userGRNSTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:define name="head-title">
+        <title>
+            GRNS | View All Aggregation Posts
+        </title>
+    </ui:define>
+    <ui:define name="css-style">
+        <style type="text/css">
+            td, th {
+                padding: 5px !important;
+            }
+            .ui-grid-row {
+                padding: 5px 10px;
+            }
+            
+        </style>
+    </ui:define>
+    <ui:define name="leftMenu">
+        <h:form>
+            <p:tieredMenu style="width:225px">
+                <p:menuitem value="Workspace" rendered="#{not externalAccountManagedBean.checkIfExternal}" url="/CommonWeb/companyUserHome.xhtml" icon="ui-icon-home" />
+                <p:separator rendered="#{not externalAccountManagedBean.checkIfExternal}"/>
+                <p:menuitem value="Control Panel" icon="ui-icon-gear" url="/GRNSWeb/myGRNS.xhtml" />
+            </p:tieredMenu>
+
+            <p:accordionPanel multiple="true">
+                <p:tab title="Categories">
+                    <p:commandLink id="ap" actionListener="#{postManagedBean.viewAllAggregationPost()}">
+                        <h:outputText value="View All Aggregation Post" />
+                    </p:commandLink>
+                    <p:separator />
+                    <p:commandLink id="sp" actionListener="#{postManagedBean.viewAllStoragePost()}">
+                        <h:outputText value="View All Storage Post" />
+                    </p:commandLink>
+                    <p:separator />
+                    <p:commandLink id="tp" actionListener="#{postManagedBean.viewAllTransportPost()}">
+                        <h:outputText value="View All Transportation Post" />
+                    </p:commandLink>
+                </p:tab>
+
+                <p:tab title="Auction Type">
+                    <p:commandLink id="ea" type="submit" actionListener="#{postManagedBean.setFilterEnglish()}">
+                        <h:outputText value="English Auction" />
+                    </p:commandLink>
+                    <p:separator />
+                    <p:commandLink id="ba" type="submit" actionListener="#{postManagedBean.setFilterBlind()}">
+                        <h:outputText value="Blind Auction" />
+                    </p:commandLink>
+                    <p:separator />
+                    <p:commandLink id="va" type="submit" actionListener="#{postManagedBean.setFilterVickrey()}">
+                        <h:outputText value="Vickrey Auction" />
+                    </p:commandLink>
+                </p:tab>
+
+                <p:tab title="By Status">
+                    <p:commandLink id="np" type="submit" actionListener="#{postManagedBean.setFilterNew()}">
+                        <h:outputText value="New Post" />
+                    </p:commandLink>
+                    <p:separator />
+                    <p:commandLink id="es" type="submit" actionListener="#{postManagedBean.setFilterEnding()}">
+                        <h:outputText value="Closing Soon"  />
+                    </p:commandLink>
+                </p:tab>
+
+                <p:tab title="Within Price Range">
+                    <p:panelGrid id="price" columns="2" style="width:180px">
+                        <p:outputLabel value="Min Price: S$" />
+                        <p:inputText style="width: 90px" value="#{postManagedBean.minPrice}" />
+                        <p:outputLabel value="Max Price: S$" />
+                        <p:inputText style="width: 90px" value="#{postManagedBean.maxPrice}"/>
+                    </p:panelGrid>
+                    <p:commandButton type="submit" value="Search" actionListener="#{postManagedBean.filterByPrice()}" id="p" style="float:right;"/>
+                </p:tab>
+
+            </p:accordionPanel>
+
+        </h:form>
+    </ui:define>
+    <ui:define name="content"> 
+        <h:form> 
+            <p:dataScroller value="#{postManagedBean.allAP}" var="ap" chunkSize="10">
+                <f:facet name="header">
+                    Scroll Down to Load More Aggregation Posts
+                </f:facet>
+
+                <h:panelGrid style="width:100%;">
+                    <p:panel>
+                        <div class="ui-grid ui-grid-responsive">
+                            <div class="ui-grid-row">
+                                <div class="ui-grid-col-3">
+                                    <p:commandLink id="viewAPDetailTitle" actionListener="#{postManagedBean.viewDetailAggregationPost(ap.id)}">
+                                        <p:graphicImage name="images/merlion-logo.png" style="width: 200px;" /> 
+                                    </p:commandLink>
+                                </div>
+                                <div class="ui-grid-col-9">
+                                    <div class="ui-grid-row">
+                                        <p:commandLink id="viewDetailTitle" actionListener="#{postManagedBean.viewDetailAggregationPost(ap.id)}">
+                                            <h:outputText value="#{ap.title}" style="font-weight: bold; font-size: 2em;"/>
+                                        </p:commandLink>
+                                    </div>
+                                    <div class="ui-grid-row">
+                                        <div class="ui-grid-col-4">
+                                            <div class="ui-grid-row">
+                                                <h:outputText value="Current Lowest Bid:" rendered="#{not ap.blindAuctionSpecified}" />
+                                                <h:outputText value="Initial Bid:" rendered="#{ap.blindAuctionSpecified}" />
+                                            </div>
+                                            <div class="ui-grid-row">
+                                                <h:outputText value="S$ #{ap.lowestBid}" style="font-weight: bold; color: red; font-size: 2.5em;" rendered="#{not ap.blindAuctionSpecified}"/>
+                                                <h:outputText value="S$ #{ap.initBid}" style="font-weight: bold; color: red; font-size: 2.5em;" rendered="#{ap.blindAuctionSpecified}"/>
+                                            </div>
+                                            <div class="ui-grid-row">
+                                                <h:outputText value="Auction Type:" />
+                                                <h:outputText value="#{ap.auctionType}" style="font-weight: bold; font-size: 1.2em;"/>
+                                            </div>
+                                        </div>
+                                        <div class="ui-grid-col-8">
+                                            <div class="ui-grid-row">
+                                                <div class="ui-grid-col-3">
+                                                    <h:outputText value="Source Location: " />
+                                                </div>
+                                                <div class="ui-grid-col-9">
+                                                    <h:outputText value="#{ap.sourceLoc.street}, #{ap.sourceLoc.city}, #{ap.sourceLoc.state}, #{ap.sourceLoc.country} #{ap.sourceLoc.postalCode}" style="font-size: 1.2em"/>
+                                                </div>
+                                            </div>
+                                            <div class="ui-grid-row">
+                                                <div class="ui-grid-col-3">
+                                                    <h:outputText value="Destination Location: "/>
+                                                </div>
+                                                <div class="ui-grid-col-9">
+                                                    <h:outputText value="#{ap.destLoc.street}, #{ap.destLoc.city}, #{ap.destLoc.state}, #{ap.destLoc.country} #{ap.destLoc.postalCode}" style="font-size: 1.2em"/>
+                                                </div>
+                                            </div>
+                                            <div class="ui-grid-row">
+                                                <div class="ui-grid-col-3">
+                                                    <h:outputText value="Quantity :" />
+                                                </div>
+                                                <div class="ui-grid-col-9">
+                                                    <h:outputText value="#{ap.quantity}" style="font-weight: bold; font-size: 1.2em;"/>
+                                                </div>
+                                            </div>
+                                            <div class="ui-grid-row">
+                                                <div class="ui-grid-col-3">
+                                                    <h:outputText value="End time :" />
+                                                </div>
+                                                <div class="ui-grid-col-9">
+                                                    <h:outputText value="#{ap.endDateTime}" style="font-size: 1.2em"/>
+                                                </div>
+                                            </div>
+                                            <div class="ui-grid-row">
+                                                <div class="ui-grid-col-3">
+                                                    <h:outputText value="Ending In (HH:mm:ss) : " />
+                                                </div>
+                                                <div class="ui-grid-col-9">
+                                                    <h:outputText style="display: inline;" value="#{postManagedBean.getDayLeftAP(ap)} Day(s)"/>
+                                                    <pe:timer timeout="#{postManagedBean.getTimeLeftAP(ap)}"  format="HH : mm : ss"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>        
+                                </div>
+                            </div>
+                        </div>
+                    </p:panel>
+
+
+                </h:panelGrid>
+            </p:dataScroller>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

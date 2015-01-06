@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>View Sales Lead</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+    </ui:define>
+
+    <ui:define name="content">   
+
+        <h:form id="formMain">     
+            <p:growl life="3000"/>
+            <p:graphicImage value="../../resources/images/salesLead.jpg" style="width:100%;"></p:graphicImage>
+                <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+                <p:dataTable id="datatable" var="salesLead" value="#{salesLeadManagedBean.slList}"
+                             rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="No sales lead found">
+                    <f:facet name="header">
+                        <p style="font-size: 1.5em;margin-bottom: 0;">Sales Lead list of Company #{salesLeadManagedBean.ownerCompanyName}</p>
+                    </f:facet>
+                    <p:column headerText="Client Name"
+                              sortBy="#{salesLead.clientCompany.companyName}">
+                        <h:outputText value="#{salesLead.clientCompany.companyName}" />
+                    </p:column>                 
+                    <p:column headerText="Description">
+                        <h:outputText value="#{salesLead.description}" />
+                    </p:column>
+                    <p:column headerText="Update">
+                        <center>
+                            <p:commandButton type="submit" icon="ui-icon-extlink" ajax="true" id="submit" actionListener="#{salesLeadManagedBean.retrieveSalesLead(salesLead)}" styleClass="ui-priority-primary"/>
+                        </center>
+                    </p:column>
+                    <p:column headerText="Delete">
+                        <center>
+                            <p:commandButton type="update" icon="ui-icon-trash" ajax="true" id="submit1" update="datatable" actionListener="#{salesLeadManagedBean.removeSalesLead(salesLead)}" styleClass="ui-priority-primary"/>
+                        </center>
+                    </p:column>
+                </p:dataTable>
+                <p:panel>
+                    <f:facet name="header">
+                        <b style="font-size:1.5em;margin-left: 40%">Create New Sales Lead</b>
+                    </f:facet>
+                    <center>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="clientCompanyName" value="Client company name:" />
+                    <p:inputText required="false" label="customerCompanyName" size="50"
+                                 requiredMessage="Client company name is required." id="clientCompanyName"
+                                 value="#{salesLeadManagedBean.clientCompanyName}"/>
+                    <h:outputText value=" "></h:outputText>
+                    <p:commandButton ajax="true" type="update" value="Add new Sales Lead" update="datatable" icon="ui-icon-check" actionListener="#{salesLeadManagedBean.addSalesLeadEntry()}" /> 
+                </h:panelGrid>
+                        </center>
+                    </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

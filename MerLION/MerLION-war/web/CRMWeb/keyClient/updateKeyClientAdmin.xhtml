@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyAdminTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Update Key Client</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; 
+            }
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/keyClient.jpg" style="width:100%;"></p:graphicImage>
+            <p:panel id="panel" header="Update New Key Client Type">
+                
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="companyName" style="font-weight: bold" value="Company Name: " />
+                        </p:column>
+                        <p:column>
+                            <p:inplace id="cName" editor="true">
+                                <p:inputText required="true" label="companyName"
+                                    requiredMessage="Company Name is required." id="companyName"
+                                    value="#{keyClientManagedBean.companyName}">
+                                </p:inputText>
+                            </p:inplace>                           
+                        </p:column>                       
+                        <p:column>
+                            <p:message for="companyName" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="contactNo" style="font-weight: bold" value="Contact No: " />
+                        </p:column>
+                        <p:column>
+                            <p:inplace id="cNo" editor="true">
+                                <p:inputText required="true" label="Contact No" requiredMessage="Contact No is required." id="contactNo"
+                                             value="#{keyClientManagedBean.contactNo}">
+                                </p:inputText>
+                            </p:inplace>
+                        </p:column>
+                        <p:column>
+                            <p:message for="contactNo" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="membershipPoint" style="font-weight: bold" value="Membership Point: " />
+                        </p:column>
+                        <p:column>
+                            <p:inplace id="mPoint" editor="true">
+                                <p:inputText required="true" label="MembershipPoint" 
+                                             requiredMessage="Membership Point is required." id="membershipPoint"
+                                             value="#{keyClientManagedBean.membershipPoint}">
+                                </p:inputText>
+                            </p:inplace>
+                        </p:column>
+                        <p:column>
+                            <p:message for="membershipPoint" />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>   
+                <p:commandButton id="btn" value="Update"
+                                 update="panel" actionListener="#{keyClientManagedBean.updateKeyClientAdmin}" ajax="true"/>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

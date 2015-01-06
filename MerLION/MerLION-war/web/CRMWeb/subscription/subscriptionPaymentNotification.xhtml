@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/systemAdminTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Payment Management</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; 
+            }
+        </style>
+    </ui:define>
+    
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/subscription.jpg" style="width:100%;"></p:graphicImage>
+            <p:panel id="panel3" header="Check Subscription Payment of One Company">
+              <p:growl id="msgs" />
+                <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold" value="Company Id: " />
+                            </p:column>
+                            <p:column>
+                                    <p:inputText required="true" label="companyId" requiredMessage="Company ID is required." 
+                                                  value="#{subscriptionPaymentManagedBean.companyId2}" validatorMessage="Company ID must be integer only.">
+                                          <f:validateRegex pattern="[0-9]+"/>
+                                    </p:inputText>
+                            </p:column>
+                        </p:row>
+                </p:panelGrid>
+                
+                <p:commandButton id="btn3" value="Check" update=":formMain:dialog2" icon="ui-icon-circle-zoomin"
+                                 actionListener="#{subscriptionPaymentManagedBean.checkPayment(event)}" ajax="true"/>
+            </p:panel>
+            
+           <p:dialog id="dialog2" header="Notification Detail" widgetVar="Dialog2" resizable="false"  
+                              width="700" position="center"  >  
+                <p:panelGrid id="display1">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="font-weight: bold" value="Notification Id: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{subscriptionPaymentManagedBean.notiId}" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="font-weight: bold" value="Notification Content: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{subscriptionPaymentManagedBean.notiContent}" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="font-weight: bold" value="Notification Time: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{subscriptionPaymentManagedBean.notiTime}" />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:dialog> 
+        </h:form>
+        
+        <h:form id="form3">
+            <p:panel id="panel" header="View All Subscription Payment">
+                <p:dataTable id="paymentTable" var="payment" value="#{subscriptionPaymentManagedBean.getAllSubscriptionPaymentAdmin(event)}" paginator="true" rows="5" emptyMessage="No type">
+                    <f:facet name="header">
+                        List of Payment
+                        <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                        <p:columnToggler datasource="paymentTable" trigger="toggler" />
+                    </f:facet>
+                    <p:column headerText="Subscription Payment ID" sortBy="#{payment.id}">
+                        <h:outputText value="#{payment.id}" />
+                    </p:column>
+                    <p:column headerText="Company ID" >
+                        <h:outputText value="#{payment.company.id}" />
+                    </p:column>
+                    <p:column headerText="Paid by" filterBy="#{payment.company.companyName}" filterStyle="contains">
+                        <h:outputText value="#{payment.company.companyName}" />
+                    </p:column>
+                    <p:column headerText="Price (S$)">
+                        <h:outputText value="#{payment.price}" />
+                    </p:column>
+                    <p:column headerText="Subscription Payment Time" sortBy="#{payment.paymentTime}">
+                        <h:outputText value="#{payment.paymentTime}" />
+                    </p:column>
+                    <p:column headerText="Subscription Expected Payment Time" sortBy="#{payment.expectedPaymentTime}">
+                        <h:outputText value="#{payment.expectedPaymentTime}" />
+                    </p:column>
+                    <p:column headerText="Subscription Payment Duration" sortBy="#{payment.schema.numOfYears}" filterBy="#{payment.schema.numOfYears}" filterMatchMode="contains">
+                        <h:outputText value="#{payment.schema.numOfYears}" />
+                    </p:column>
+                </p:dataTable>
+            </p:panel>          
+        </h:form>
+    </ui:define>
+</ui:composition>

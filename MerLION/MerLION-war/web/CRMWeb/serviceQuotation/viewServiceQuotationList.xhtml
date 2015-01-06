@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>View Service Quotations List</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfSalesAndMarketing()}
+        #{commonFuncManagedBean.checkIfPartnerCompany()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/sq1.jpg" style="width:100%;"></p:graphicImage>
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+            <p:dataTable id="datatable" var="serviceQuotation" value="#{serviceQuotationManagedBean.retrieveServiceQuotationList()}"
+                         rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="No Service quotation found">
+                <f:facet name="header">
+                    <p style="font-size: 1.5em;margin-bottom: 0;display: inline;text-align: center;">List of Service Quotation</p>
+                </f:facet>
+                 <p:column headerText="Quotation ID">
+                    <h:outputText value="#{serviceQuotation.id}">
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Creation time">
+                    <h:outputText value="#{serviceQuotation.createTime}">
+                        <f:convertDateTime pattern="yy-MM-dd" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Client Company" sortBy="#{serviceQuotation.clientCompany.companyName}">
+                    <h:outputText value="#{serviceQuotation.clientCompany.companyName}" />
+                </p:column>
+                <p:column headerText="Description">
+                    <h:outputText value="#{serviceQuotation.description}" />
+                </p:column>
+                <p:column headerText="Have Provider Approved?" sortBy="#{serviceQuotation.isApprovedOrNot().toString}">
+                    <p:selectBooleanButton id="providerApprovedOrNot1" value="#{serviceQuotation.isApprovedOrNot()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>
+                </p:column>
+                <p:column headerText="Have Client Approved?" sortBy="#{serviceQuotation.getClientApprovedOrNot().toString}">
+                    <p:selectBooleanButton id="clientApprovedOrNot1" value="#{serviceQuotation.getClientApprovedOrNot()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>
+                </p:column>
+                <p:column headerText="Is Contract Established?" sortBy="#{serviceQuotation.establishedContractOrNot.toString}">
+                    <p:selectBooleanButton id="establishedContractOrNot1" value="#{serviceQuotation.establishedContractOrNot}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                    </p:selectBooleanButton>
+                </p:column>
+                  <p:column headerText="Verify">
+                    <center>
+                    <p:commandButton type="submit" icon="ui-icon-search" ajax="true" id="submit2" actionListener="#{serviceQuotationManagedBean.retrieveServiceQuotation(serviceQuotation)}" styleClass="ui-priority-primary"/>
+                    </center>
+                </p:column>
+                <p:column headerText="Approve">
+                    <center>
+                    <p:commandButton type="update" icon="ui-icon-check" ajax="true" id="submit1" update="datatable" actionListener="#{serviceQuotationManagedBean.approveServiceQuotation(serviceQuotation)}" styleClass="ui-priority-primary"/>
+                    </center>
+                </p:column>
+              
+                <p:column headerText="Reject">
+                    <center>
+                    <p:commandButton type="update" icon="ui-icon-close" ajax="true" id="reject" update="datatable" actionListener="#{serviceQuotationManagedBean.rejectServiceQuotationRequest(serviceQuotation)}" styleClass="ui-priority-primary"/>
+                    </center>
+                </p:column>
+                <p:column headerText="Archive">
+                    <center>
+                    <p:commandButton type="update" icon="ui-icon-trash" ajax="true" id="submit3" update="datatable" actionListener="#{serviceQuotationManagedBean.archiveServiceQuotation(serviceQuotation)}" styleClass="ui-priority-primary"/>
+                    </center>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+

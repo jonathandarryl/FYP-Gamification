@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Create BOM</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfManufacture()}
+        #{commonFuncManagedBean.checkIfUser()}
+        #{bomManagedBean.retrieveMaterialList()}
+        #{bomManagedBean.retrieveAllProducts()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/banner_business_promotion.png" style="width:100%;"></p:graphicImage>
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+
+            <p:layout style="height:650px;">
+                <p:layoutUnit position="west" resizable="true" size="50%" header="Select Product:">
+                    <p:dataTable var="products" value="#{bomManagedBean.productList}" rowKey="#{products.id}"
+                                 rows="10" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" emptyMessage="No Materials" selection="#{bomManagedBean.selectedProduct}">
+                        <p:column selectionMode="single" style="width:30px"/>  
+                        <p:column headerText="Product ID">
+                            <h:outputText value="#{products.id}" />
+                        </p:column>
+                        <p:column headerText="Product Name"
+                                  sortBy="#{products.productName}">
+                            <h:outputText value="#{products.productName}" />
+                        </p:column>
+                        <p:column headerText="Product Price">
+                            <h:outputText value="#{products.productPrice}">
+                                <f:convertNumber type="currency" currencySymbol="S$" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Product Description">
+                            <h:outputText value="#{products.productDescription}" />
+                        </p:column>
+                        <p:column headerText="Inventory Level">
+                            <h:outputText value="#{products.inventoryLevel}" />
+                        </p:column>
+                        <p:column headerText="Unit">
+                            <h:outputText value="#{products.unit}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:layoutUnit>
+                <p:layoutUnit position="center" resizable="true" size="50%" header="Select Raw Materials:">
+                    <p:dataTable var="materials" value="#{bomManagedBean.allMaterials}" rowKey="#{materials.id}"
+                                 rows="10" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" emptyMessage="No Materials" selection="#{bomManagedBean.selectedMaterial}">
+                        <p:column selectionMode="multiple" style="width:30px"/>  
+                        <p:column headerText="Material ID">
+                            <h:outputText value="#{materials.id}" />
+                        </p:column>
+                        <p:column headerText="Material Name"
+                                  sortBy="#{materials.productName}">
+                            <h:outputText value="#{materials.productName}" />
+                        </p:column>
+                        <p:column headerText="Material Price">
+                            <h:outputText value="#{materials.productPrice}">
+                                <f:convertNumber type="currency" currencySymbol="S$" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Material Description">
+                            <h:outputText value="#{materials.productDescription}" />
+                        </p:column>
+                        <p:column headerText="Inventory Level">
+                            <h:outputText value="#{materials.inventoryLevel}" />
+                        </p:column>
+                        <p:column headerText="Unit">
+                            <h:outputText value="#{materials.unit}" />
+                        </p:column>
+                    </p:dataTable>
+                    <center>
+                        <p:commandButton type="submit" value="Submit" actionListener="#{bomManagedBean.preAddAction()}"/>
+                    </center>
+                </p:layoutUnit>
+            </p:layout>
+        </h:form>
+    </ui:define>
+</ui:composition>

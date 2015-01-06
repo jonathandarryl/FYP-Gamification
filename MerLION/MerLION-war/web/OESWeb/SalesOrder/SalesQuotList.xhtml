@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Sale Quotation List</title>
+    </ui:define>
+    <ui:define name="check">
+        #{salesOrderManagedBean.retrieveSalesQuotList()}
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfOperating()}
+    </ui:define>
+    <ui:define name="content">
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="images/ajaxloadingbar.gif" />
+        </p:dialog>
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/Quotation_Banner.png" style="width:100%; height: 200px"></p:graphicImage>
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+
+            <p:panel header="View All Sales Quotations">
+                <p:dataTable var="quots" value="#{salesOrderManagedBean.salesQuotList}"
+                             paginator="true" rows="5" emptyMessage="No Product">
+                    <p:column headerText="Quotation ID">
+                        <h:outputText value="#{quots.id}" />
+                    </p:column>
+                    <p:column filterBy="#{quots.customer.name}" headerText="Customer Company"
+                              sortBy="#{quots.customer.name}" filterMatchMode="contains">
+                        <h:outputText value="#{quots.customer.name}" />
+                    </p:column>
+                    <p:column headerText="Total Price"
+                              sortBy="#{quots.totalPrice}">
+                        <h:outputText value="#{quots.totalPrice}">
+                            <f:convertNumber type="currency" currencySymbol="S$" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Quotation Date">
+                        <h:outputText value="#{quots.salesQuotationDate}" />
+                    </p:column>
+                    <p:column headerText="Is it approved?" sortBy="#{quots.isApprovedOrNot().toString}">
+                        <p:selectBooleanButton id="approvedOrNot" value="#{quots.isApprovedOrNot()}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                        </p:selectBooleanButton>
+                    </p:column>
+                    <p:column headerText="Update Quotation" >
+                        <p:commandButton type="submit" value="Update" actionListener="#{salesOrderManagedBean.preUpdateSalesQuotation(quots)}"/>
+                    </p:column>
+                    <p:column headerText="View Detail" >
+                        <p:commandButton type="submit" value="View Detail" actionListener="#{salesOrderManagedBean.retrieveSalesQuotation(quots.id)}"/>
+                    </p:column>
+                    <p:column headerText="Send to Customer" >
+                        <p:commandButton type="update" value="Send" actionListener="#{salesOrderManagedBean.sendQuot(quots)}"/>
+                    </p:column>
+                    <p:column headerText="Approve" >
+                        <p:commandButton type="update" value="Approve" actionListener="#{salesOrderManagedBean.approveSalesQuotation(quots.id)}"/>
+                    </p:column>
+                    <p:column headerText="Create Order" >
+                        <p:commandButton type="update" value="Create Order" actionListener="#{salesOrderManagedBean.createSalesOrder(quots.id)}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

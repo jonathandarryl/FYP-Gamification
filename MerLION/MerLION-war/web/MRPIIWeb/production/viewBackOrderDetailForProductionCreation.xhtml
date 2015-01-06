@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Display Sales Order</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfManufacture()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+            <p:graphicImage value="../../resources/images/bannerManufacturing.jpg" style="width:100%;"></p:graphicImage>
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+            <p:layout style="height:450px;" >
+                <p:layoutUnit position="west" resizable="true" size="20%" header="Sales Order Information">
+                    <p:panelGrid columns="2">
+
+                        <h:outputText value="Order ID"/>
+                        <h:outputText value="#{productionManagedBean.so.id}"/>
+
+                        <h:outputText value="Customer"/>
+                        <h:outputText value="#{productionManagedBean.so.salesQuotation.customer.name}"/>
+
+                        <h:outputText value="Creation Time"/>
+                        <h:outputText value="#{productionManagedBean.so.salesOrderDate}"/>
+
+                        <h:outputText value="Total Price"/>
+                        <h:outputText value="#{productionManagedBean.so.salesQuotation.totalPrice}"/>
+
+                    </p:panelGrid>
+
+                </p:layoutUnit>
+                <p:layoutUnit position="center" resizable="true" size="80%" header="Ordered Finished Goods List">
+                    <p:dataTable var="product" value="#{productionManagedBean.so.salesQuotation.productList}"
+                                 rows="10" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" emptyMessage="No Product" >
+                        <p:column headerText="Product Name">
+                            <h:outputText value="#{product.productName}" />
+                        </p:column>
+                        <p:column headerText="Unit">
+                            <h:outputText value="#{product.unit}" />
+                        </p:column>
+                        <p:column headerText="Required Quantity">
+                            <h:outputText value="#{productionManagedBean.getSingleRequiredQuantity(product)}" />
+                        </p:column>
+                        <p:column headerText="Current Inventory">
+                            <h:outputText value="#{product.inventoryLevel}" />
+                        </p:column>
+                        <p:column headerText="Initiate Production">
+                            <center>
+                                <p:commandButton type="submit" ajax="true" value="Initiate" actionListener="#{productionManagedBean.retrieveProduct(product)}" 
+                                                 oncomplete="PF('dlg1').show()">
+                                    <f:setPropertyActionListener value="#{product}" target="#{productionManagedBean.product}" />
+                                </p:commandButton>
+                            </center>
+                        </p:column>                        
+                    </p:dataTable>  
+                </p:layoutUnit>    
+
+                <p:dialog id="production" resizable="true" header="Production Initiated Successfully" widgetVar="dlg1" showEffect="fold" dynamic="true">
+                    <h:panelGrid columns="2" cellpadding="5">
+
+                        <h:outputLabel value="Product Name:" />
+                        <h:outputText value="#{productionManagedBean.product.productName}">
+                        </h:outputText>
+
+                        <h:outputLabel value="Unit:" />
+                        <h:outputText value="#{productionManagedBean.product.unit}">
+                        </h:outputText>
+
+                        <h:outputLabel value="Needed Quantity:" />
+                        <h:outputText value="#{productionManagedBean.getSingleRequiredQuantity(productionManagedBean.product)}">
+                        </h:outputText>
+
+                        <h:outputLabel value="Quantity in One Batch:" />
+                        <h:outputText value="#{productionManagedBean.product.quantityInOneBatch}">
+                        </h:outputText>
+
+                        <h:outputLabel value="Minimun Batch Number Needed:" />
+                        <h:outputText value="#{productionManagedBean.minimunBatchNumber}">
+                        </h:outputText>
+
+                        <h:outputLabel value="Planned Batch Number: " />
+                        <p:inputText id="batchNumber" value="#{productionManagedBean.batchNumber}" label="batchNumber">                       
+                        </p:inputText>                    
+
+                    </h:panelGrid>
+                    <center>
+                        <p:commandButton type="submit" value="Initiate Production" icon="ui-icon-check" actionListener="#{productionManagedBean.createProduction()}" /> 
+                    </center>
+                </p:dialog>
+
+                <p:dialog resizable="false" header="Production Initiated Successfully" widgetVar="dlg" showEffect="fold">
+                    <p:commandButton type="submit" value="View Stand By Production List" icon="ui-icon-check" actionListener="#{productionManagedBean.redirectToViewStandByProductionList()}" /> 
+                </p:dialog>
+            </p:layout>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+

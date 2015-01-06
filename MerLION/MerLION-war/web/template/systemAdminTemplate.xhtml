@@ -1,0 +1,265 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="author" content="Sunnie" />
+        <!--<link href="../resources/css/bootstrap.min.css" rel="stylesheet"/>-->
+        <!--<link href="../resources/css/merlion-platform.css" rel="stylesheet" type="text/css"/>-->
+        <!--<link href="../resources/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>-->
+        <link href="https://fonts.googleapis.com/css?family=Sonsie+One" rel="stylesheet" type="text/css"/>
+
+        <!--        <link href="../resources/css/default.css" rel="stylesheet" type="text/css" />
+                <link href="../resources/css/cssLayout.css" rel="stylesheet" type="text/css" />-->
+        <ui:insert name="head-title">
+            <title>MerLION Platform - System Admin Workspace</title>
+        </ui:insert>
+        <ui:insert name="cssText">
+
+        </ui:insert>
+        <ui:insert name="js">
+        </ui:insert>
+
+        <f:facet name="middle">
+            <h:outputStylesheet name="bootstrap/css/bootstrap.css" />
+            <h:outputStylesheet name="css/font-awesome.css" />
+            <h:outputStylesheet name="css/merlion-platform.css" />
+            <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" type="text/javascript" />-->
+            <!--<h:outputScript name="bootstrap/js/bootstrap.js" />-->
+        </f:facet>
+
+        <style type="text/css">
+            .ui-layout-north {
+                z-index:20 !important;
+                overflow:visible !important;;
+            }
+
+            .ui-layout-north .ui-layout-unit-content {
+                overflow:visible !important;
+            }
+            .ui-layout-north .ui-menubar {
+                margin-top: 15px;
+                margin-left: 180px;
+                border: none;
+                margin-right: 20px;
+            }
+            .ui-layout-west {
+                z-index:19 !important;
+                overflow:visible !important;;
+            }
+
+            .ui-layout-west .ui-layout-unit-content {
+                overflow:visible !important;
+            }
+            td, th {
+                padding: 5px !important;
+            }
+            .ui-menu.ui-megamenu .ui-menu-child .ui-menu-list {
+                width: 15em;
+            }
+            .ui-datepicker-inline {
+                width: 100% !important;
+            }
+            .ui-datepicker table {
+                font-size: .7em !important;
+            } 
+            .ui-datepicker-calendar td, .ui-datepicker-calendar th {
+                    padding: 0 !important;
+                }
+        </style>
+    </h:head>
+
+    <h:body>
+        #{commonFuncManagedBean.checkStatus()}
+        <ui:insert name="check">    
+        </ui:insert>
+
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size = "60">
+                <a href="/MerLION-war/index.xhtml"><img src="/MerLION-war/resources/css/images/logo.png" class="logoImage" ></img></a>
+                <h:form>  
+                    <p:growl id="messages"/>
+
+                    <p:megaMenu id="mb" orientation="horizontal" >
+                        <p:submenu label="My Account" icon="ui-icon-document">
+                            <p:column>
+                                <p:graphicImage name="images/crm4.png" width="200"/>
+                            </p:column>
+                            <p:column>
+                                <p:submenu label="Workspace">
+                                    <p:menuitem value="Workspace" url="/CommonWeb/systemAdminHome.xhtml" icon="ui-icon-home" />
+                                </p:submenu>
+                                <p:submenu label="Profile">
+                                    <p:menuitem value="View and update MerLION Info" url="/CommonWeb/updateMerLION.xhtml" />
+                                    <p:separator />
+                                    <p:menuitem value="View and Updte Your profile" url="/CommonWeb/updateProfileSystemAdmin.xhtml" />
+                                    <p:separator />
+                                    <p:menuitem value="Change password" url="/CommonWeb/changePasswordSystemAdmin.xhtml" />
+                                    <p:separator />
+                                </p:submenu>
+                            </p:column>
+                        </p:submenu>
+                        <p:submenu label="Customer Relationship Mgt" icon="ui-icon-person" >
+                            <p:column>
+                                <p:graphicImage name="/images/crm8.png" width="200"/>
+                            </p:column>
+                            <p:column>
+                                <p:submenu label="Subscription Schema Management" >
+                                    <p:menuitem value="Subscription Schema Management" url="/CRMWeb/subscription/subscriptionSchemaMgt.xhtml" />
+                                    <p:separator />
+                                </p:submenu>
+                                <p:submenu label="Subscription Payment Management" >                           
+                                    <p:menuitem value="View All Payment" url="/CRMWeb/subscription/subscriptionPaymentMgtViewAllPayment.xhtml" />
+                                    <p:separator />    
+                                    <p:menuitem value="View Payment By One Company" url="/CRMWeb/subscription/subscriptionPaymentMgtAdmin.xhtml" />
+                                    <p:separator />    
+                                    <p:menuitem value="Check Payment Notification" url="/CRMWeb/subscription/subscriptionPaymentNotification.xhtml" />
+                                    <p:separator />    
+                                    <p:menuitem value="Check Lock Status" url="/CRMWeb/subscription/subscriptionPaymentLockStatus.xhtml"/>
+                                    <p:separator />
+                                </p:submenu>
+                                <p:submenu label="Key Client Management" >                           
+                                    <p:menuitem value="Key Client Type Management" url="/CRMWeb/keyClient/viewAllKeyClientType.xhtml"/>                                                 
+                                    <p:separator />
+                                    <p:menuitem value="Key Client Management" url="/CRMWeb/keyClient/keyClientMgtPageAdmin.xhtml"/>  
+                                    <p:separator />
+                                </p:submenu>
+                            </p:column>
+                        </p:submenu>
+                        <p:submenu label="Global Rates Negotiation System" icon="ui-icon-extlink">
+                            <p:column>
+                                <p:graphicImage name="/images/grns2.png" width="200"/>
+                            </p:column>
+                            <p:column>
+                                <p:submenu label="Manage GRNS" >
+                                    <p:menuitem value="Control Panel" url="/GRNSWeb/manageGRNS.xhtml" />
+                                    <p:separator />
+                                </p:submenu>
+                            </p:column>
+                        </p:submenu>
+                        <ui:insert name="menubarItem">
+                        </ui:insert>
+                        <p:submenu label="Help" icon="ui-icon-help">
+                            <p:column>
+                                <p:graphicImage name="/images/contact.png" width="200"/>
+                            </p:column>
+                            <p:column>
+                                <p:submenu label="Help" >
+                                    <p:menuitem value="Service Directory" url="../AboutUs/serviceDirectorySystemAdmin.xhtml" />
+                                </p:submenu>
+                                <p:submenu label="Contact Us" >
+                                    <p:menuitem value="Contact Us" url="../AboutUs/contactUs.xhtml" />
+                                </p:submenu>
+                            </p:column>
+                        </p:submenu>
+                        <f:facet name="options">
+                            <p:commandButton type="submit" value="Logout" icon="ui-icon-extlink" actionListener="#{loginManagedBean.logout()}" onclick="if (!confirm('Are you sure you want to log out?'))
+                                        return false;"/>
+                        </f:facet>
+                    </p:megaMenu>
+
+                </h:form>
+                <p:idleMonitor timeout="1800000" onidle="PF('dlg').show()"/>
+                <p:dialog header="Idled for 30 Minutes" modal="true" appendTo="@(body)" widgetVar="dlg" resizable="false" closable="false">  
+                    <h:form id="timeoutForm">  
+                        <h:panelGrid columns="1" style="margin-bottom:10px">  
+                            <h:outputLabel value="You have been logged out." />
+                        </h:panelGrid>
+                        <center><p:commandButton id="submitButton" value="Ok" oncomplete="PF('dlg').hide();" actionListener="#{commonFuncManagedBean.forcelogout()}"/></center>  
+                    </h:form>  
+                </p:dialog>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="230"  header="Main Menu" collapsible="true" >
+                <ui:insert name="leftpanel">
+                    <h:form>
+                        <p:tieredMenu style="width:225px">
+                            <p:menuitem value=" My Scheduler" icon="ui-icon-clipboard" url="/CommonWeb/systemAdminHome.xhtml" />
+                            <p:separator />
+                            <p:submenu label=" Manage Company User" icon="ui-icon-clipboard">
+                                <p:menuitem value=" Create Company Users" url="/CommonWeb/companyUserCreation1.xhtml" />
+                                <p:separator />
+                                <p:menuitem value=" View and Manage All Company Users" url="/CommonWeb/viewAllCompanyUser.xhtml" />
+                                <p:separator />
+                                <p:menuitem value=" View and Manage All Company Admin" url="/CommonWeb/viewAllCompanyAdmin.xhtml" />
+                                <p:separator />
+                                <p:menuitem value=" Activate Locked Account" url="/CommonWeb/unlockUser.xhtml" />
+                                <p:separator />
+                                <p:menuitem value=" Search Company User" url="/CommonWeb/searchCompanyUserSystemAdmin.xhtml" />
+                            </p:submenu>
+                            <p:separator />
+                            <p:submenu label=" Manage Company" icon="ui-icon-clipboard">
+                                <p:menuitem value=" Company Admin Registration" url="/CommonWeb/companyAdminRegistrationSystemAdmin.xhtml" />
+                                <p:separator />
+                                <p:menuitem value=" Approve New Registration" url="/CommonWeb/approveCompanyAdmin.xhtml" />
+                                <p:separator />
+                                <p:menuitem value=" Search Company" url="/CommonWeb/viewAllCompanySystemAdmin.xhtml" />
+                            </p:submenu>
+                            <p:separator />
+                            <p:submenu label=" Message Center" icon="ui-icon-document">
+                                <p:menuitem value=" View Message" url="/CommonWeb/viewMessageSystemAdmin.xhtml" />
+                                <p:separator />
+                                <p:menuitem value=" Send Message" url="/CommonWeb/sendMessageSystemAdmin.xhtml" />
+                            </p:submenu>
+                            <p:separator />
+                            <p:submenu label=" Announcement Center" icon="ui-icon-document">
+                                <p:menuitem value=" View Announcement" url="/CommonWeb/viewAnnouncementSystemAdmin.xhtml" />
+                                <p:separator />
+                                <p:menuitem value=" Send Announcement" url="/CommonWeb/sendAnnouncementSystemAdmin.xhtml" />
+                                <p:separator />
+                                <p:menuitem value=" View Announcement Sent" url="/CommonWeb/viewAnnouncementSentSystemAdmin.xhtml" />
+                            </p:submenu>
+                            <p:separator />
+                            <p:submenu label=" Notification Center" icon="ui-icon-mail-closed">
+                                <p:menuitem value=" View Notification" url="/CommonWeb/viewNotificationSystemAdmin.xhtml" />
+                                <p:separator />
+                                <p:menuitem value=" Send Notification" url="/CommonWeb/sendNotificationSystemAdmin.xhtml" />
+                            </p:submenu>
+                        </p:tieredMenu>
+
+                        <p:calendar id="inline" mode="inline" />
+
+                    </h:form>
+                    <h:form>
+                        <p:panel style="width:225px;">
+                            <f:facet name="header">
+                                <center><p:clock /></center>
+                            </f:facet>
+                                <h:outputLabel for="displayusername" value="Username : " style="margin-right:5px" />
+                                <h:outputText id="displayusername" style="margin-right:10px" value="#{commonFuncManagedBean.username}" /><br />
+                                <h:outputLabel for="displayfirst" value="Name : " style="margin-right:5px" />
+                                <h:outputText id="displayfirst" style="margin-right:10px" value="#{commonFuncManagedBean.firstName} #{commonFuncManagedBean.lastName}" /><br />
+                                <h:outputLabel for="displaydepartment" value="Department : " style="margin-right:5px" />
+                                <h:outputText id="displaydepartment" style="margin-right:10px" value="#{commonFuncManagedBean.department.departmentName}" /><br />
+                                <h:outputLabel for="displaycompany" value="Company : " style="margin-right:5px" />
+                                <h:outputText id="displaycompany" style="margin-right:10px" value="#{commonFuncManagedBean.companyName}" /><br />
+                                <h:outputLabel for="displaycompanytype" value="Company Type : " style="margin-right:5px" />
+                                <h:outputText id="displaycompanytype" style="margin-right:10px" value="#{commonFuncManagedBean.companyType}" />
+                        </p:panel>
+                    </h:form>
+                </ui:insert>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">                                                         
+                <ui:insert name="content">
+                </ui:insert>
+            </p:layoutUnit>
+
+            <ui:insert name="right">              
+            </ui:insert>
+
+            <p:layoutUnit position="south" size="30">
+                <ui:insert name="footer">
+                    <ui:include src="defaultFooter.xhtml" />
+                </ui:insert>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+
+</html>

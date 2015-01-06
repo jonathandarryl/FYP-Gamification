@@ -1,0 +1,67 @@
+<ui:composition template="../template/companyUserTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            MerLION Platform | Send Message
+        </title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()} 
+    </ui:define>
+    <ui:define name="content"> 
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="images/ajaxloadingbar.gif" />
+        </p:dialog>
+
+        <center>
+
+            <h:form>
+                <p:panel id ="panel">
+                    <p:messages id="sendMsg" autoUpdate="true" closable="true"/>
+
+                    <h:panelGrid columns="3" cellpadding="5">
+
+                        <h:outputLabel for="receiverType" value="Receiver User Type: *" />
+                        <p:selectOneMenu id="receiverType" value="#{messageManagedBean.receiverType}" label="receiverType" required="true" requiredMessage="Please select one user type">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItem itemLabel="System Admin" itemValue="SystemAdmin" />
+                            <f:selectItem itemLabel="Company Admin" itemValue="Admin" />
+                            <f:selectItem itemLabel="Company User" itemValue="User" />
+                        </p:selectOneMenu>
+                        <p:messages for="receiverType" />
+
+                        <h:outputLabel for="receiver" value="Receiver username: *" />
+                        <p:inputText id="receiver" value="#{messageManagedBean.receiverName}" label="receiver" required="true" requiredMessage="Please input username of receiver">
+                            <f:validateLength minimum="4" maximum="25" />
+                            <p:watermark for="receiver" value="Please enter username of the receiver" />
+                        </p:inputText>                        
+                        <p:messages for="receiver" />
+
+                        <h:outputLabel for="title" value="Message title: *" />
+                        <p:inputText id="title" value="#{messageManagedBean.title}" label="title" required="true" requiredMessage="Please input title of message">
+                            <p:watermark for="title" value="Please enter title of the message" />
+                        </p:inputText>                        
+                        <p:messages for="title" />
+
+                    </h:panelGrid>
+
+                    <p:editor id="msgEditor" widgetVar="editorWidget" value="#{messageManagedBean.content}" width="600" />
+
+                    <p:commandButton type="submit" value="Send" icon="ui-icon-check" actionListener="#{messageManagedBean.sendMessage()}" />
+                </p:panel>
+
+                <p:dialog header="Content" widgetVar="dlg" showEffect="fade" hideEffect="fade">
+                    <h:outputText id="display" value="#{messageManagedBean.content}" escape="false" />
+                </p:dialog>
+
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
+

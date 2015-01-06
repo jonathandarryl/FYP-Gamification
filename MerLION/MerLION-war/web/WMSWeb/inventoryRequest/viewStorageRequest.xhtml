@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>View Stock-in Request</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfWarehouse()}
+        #{facilityManagedBean.setRegionList(inventoryRequestManagedBean.sr.warehouse.regionList)}
+        #{facilityManagedBean.setWarehouseName(inventoryRequestManagedBean.sr.warehouse.name)}
+        #{facilityManagedBean.setWh(inventoryRequestManagedBean.sr.warehouse)}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+
+            <p:panel id ="panel" header="View Stock-in Request #{inventoryRequestManagedBean.sr.id} 
+                     Request From: #{inventoryRequestManagedBean.sr.requestInitiator.companyName}">
+                <p:growl id="msgs" />
+                <p:layout style="height:650px;" >
+                    <p:layoutUnit position="west" resizable="true" size="30%" header="Common Information">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:outputLabel value="Stock-in Request ID:" />
+                            <h:outputText value="#{inventoryRequestManagedBean.sr.id}"/>
+
+                            <p:outputLabel value="Request from:" />
+                            <h:outputText value="#{inventoryRequestManagedBean.sr.requestInitiator.companyName}"/>
+
+                            <p:outputLabel value="Creation Time:" />
+                            <h:outputText value="#{inventoryRequestManagedBean.sr.creationTime}">
+                            </h:outputText>
+
+                            <p:outputLabel value="Request source description:" />
+                            <h:outputText value="#{inventoryRequestManagedBean.sr.requestSource}"/>
+
+                            <p:outputLabel value="Target Warehouse:" />
+                            <h:outputText value="#{inventoryRequestManagedBean.sr.warehouse.name}"/>
+
+                            <p:outputLabel value="Product:" />
+                            <h:outputText value="#{inventoryRequestManagedBean.sr.product.productName}"/>
+
+                            <p:outputLabel value="Quantity (#{inventoryRequestManagedBean.sr.product.unit}):" />
+                            <h:outputText value="#{inventoryRequestManagedBean.sr.quantity}"/>
+
+                            <p:outputLabel value="Needed Capacity:" />
+                            <h:outputText value="#{inventoryRequestManagedBean.generateNeededCapacity()}"/>
+
+                            <p:outputLabel value="Perishable" />
+                            <p:selectBooleanButton id="perishable" value="#{inventoryRequestManagedBean.sr.perishable}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                            </p:selectBooleanButton>
+
+                            <p:outputLabel value="Flammable" />
+                            <p:selectBooleanButton id="flammable" value="#{inventoryRequestManagedBean.sr.flammable}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                            </p:selectBooleanButton>
+
+                            <p:outputLabel value="Pharmaceutical:" />
+                            <p:selectBooleanButton id="pharmaceutical" value="#{inventoryRequestManagedBean.sr.pharmaceutical}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                            </p:selectBooleanButton>
+
+                            <p:outputLabel value="HighValue:" />
+                            <p:selectBooleanButton id="highValue" value="#{inventoryRequestManagedBean.sr.highValue}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px">
+                            </p:selectBooleanButton>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="3" cellpadding="5">
+                            <p:outputLabel value="Target Region:" />
+                            <p:selectOneMenu id="unit" var="regionCode" value="#{inventoryRequestManagedBean.regionCode}" label="regionCode" required="true" requiredMessage="Please select target region">
+                                <f:selectItems value="#{inventoryRequestManagedBean.sr.warehouse.regionList}" var="region" itemLabel="#{region}" itemValue="#{region}" />
+                            </p:selectOneMenu>
+
+                            <p:commandButton value="Approve" type="submit" id="back" update="msgs" ajax="true" actionListener="#{inventoryRequestManagedBean.approveStorageRequest()}" styleClass="ui-priority-primary" />
+                        </h:panelGrid>    
+
+                        <p:dialog resizable="false" header="Stock-in Request #{inventoryRequestManagedBean.sr.id} has been scheduled successfully" widgetVar="dlg" showEffect="fold">
+                            <p:commandButton type="submit" value="Back to Stock-in Requeset List" icon="ui-icon-check" actionListener="#{inventoryRequestManagedBean.redirectToViewStorageRequestList()}" /> 
+                        </p:dialog>
+                    </p:layoutUnit>
+
+                    <p:layoutUnit position="center" resizable="true" size="70%" header="Regions of #{inventoryRequestManagedBean.sr.warehouse.name}">
+                        <p:dataGrid id="dataGrid" var="regionCode1" value="#{facilityManagedBean.regionList}" columns="1" layout="grid" 
+                                    rows="6" paginator="true" emptyMessage="No Storage bin found">
+                            <h:panelGrid columns="2">
+                                <p:chart type="pie" model="#{facilityManagedBean.getRegionCapacityChart(regionCode1)}" style="width:400px;height:300px" />
+
+                                <p:panelGrid columns="2">
+                                    <h:outputText value="Number of Storage Bins: "/>
+                                    <h:outputText value="#{facilityManagedBean.getRegionShelfNumber(regionCode1)}"/>
+
+                                    <h:outputText value="Total Capacity: "/>
+                                    <h:outputText value="#{facilityManagedBean.getRegionCapacity(regionCode1)}" />
+
+                                    <h:outputText value="Spare Capacity: "/>
+                                    <h:outputText value="#{facilityManagedBean.getRegionSpareCapacity(regionCode1)}" />
+                                </p:panelGrid>
+
+                            </h:panelGrid>
+                        </p:dataGrid>
+
+                    </p:layoutUnit>
+                </p:layout>
+
+            </p:panel>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+

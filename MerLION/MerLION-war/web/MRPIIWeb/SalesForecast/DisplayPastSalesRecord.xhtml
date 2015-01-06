@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <ui:define name="head-title">
+        <title>Display Past Sales Record</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfCustomerCompany()}
+        #{commonFuncManagedBean.checkIfManufacture()}
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="formMain">
+
+            <p:growl id="messages" autoUpdate="true" globalOnly="true"/>
+            <p:messages autoUpdate="true" closable="true" />
+            <p:layout style="height:750px;" >
+                <p:layoutUnit position="west" resizable="true" size="20%">
+                <p:dataTable var="calendars" value="#{salesForecastManagedBean.calendarSet}"
+                             paginator="true" rows="20" emptyMessage="No Sales Record">
+                    <f:facet name="header">
+                        Past Sales Records
+                    </f:facet>
+
+                    <p:column headerText="Date"
+                              sortBy="#{calendars}">
+                        <h:outputText value="#{calendars}" />
+                    </p:column>
+                    <p:column headerText="Sales Figure(Quantity)"
+                              sortBy="#{salesForecastManagedBean.retrieveSinglePastSale(calendars)}">
+                        <h:outputText value="#{salesForecastManagedBean.retrieveSinglePastSale(calendars)}" />
+                    </p:column>
+                    
+                </p:dataTable>
+                    </p:layoutUnit>
+                <p:layoutUnit position="center" resizable="true" size="80%" header="Sales Record in Past 3 Years">
+                    <p:dataGrid var="recordChart" value="#{salesForecastManagedBean.generateSalesRecordChartList()}" columns="2" rows="4"
+                                paginator="true" layout="grid">
+                        <p:chart type="bar" model="#{recordChart}" style="height:300px"/>
+                    </p:dataGrid>
+                </p:layoutUnit>
+            </p:layout>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

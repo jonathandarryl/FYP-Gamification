@@ -1,0 +1,250 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:m="http://code.google.com/p/gmaps4jsf/"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="head-title">
+        <title>Update Routes Information</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; 
+            }
+        </style>
+    </ui:define>
+    <ui:define name="js">
+        <script src="https://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAxrVS1QxlpJHXxQ2Vxg2bJBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxS9AOPy_YJl48ifAy4mq6I8SgK8fg" type="text/javascript">
+        </script>     
+    </ui:define>
+    <ui:define name="content"> 
+        <p:graphicImage value="../../resources/images/transportationRoutes1.jpg" style="width:100%;"></p:graphicImage>
+        <p:growl id="msgs" autoUpdate="true" life="3000"/>
+
+        <h:form id="form2">
+            <p:panel id="panel2" header="Update Deliver Route">
+                <f:facet name="header">
+                    <b style="margin-bottom:0;font-size:1.5em">Update Transportation Route</b>
+                </f:facet>
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/spinner.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:messages />
+                <div class="ui-grid ui-grid-responsive">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-6">
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Source country:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inplace id="sco" editor="true">
+                                        <p:inputText required="true" label="sourceCountry"
+                                                     requiredMessage="Source country is required." id="sourceCountry"
+                                                     value="#{routesManagedBean.sourceCountry}"/>
+                                    </p:inplace>                                      
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Source state:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inplace id="sst" editor="true">
+                                        <p:inputText required="true" label="sourceState"
+                                                     requiredMessage="Source state is required." id="sourceState"
+                                                     value="#{routesManagedBean.sourceState}"/>
+                                    </p:inplace>                                   
+                                </div>  
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Source city:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inplace id="sci" editor="true">
+                                        <p:inputText required="true" label="sourceCity"
+                                                     requiredMessage="Source city is required." id="sourceCity"
+                                                     value="#{routesManagedBean.sourceCity}"/>
+                                    </p:inplace> 
+                                </div>  
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Source street:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inplace id="sst2" editor="true">
+                                        <p:inputText required="true" label="sourceStreet"
+                                                     requiredMessage="Required vessel number is required." id="sourceStreet"
+                                                     value="#{routesManagedBean.sourceStreet}"/>
+                                    </p:inplace> 
+                                </div>  
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Source block No:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inplace id="sbl" editor="true">
+                                        <p:inputText label="sourceBlock" id="sourceBlockNo"
+                                                     value="#{routesManagedBean.sourceBlockNo}"/>
+                                    </p:inplace> 
+                                </div>  
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Source postal code:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inplace id="spo" editor="true">
+                                        <p:inputText required="true" label="sourcePostalCode"
+                                                     requiredMessage="Source postal code is required." id="sourcePostalCode"
+                                                     value="#{routesManagedBean.sourcePostalCode}"/>                      
+                                    </p:inplace> 
+                                </div>  
+                            </div>
+                        </div>
+                        <div class="ui-grid-col-6">
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Destination country:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inplace id="dco" editor="true">
+                                        <p:inputText required="true" label="destCity"
+                                                     requiredMessage="Dest city is required." id="destCountry"
+                                                     value="#{routesManagedBean.destCountry}"/>
+                                    </p:inplace> 
+                                </div>           
+                            </div>
+
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Destination state:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inplace id="dst" editor="true">
+                                        <p:inputText required="true" label="desteState"
+                                                     requiredMessage="Dest state is required." id="destState"
+                                                     value="#{routesManagedBean.destState}"/>
+                                    </p:inplace> 
+                                </div>
+                            </div>
+
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Destination city:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inplace id="dci" editor="true">
+                                        <p:inputText required="true" label="destCity"
+                                                     requiredMessage="dest city is required." id="destCity"
+                                                     value="#{routesManagedBean.destCity}"/>
+                                    </p:inplace> 
+                                </div>
+                            </div>
+
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Destination street:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inplace id="dst2" editor="true">
+                                        <p:inputText required="true" label="destStreet"
+                                                     requiredMessage="dest street is required." id="destStreet"
+                                                     value="#{routesManagedBean.destStreet}"/>
+                                    </p:inplace>
+                                </div>
+                            </div>
+
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Destination block No:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inplace id="dbl" editor="true">
+                                        <p:inputText label="destblock" id="destBlockNo"
+                                                     value="#{routesManagedBean.destBlockNo}"/>                      
+                                    </p:inplace>
+                                </div>
+                            </div>
+
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Destination postal code:" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inplace id="dpo" editor="true">
+                                        <p:inputText required="true" label="destPostalCode"
+                                                     requiredMessage="dest postal code is required." id="destPostalCode"
+                                                     value="#{routesManagedBean.destPostalCode}"/>
+                                    </p:inplace>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Transportation Mode:" />
+                                </div>
+                                <div class="ui-grid-col-6">                         
+                                    <p:selectOneMenu style="width:100%" id="type" value="#{routesManagedBean.mode}">
+                                        <f:selectItem itemLabel="Select One" itemValue="" />
+                                        <f:selectItem itemLabel="By Truck" itemValue="byTruck" />
+                                        <f:selectItem itemLabel="By Vessel" itemValue="byVessel" />
+                                        <f:selectItem itemLabel="By Plane" itemValue="byPlane" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+
+                            <div class="ui-grid-row" style="margin:10px 10px;">
+                                <div class="ui-grid-col-6">
+                                    <p:outputLabel style="font-weight: bold" value="Distance (KM):" />
+                                </div>
+                                <div class="ui-grid-col-6">
+                                    <p:inputText style="width:100%" required="true" label="distance"
+                                                 requiredMessage="Distance is required." id="distance"
+                                                 value="#{routesManagedBean.distance}">                               
+                                    </p:inputText>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="ui-grid-row" style="float:right;">
+                        <p:commandButton id="btn2" value="Submit" icon="ui-icon-check"
+                                         update="panel2" actionListener="#{routesManagedBean.updateRoutesInfo()}" ajax="true"/>
+                    </div>
+                </div>                               
+            </p:panel>
+            <m:map rendered="#{not routesManagedBean.isTruck}" id="map"  height="500px" width="100%" address="#{routesManagedBean.sourceStreet}, #{routesManagedBean.sourceBlockNo}, #{routesManagedBean.sourceCity}, #{routesManagedBean.sourceState}, #{routesManagedBean.sourceCountry} #{routesManagedBean.sourcePostalCode}" 
+                   zoom="4">
+                <m:polyline lineWidth="10" hexaColor="#ff0000" geodesic="true" opacity="0.8" >
+                    <m:point latitude="#{routesManagedBean.sourceLat}" longitude="#{routesManagedBean.sourceLng}"></m:point>
+                    <m:point latitude="#{routesManagedBean.destLat}" longitude="#{routesManagedBean.destLng}"></m:point>
+                </m:polyline>
+                <m:htmlInformationWindow htmlText="#{routesManagedBean.sourceLocation}"/>
+                <m:marker />
+                <m:marker address="#{routesManagedBean.destLocation}" />
+            </m:map>
+            <m:map rendered="#{routesManagedBean.isTruck}" id="map2"  height="500px" width="100%" address="#{routesManagedBean.sourceStreet}, #{routesManagedBean.sourceBlockNo}, #{routesManagedBean.sourceCity}, #{routesManagedBean.sourceState}, #{routesManagedBean.sourceCountry} #{routesManagedBean.sourcePostalCode}" 
+                   zoom="6">
+                <m:direction fromAddress="#{routesManagedBean.sourceLocation}"
+                             toAddress="#{routesManagedBean.destLocation}" preserveViewport="false">
+                
+                    <m:htmlInformationWindow htmlText="#{routesManagedBean.sourceLocation}"/>
+                    
+                </m:direction>
+                <m:htmlInformationWindow htmlText="#{routesManagedBean.destLocation}"/>
+            </m:map>
+        </h:form>
+    </ui:define>
+</ui:composition>

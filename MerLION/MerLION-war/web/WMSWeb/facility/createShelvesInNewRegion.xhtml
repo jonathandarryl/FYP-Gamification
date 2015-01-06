@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/companyUserTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:o="http://omnifaces.org/ui">
+    <ui:define name="head-title">
+        <title>Create New Shelf List In Region #{facilityManagedBean.regionCode}</title>
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{commonFuncManagedBean.checkIfWarehouse()}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <p:graphicImage value="../../resources/images/bannerWarehouse.jpg" style="width:100%;"></p:graphicImage>
+
+            <p:panel id ="panel">
+                <p:messages id="msgId" showDetail="false" autoUpdate="true" closable="true"/>
+                <p:growl id="msgs" />
+
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="regionCode" value="Code for the new region:" />
+                    <p:inputText required="true" label="regionCode"
+                                 requiredMessage="Region Code is required." id="regionCode"
+                                 value="#{facilityManagedBean.regionCode}">
+                    </p:inputText>
+
+                    <p:outputLabel for="number" value="Number of new storage bins:" />
+                    <p:inputText required="true" label="number"
+                                 requiredMessage="Shelves number is required." id="number"
+                                 value="#{facilityManagedBean.shelvesNum}">
+                        <f:convertNumber type="number" />
+                    </p:inputText>
+
+                    <p:outputLabel for="capacity" value="Capacity per storage bin:" />
+                    <p:inputText required="true" label="capacity"
+                                 requiredMessage="Capacity is required." id="capacity"
+                                 value="#{facilityManagedBean.shelfCapacity}">
+                        <f:convertNumber type="number" />
+                    </p:inputText>
+
+                </h:panelGrid>
+
+                <p:commandButton ajax="true" type="submit" value="Add New Storage Region" icon="ui-icon-check" actionListener="#{facilityManagedBean.createShelfListForWarehouse()}" /> 
+
+                <p:dialog resizable="false" header="Added Successfully" widgetVar="dlg" showEffect="fold">
+                    <p:commandButton type="submit" value="View Current Storage Bin List" icon="ui-icon-check" actionListener="#{facilityManagedBean.redirectToViewWarehouseLayout()}" /> 
+                </p:dialog>
+            </p:panel>
+            <p:ajaxStatus style="width:200px;height:16px;">
+            </p:ajaxStatus>
+
+
+        </h:form>
+    </ui:define>
+</ui:composition>

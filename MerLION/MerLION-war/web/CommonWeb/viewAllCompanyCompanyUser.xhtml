@@ -1,0 +1,59 @@
+<ui:composition template="../template/companyUserTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            MerLION Platform | Search company
+        </title>
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            td {
+                color: black !important;
+            }
+        </style> 
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkStatus()}
+        #{commonFuncManagedBean.checkIfUser()}
+        #{companyAdminManagedBean.searchCompany()}
+    </ui:define>
+    <ui:define name="content">         
+        <center>
+            <h:form id="form">
+                <p:panel id ="panel">
+
+                    <p:messages id="viewCompany" autoUpdate="true" closable="true"/>
+
+                    <p:dataTable var="company" value="#{companyAdminManagedBean.allCompany}" resizableColumns="true" rows="10" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" >
+
+                        <p:column filterBy="#{company.id}" headerText="Company ID" sortBy="#{company.id}" filterMatchMode="contains" >
+                            <h:outputText value="#{company.id}" />
+                        </p:column>
+
+                        <p:column filterBy="#{company.companyName}" headerText="Company Name" sortBy="#{company.companyName}" filterMatchMode="contains" >
+                            <h:outputText value="#{company.companyName}" />
+                        </p:column>
+
+                        <p:column filterBy="#{company.companyType}" headerText="Company Type" sortBy="#{company.companyType}" filterMatchMode="contains" >
+                            <h:outputText value="#{company.companyType}" />
+                        </p:column>
+
+                        <p:column filterBy="#{company.contactNo}" headerText="Contact No." sortBy="#{company.contactNo}" filterMatchMode="contains" >
+                            <h:outputText value="#{company.contactNo}" />
+                        </p:column>
+
+                    </p:dataTable>
+
+                </p:panel>
+
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
+

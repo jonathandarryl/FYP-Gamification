@@ -1,0 +1,89 @@
+<ui:composition template="../template/companyUserTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            MerLION Platform | View Notification
+        </title>
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            #notDetail {
+                z-index: 1010 !important;
+            }
+            td th {
+                padding: 5px !important;
+            }
+            td {
+                color: black !important;
+            }
+        </style> 
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfUser()}
+        #{messageManagedBean.viewAllNotification()}
+    </ui:define>
+    <ui:define name="content"> 
+        
+        <center>
+
+            <h:form id="form">
+                <p:panel id ="panel">
+
+                    <p:messages id="viewNot" autoUpdate="true" closable="true"/>
+
+                    <p:dataTable var="notification" value="#{messageManagedBean.allNotification}" resizableColumns="true" rows="10" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" >
+                        <f:facet name="header">
+                            View Notifications
+                        </f:facet>
+                        
+                        <p:column filterBy="#{notification.receiveTime}" headerText="Notification Time" sortBy="#{notification.receiveTime}" filterMatchMode="contains" >
+                            <h:outputText value="#{notification.receiveTime}" />
+                        </p:column>
+
+                        <p:column filterBy="#{notification.content}" headerText="Content" filterMatchMode="contains">
+                            <h:outputText value="#{notification.content}" escape="false" />
+                        </p:column>
+
+                        <p:column headerText="View" style="width: 80px;" >
+                            <center>
+                                <p:commandButton icon="ui-icon-search" oncomplete="PF('notDialog').show()" ajax="true" update=":form:panel" type="submit" >
+                                    <f:setPropertyActionListener value="#{notification}" target="#{messageManagedBean.selectedNotification}" />
+                                </p:commandButton>
+                            </center>
+                        </p:column>
+                        
+                        <p:column headerText="Delete" style="width: 80px;" >
+                            <center>
+                                <p:commandButton icon="ui-icon-trash" actionListener="#{messageManagedBean.deleteNotification(notification.id)}" update=":form:panel" ajax="false" 
+                                                 type="submit" onclick="if (!confirm('Are you sure you want to delete this notification?')) return false;"/>
+                            </center>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <p:dialog appendTo="@(body)" header="Notification Info" widgetVar="notDialog" showEffect="fade" hideEffect="fade" resizable="false">
+                        <p:outputPanel id="notDetail" style="text-align:center;">
+                            <p:panelGrid  columns="2" rendered="#{not empty messageManagedBean.selectedNotification}" columnClasses="label,value">
+
+                                <h:outputText value="Send time" />
+                                <h:outputText value="#{messageManagedBean.selectedNotification.receiveTime}" />
+
+                                <h:outputText value="Content:" />
+                                <h:outputText value="#{messageManagedBean.selectedNotification.content}" escape="false" />
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </p:dialog>
+
+                </p:panel>
+
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
+

@@ -1,0 +1,87 @@
+<ui:composition template="../../template/adminGRNSTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            GRNS | View all external users
+        </title>
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            #userDetail {
+                z-index: 1010 !important;
+            }
+            td {
+                color: black !important;
+            }
+        </style> 
+    </ui:define>
+    <ui:define name="check">
+        #{adminManagedBean.viewUserList()}
+    </ui:define>
+    <ui:define name="content">         
+        <center>
+            <h:form id="form">
+                <p:messages id="viewUser" autoUpdate="true" closable="true"/>
+
+                <p:dataTable widgetVar="userTable" var="user" value="#{adminManagedBean.allUserList}" resizableColumns="false" rows="10" paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15" >
+                    <f:facet name="header">
+                        <p style="font-size:1.5em;margin-bottom: 0;">View All External User</p>
+                    </f:facet>
+                    <p:column filterBy="#{user.username}" headerText="Username" sortBy="#{user.username}" filterMatchMode="contains" >
+                        <h:outputText value="#{user.username}" />
+                    </p:column>
+
+                    <p:column filterBy="#{user.firstName}" headerText="First Name" sortBy="#{user.firstName}" filterMatchMode="contains">
+                        <h:outputText value="#{user.firstName}" />
+                    </p:column>
+
+                    <p:column filterBy="#{user.lastName}" headerText="Last Name" sortBy="#{user.lastName}" filterMatchMode="contains">
+                        <h:outputText value="#{user.lastName}" />
+                    </p:column>
+
+                    <p:column filterBy="#{user.email}" headerText="Email" sortBy="#{user.email}" filterMatchMode="contains">
+                        <h:outputText value="#{user.email}" />
+                    </p:column>
+
+                    <p:column filterBy="#{user.contact}" headerText="Contact" sortBy="#{user.contact}" filterMatchMode="contains">
+                        <h:outputText value="#{user.contact}" />
+                    </p:column>
+
+                    <p:column filterBy="#{user.externalCompany.companyName}" headerText="Company Name" sortBy="#{user.externalCompany.companyName}" filterMatchMode="contains">
+                        <h:outputText value="#{user.externalCompany.companyName}" />
+                    </p:column>
+
+                    <p:column filterBy="#{user.externalCompany.contactNo}" headerText="Company Contact" sortBy="#{user.externalCompany.contactNo}" filterMatchMode="contains">
+                        <h:outputText value="#{user.externalCompany.contactNo}" />
+                    </p:column>
+
+                    <p:column headerText="ActivatedOrNot" filterBy="#{user.activated}" filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneButton onchange="PF('userTable').filter()" >
+                                <f:converter converterId="javax.faces.Boolean" />
+                                <f:selectItem itemLabel="All" itemValue="" />
+                                <f:selectItem itemLabel="Yes" itemValue="true" />
+                                <f:selectItem itemLabel="No" itemValue="false" />
+                            </p:selectOneButton>
+                        </f:facet>
+                        <p:selectBooleanButton style="width:70px" id="ActivatedOrNot" value="#{user.activated}" disabled="true" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close"/>
+                    </p:column>  
+
+                    <p:column headerText="Update" style="width: 80px;" >
+                        <center>
+                            <p:commandButton icon="ui-icon-pencil" update=":form" actionListener="#{adminManagedBean.viewOneUser(user.id)}" ajax="true" type="submit" />
+                        </center>
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
+

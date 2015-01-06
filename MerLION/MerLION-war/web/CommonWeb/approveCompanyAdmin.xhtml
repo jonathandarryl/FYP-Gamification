@@ -1,0 +1,74 @@
+<ui:composition template="../template/systemAdminTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="head-title">
+        <title>
+            MerLION Platform | Approve Company Admin Registration
+        </title>
+    </ui:define>
+    <ui:define name="cssText">
+        <style type="text/css">
+            td th {
+                padding: 5px !important;
+            }
+            td {
+                color: black !important;
+            }
+        </style> 
+    </ui:define>
+    <ui:define name="check">
+        #{commonFuncManagedBean.checkIfSystemAdmin()}
+        #{systemAdminManagedBean.viewAllRegistration()}
+
+    </ui:define>
+    <ui:define name="content"> 
+        
+        <center>
+
+            <h:form id="approveCAForm">
+
+                    <p:messages id="viewReg" autoUpdate="true" closable="true"/>
+
+                    <p:dataTable var="registration" value="#{systemAdminManagedBean.allRegistration}" resizableColumns="true" rows="10" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" >
+                        <f:facet name="header">
+                            New Company Registration
+                        </f:facet>
+                        <p:column headerText="Username" sortBy="#{registration.username}" style="width: 100px;" >
+                            <h:outputText value="#{registration.username}" />
+                        </p:column>
+                        
+                        <p:column headerText="Email" sortBy="#{registration.companyAdmin.email}" style="width: 100px;" >
+                            <h:outputText value="#{registration.companyAdmin.email}" />
+                        </p:column>
+
+                        <p:column headerText="Date of issue" style="width: 100px;" >
+                            <h:outputText value="#{registration.dateOfIssue}" />
+                        </p:column>
+
+                        <p:column headerText="Company" style="width: 80px;" >
+                            <h:outputText value="#{registration.company.companyName}" />
+                        </p:column>
+                        
+                        
+                        <p:column headerText="Company Type" sortBy="#{registration.company.companyType}" style="width: 150px;" >
+                            <h:outputText value="#{registration.company.companyType}" />
+                        </p:column>
+
+                        <p:column headerText="Approve" style="width: 150px;" >
+                            <center>
+                                <p:commandButton value="Approve" icon="ui-icon-check" actionListener="#{systemAdminManagedBean.approveCompanyAdmin(registration.id)}" update=":approveCAForm" ajax="false" type="submit" />
+                            </center>
+                        </p:column>
+
+                    </p:dataTable>
+
+            </h:form>
+        </center>
+    </ui:define>
+</ui:composition>
+
